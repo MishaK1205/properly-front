@@ -5,6 +5,7 @@ import { findPropertyBySlug, PROPERTIES } from '../../core/data/properties.data'
 import { WHATSAPP_URL } from '../../core/data/site.data';
 import { SiteFooter } from '../../shared/components/site-footer/site-footer';
 import { SiteHeader } from '../../shared/components/site-header/site-header';
+import { WhatsappIcon } from '../../shared/components/whatsapp-icon/whatsapp-icon';
 import { DetailHero } from './components/detail-hero/detail-hero';
 import { DeveloperSection } from './components/developer-section/developer-section';
 import { InterestForm } from './components/interest-form/interest-form';
@@ -27,6 +28,7 @@ import { getPropertyDetailContent } from './property-detail.data';
     DeveloperSection,
     InterestForm,
     KeepExploring,
+    WhatsappIcon,
   ],
   templateUrl: './property-detail.html',
   styleUrl: './property-detail.scss',

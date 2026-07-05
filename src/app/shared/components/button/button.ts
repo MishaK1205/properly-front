@@ -14,8 +14,6 @@ export class Button {
   readonly variant = input<ButtonVariant>('primary');
   readonly size = input<ButtonSize>('md');
   readonly type = input<'button' | 'submit'>('button');
-  /** When set, renders an anchor (external link) instead of a button. */
-  readonly href = input<string>('');
   /** Stretches the button to the full width of its container. */
   readonly block = input(false);
 

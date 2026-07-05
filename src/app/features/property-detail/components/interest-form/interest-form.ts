@@ -6,14 +6,16 @@ import {
   WHATSAPP_URL,
 } from '../../../../core/data/site.data';
 import { Button } from '../../../../shared/components/button/button';
+import { ButtonLink } from '../../../../shared/components/button-link/button-link';
 import { SectionHeading } from '../../../../shared/components/section-heading/section-heading';
 import { SelectInput } from '../../../../shared/components/select-input/select-input';
 import { TextInput } from '../../../../shared/components/text-input/text-input';
+import { WhatsappIcon } from '../../../../shared/components/whatsapp-icon/whatsapp-icon';
 import { FORM_TRUST_ITEMS } from '../../property-detail.data';
 
 @Component({
   selector: 'app-interest-form',
-  imports: [Button, SectionHeading, SelectInput, TextInput],
+  imports: [Button, ButtonLink, SectionHeading, SelectInput, TextInput, WhatsappIcon],
   templateUrl: './interest-form.html',
   styleUrl: './interest-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

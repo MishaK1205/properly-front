@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { WHATSAPP_URL } from '../../../core/data/site.data';
-import { Button } from '../button/button';
+import { ButtonLink } from '../button-link/button-link';
 import { LanguageSwitcher } from '../language-switcher/language-switcher';
+import { WhatsappIcon } from '../whatsapp-icon/whatsapp-icon';
 
 @Component({
   selector: 'app-site-header',
-  imports: [Button, LanguageSwitcher, RouterLink],
+  imports: [ButtonLink, LanguageSwitcher, RouterLink, WhatsappIcon],
   templateUrl: './site-header.html',
   styleUrl: './site-header.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

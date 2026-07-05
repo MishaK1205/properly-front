@@ -4,6 +4,7 @@ import { PROPERTIES } from '../../core/data/properties.data';
 import { WHATSAPP_URL } from '../../core/data/site.data';
 import { SiteFooter } from '../../shared/components/site-footer/site-footer';
 import { SiteHeader } from '../../shared/components/site-header/site-header';
+import { WhatsappIcon } from '../../shared/components/whatsapp-icon/whatsapp-icon';
 import { AnnouncementBar } from './components/announcement-bar/announcement-bar';
 import { Faq } from './components/faq/faq';
 import { Hero } from './components/hero/hero';
@@ -26,6 +27,7 @@ import { Verification } from './components/verification/verification';
     Faq,
     LeadForm,
     SiteFooter,
+    WhatsappIcon,
   ],
   templateUrl: './landing.html',
   styleUrl: './landing.scss',

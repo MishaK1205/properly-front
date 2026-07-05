@@ -11,11 +11,14 @@ import {
 import { TELEGRAM_URL, WHATSAPP_URL } from '../../../../core/data/site.data';
 import { Property } from '../../../../core/models/property';
 import { Button } from '../../../../shared/components/button/button';
+import { ButtonLink } from '../../../../shared/components/button-link/button-link';
+import { TelegramIcon } from '../../../../shared/components/telegram-icon/telegram-icon';
+import { WhatsappIcon } from '../../../../shared/components/whatsapp-icon/whatsapp-icon';
 import { PropertyDetailContent } from '../../property-detail.models';
 
 @Component({
   selector: 'app-detail-hero',
-  imports: [Button, NgOptimizedImage],
+  imports: [Button, ButtonLink, NgOptimizedImage, TelegramIcon, WhatsappIcon],
   templateUrl: './detail-hero.html',
   styleUrl: './detail-hero.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
