@@ -1,0 +1,37 @@
+<footer class="footer">
+  <div class="footer__top container">
+    <div class="footer__brand">
+      <p class="footer__logo-row">
+        <span class="footer__logo" aria-hidden="true">B</span>
+        <span class="footer__name">Batumi Top 10</span>
+      </p>
+      <p class="footer__tagline">Independent investment research. Free for buyers.</p>
+    </div>
+
+    <nav class="footer__nav" aria-label="Footer">
+      @for (link of links; track link) {
+        <a class="footer__link" href="#">{{ link }}</a>
+      }
+    </nav>
+
+    <div class="footer__actions">
+      <a class="footer__social footer__social--whatsapp" [href]="whatsappUrl" target="_blank" rel="noopener" aria-label="WhatsApp">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2 0-.2 0-.3-.1-.4l-.7-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5 0-.7.3a3 3 0 0 0-1 2.2c0 1.3 1 2.6 1.1 2.8.1.2 2 3 4.8 4.2 1.8.8 2.5.8 3.4.7.5-.1 1.4-.6 1.6-1.2.2-.6.2-1.1.1-1.2 0-.1-.2-.2-.4-.3Z" />
+        </svg>
+      </a>
+      <a class="footer__social footer__social--telegram" [href]="telegramUrl" target="_blank" rel="noopener" aria-label="Telegram">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="m21.9 4.6-3 14.3c-.2 1-.8 1.2-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-.9.5l.3-4.6L18.2 7c.4-.3-.1-.5-.6-.2L7.3 13.3l-4.4-1.4c-1-.3-1-1 .2-1.4l17.5-6.8c.8-.3 1.5.2 1.3.9Z" />
+        </svg>
+      </a>
+      <app-language-switcher appearance="dark" />
+    </div>
+  </div>
+
+  <div class="footer__bottom">
+    <p class="footer__legal container">
+      © {{ year }} · Independent editorial · Not affiliated with any single developer · Free for buyers
+    </p>
+  </div>
+</footer>

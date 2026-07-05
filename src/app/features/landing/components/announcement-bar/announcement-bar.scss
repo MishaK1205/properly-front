@@ -1,0 +1,19 @@
+.bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.5rem var(--container-pad);
+  background: var(--color-navy-800);
+
+  &__text {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--color-text-inverse);
+  }
+
+  &__icon {
+    margin-right: 0.35rem;
+  }
+}

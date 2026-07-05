@@ -1,0 +1,9 @@
+@if (href()) {
+  <a [class]="classes()" [href]="href()" target="_blank" rel="noopener">
+    <ng-content />
+  </a>
+} @else {
+  <button [class]="classes()" [type]="type()" (click)="clicked.emit()">
+    <ng-content />
+  </button>
+}

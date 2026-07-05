@@ -1,0 +1,40 @@
+.heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+  text-align: center;
+
+  &--start {
+    align-items: flex-start;
+    text-align: start;
+  }
+
+  &__eyebrow {
+    font-size: var(--font-size-xs);
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  &__title {
+    font-size: clamp(1.5rem, 3.2vw, var(--font-size-2xl));
+    font-weight: 800;
+  }
+
+  &__subtitle {
+    max-width: 46rem;
+    color: var(--color-text-muted);
+  }
+
+  &--dark {
+    .heading__title {
+      color: var(--color-text-inverse);
+    }
+
+    .heading__subtitle {
+      color: var(--color-text-inverse-muted);
+    }
+  }
+}

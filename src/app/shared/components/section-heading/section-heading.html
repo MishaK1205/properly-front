@@ -1,0 +1,13 @@
+<header
+  class="heading"
+  [class.heading--start]="align() === 'start'"
+  [class.heading--dark]="tone() === 'dark'"
+>
+  @if (eyebrow()) {
+    <p class="heading__eyebrow">{{ eyebrow() }}</p>
+  }
+  <h2 class="heading__title">{{ title() }}</h2>
+  @if (subtitle()) {
+    <p class="heading__subtitle">{{ subtitle() }}</p>
+  }
+</header>

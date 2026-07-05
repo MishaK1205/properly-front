@@ -1,0 +1,53 @@
+.lead {
+  padding-block: var(--section-pad-y);
+  background: var(--color-navy-800);
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 26rem;
+    margin: 3rem auto 0;
+    padding: 2rem 1.75rem;
+    border-radius: var(--radius-xl);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-lg);
+  }
+
+  &__trust {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+  }
+
+  &__divider {
+    height: 1px;
+    background: var(--color-border);
+  }
+
+  &__whatsapp {
+    text-align: center;
+  }
+
+  &__success {
+    text-align: center;
+    padding-block: 2rem;
+  }
+
+  &__success-title {
+    font-size: var(--font-size-lg);
+    color: var(--color-success);
+  }
+
+  &__success-text {
+    margin-top: 0.75rem;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+}

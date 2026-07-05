@@ -1,0 +1,113 @@
+<section class="hero">
+  <div class="hero__grid container">
+    <div class="hero__gallery">
+      <div class="hero__media">
+        <img [ngSrc]="mainImageUrl()" [alt]="property().name" fill priority />
+        @if (property().badge; as badge) {
+          <span class="hero__badge" [class.hero__badge--accent]="badge.kind === 'accent'">
+            🏆 {{ badge.label }}
+          </span>
+        }
+      </div>
+
+      <div class="hero__thumbs" role="tablist" aria-label="Property photos">
+        @for (url of galleryUrls().slice(1); track url; let i = $index) {
+          <button
+            type="button"
+            class="hero__thumb"
+            [class.hero__thumb--active]="selectedIndex() === i + 1"
+            (click)="selectImage(i + 1)"
+            [attr.aria-label]="'Photo ' + (i + 2) + ' of ' + property().name"
+          >
+            <img [ngSrc]="url" alt="" fill />
+          </button>
+        }
+      </div>
+    </div>
+
+    <aside class="hero__card">
+      <h1 class="hero__name">{{ property().name }}</h1>
+
+      <p class="hero__developer">
+        {{ property().developer }}
+        <span class="hero__verified">✓ Verified</span>
+      </p>
+
+      <p class="hero__location">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" />
+          <circle cx="12" cy="10" r="2.5" />
+        </svg>
+        {{ property().location }}, Georgia
+      </p>
+
+      <div class="hero__stats">
+        @for (stat of detail().summaryStats; track stat.label) {
+          <div class="hero__stat">
+            <span class="hero__stat-label">{{ stat.label }}</span>
+            <span class="hero__stat-value" [class.hero__stat-value--accent]="stat.accent">
+              {{ stat.value }}
+            </span>
+            <span class="hero__stat-sub">{{ stat.sub }}</span>
+          </div>
+        }
+      </div>
+
+      <ul class="hero__tags">
+        @for (tag of detail().tags; track tag) {
+          <li class="hero__tag">{{ tag }}</li>
+        }
+      </ul>
+
+      <div class="hero__divider" role="separator"></div>
+
+      <p class="hero__payment">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <rect x="2" y="5" width="20" height="14" rx="2" />
+          <path d="M2 10h20" />
+        </svg>
+        {{ detail().paymentNote }}
+      </p>
+
+      <app-button variant="primary" size="lg" [block]="true" (clicked)="interested.emit()">
+        I'm Interested — Get Details →
+      </app-button>
+
+      <div class="hero__whatsapp">
+        <app-button variant="link-whatsapp" [href]="whatsappUrl">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2 0-.2 0-.3-.1-.4l-.7-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5 0-.7.3a3 3 0 0 0-1 2.2c0 1.3 1 2.6 1.1 2.8.1.2 2 3 4.8 4.2 1.8.8 2.5.8 3.4.7.5-.1 1.4-.6 1.6-1.2.2-.6.2-1.1.1-1.2 0-.1-.2-.2-.4-.3Z" />
+          </svg>
+          Or message us directly on WhatsApp →
+        </app-button>
+      </div>
+
+      <p class="hero__trust">✓ Free for buyers · A real person responds in 24h</p>
+
+      <div class="hero__divider" role="separator"></div>
+
+      <div class="hero__share">
+        <span class="hero__share-label">Share this property:</span>
+
+        <button type="button" class="hero__copy" (click)="copyLink()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="9" y="9" width="13" height="13" rx="2" />
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+          </svg>
+          {{ copied() ? 'Copied ✓' : 'Copy link' }}
+        </button>
+
+        <a class="hero__social hero__social--whatsapp" [href]="whatsappUrl" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2 0-.2 0-.3-.1-.4l-.7-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5 0-.7.3a3 3 0 0 0-1 2.2c0 1.3 1 2.6 1.1 2.8.1.2 2 3 4.8 4.2 1.8.8 2.5.8 3.4.7.5-.1 1.4-.6 1.6-1.2.2-.6.2-1.1.1-1.2 0-.1-.2-.2-.4-.3Z" />
+          </svg>
+        </a>
+        <a class="hero__social hero__social--telegram" [href]="telegramUrl" target="_blank" rel="noopener" aria-label="Share on Telegram">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="m21.9 4.6-3 14.3c-.2 1-.8 1.2-1.7.8l-4.6-3.4-2.2 2.1c-.3.3-.5.5-.9.5l.3-4.6L18.2 7c.4-.3-.1-.5-.6-.2L7.3 13.3l-4.4-1.4c-1-.3-1-1 .2-1.4l17.5-6.8c.8-.3 1.5.2 1.3.9Z" />
+          </svg>
+        </a>
+      </div>
+    </aside>
+  </div>
+</section>

@@ -1,0 +1,119 @@
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 40rem;
+  overflow: hidden;
+
+  &__media {
+    position: absolute;
+    inset: 0;
+
+    img {
+      object-fit: cover;
+    }
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgb(16 35 58 / 0.55) 0%, rgb(16 35 58 / 0.35) 55%, rgb(16 35 58 / 0.6) 100%);
+  }
+
+  &__content {
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-block: 5rem;
+  }
+
+  &__edition {
+    position: absolute;
+    top: 1.5rem;
+    left: var(--container-pad);
+    padding: 0.35rem 0.9rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-primary);
+    color: var(--color-text-inverse);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+  }
+
+  &__title {
+    max-width: 46rem;
+    color: var(--color-text-inverse);
+    font-size: clamp(2rem, 5vw, var(--font-size-3xl));
+    font-weight: 800;
+  }
+
+  &__subtitle {
+    max-width: 32rem;
+    margin-top: 1.25rem;
+    color: rgb(255 255 255 / 0.85);
+    font-size: var(--font-size-lg);
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 2rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__chip {
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+    color: var(--color-heading);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    box-shadow: var(--shadow-sm);
+  }
+
+  &__cta {
+    margin-top: 2.25rem;
+  }
+
+  &__scroll {
+    margin-top: 1.25rem;
+    border: 0;
+    background: transparent;
+    color: rgb(255 255 255 / 0.85);
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    text-decoration: underline;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--color-text-inverse);
+    }
+  }
+
+  &__trust {
+    position: relative;
+    background: var(--color-navy-900);
+  }
+
+  &__trust-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem 2.5rem;
+    margin: 0;
+    padding-block: 0.85rem;
+    list-style: none;
+  }
+
+  &__trust-item {
+    color: var(--color-text-inverse-muted);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+  }
+}

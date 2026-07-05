@@ -1,0 +1,36 @@
+<section class="explore">
+  <div class="container">
+    <app-section-heading
+      align="start"
+      eyebrow="Keep Exploring"
+      title="Other verified investments you might like"
+    />
+
+    <div class="explore__grid">
+      @for (card of cards(); track card.property.slug) {
+        <a class="explore__card" [routerLink]="['/property', card.property.slug]">
+          <div class="explore__media">
+            <img [ngSrc]="card.imageUrl" [alt]="card.property.name" fill />
+            @if (card.property.badge; as badge) {
+              <span class="explore__badge" [class.explore__badge--accent]="badge.kind === 'accent'">
+                {{ badge.label }}
+              </span>
+            }
+          </div>
+
+          <div class="explore__body">
+            <h3 class="explore__name">{{ card.property.name }}</h3>
+            <div class="explore__row">
+              <span class="explore__yield">{{ card.property.yieldLabel }}</span>
+              <span class="explore__view">View →</span>
+            </div>
+          </div>
+        </a>
+      }
+    </div>
+
+    <p class="explore__back">
+      <a class="explore__back-link" routerLink="/">← Back to the full Top 10 list</a>
+    </p>
+  </div>
+</section>

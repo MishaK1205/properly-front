@@ -1,0 +1,16 @@
+<section class="shortlist">
+  <div class="container">
+    <app-section-heading
+      align="start"
+      eyebrow="The Shortlist"
+      title="10 Verified Investments, Ranked and Reviewed"
+      subtitle="Each property passed our verification checklist. Click 'I'm Interested' and we'll send you the full investment brief for that property."
+    />
+
+    <div class="shortlist__grid">
+      @for (property of properties(); track property.rank) {
+        <app-property-card [property]="property" (interested)="interested.emit($event)" />
+      }
+    </div>
+  </div>
+</section>

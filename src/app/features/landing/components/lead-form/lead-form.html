@@ -1,0 +1,87 @@
+<section class="lead">
+  <div class="container">
+    <app-section-heading
+      tone="dark"
+      eyebrow="Get in Touch"
+      title="Get your personalized Batumi investment brief"
+      subtitle="Tell us your budget and goals — we'll send a tailored brief within 24 hours."
+    />
+
+    <form class="lead__card" (submit)="submit($event)">
+      @if (submitted()) {
+        <div class="lead__success">
+          <h3 class="lead__success-title">Request received ✓</h3>
+          <p class="lead__success-text">
+            Thank you{{ fullName() ? ', ' + fullName() : '' }}. A real person will send your
+            personalized investment brief within 24 hours.
+          </p>
+        </div>
+      } @else {
+        <app-select-input
+          label="Which property are you most interested in?"
+          placeholder="Select a property"
+          [options]="propertyNames()"
+          [hint]="propertyHint"
+          [(value)]="property"
+        />
+
+        <app-text-input
+          label="Full name"
+          placeholder="Your full name"
+          [required]="true"
+          [(value)]="fullName"
+        />
+
+        <app-text-input
+          label="WhatsApp number (with country code)"
+          type="tel"
+          placeholder="+1 234 567 8900"
+          [required]="true"
+          [(value)]="whatsappNumber"
+        />
+
+        <app-select-input
+          label="Budget range"
+          placeholder="Under $50k / $50–100k / $100–200k / $200k+"
+          [options]="budgetOptions"
+          [(value)]="budget"
+        />
+
+        <app-select-input
+          label="Investment purpose"
+          placeholder="STR income / Capital growth / Personal use / All three"
+          [options]="purposeOptions"
+          [(value)]="purpose"
+        />
+
+        <app-select-input
+          label="Timeline"
+          placeholder="Ready to buy now / 3–6 months / 6–12 months / Just exploring"
+          [options]="timelineOptions"
+          [(value)]="timeline"
+        />
+
+        <app-button variant="primary" size="lg" type="submit" [block]="true">
+          Send Me the Investment Brief
+        </app-button>
+
+        <ul class="lead__trust">
+          @for (item of trustItems; track item) {
+            <li>{{ item }}</li>
+          }
+        </ul>
+
+        <div class="lead__divider" role="separator"></div>
+
+        <div class="lead__whatsapp">
+          <app-button variant="link-whatsapp" [href]="whatsappUrl">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18a8 8 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 1 1 12 20Zm4.4-6c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.6.1-.2.2-.6.8-.8 1-.1.2-.3.2-.5.1a6.5 6.5 0 0 1-3.2-2.8c-.2-.4.2-.4.6-1.2 0-.2 0-.3-.1-.4l-.7-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5 0-.7.3a3 3 0 0 0-1 2.2c0 1.3 1 2.6 1.1 2.8.1.2 2 3 4.8 4.2 1.8.8 2.5.8 3.4.7.5-.1 1.4-.6 1.6-1.2.2-.6.2-1.1.1-1.2 0-.1-.2-.2-.4-.3Z" />
+            </svg>
+            Prefer WhatsApp? Message us directly →
+          </app-button>
+        </div>
+      }
+    </form>
+  </div>
+</section>

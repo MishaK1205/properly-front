@@ -1,0 +1,89 @@
+---
+description: Angular 20 architecture, structure, and coding conventions for this project
+alwaysApply: true
+---
+
+# Angular Conventions (Angular 20, standalone, signals-first)
+
+## Application structure
+
+```
+src/app/
+  core/            # singleton services, interceptors, guards, app-wide models
+    services/
+    models/        # interfaces, types, enums
+  shared/          # reusable, dumb building blocks (no business logic)
+    components/    # button, card, section-title, ...
+    directives/
+    pipes/
+  features/        # one folder per feature/page
+    landing/
+      landing.ts / .html / .scss        # page (smart) component
+      components/                        # section components used only by this page
+        hero/
+        footer/
+      landing.data.ts                    # static content/config for the page
+```
+
+- A component that is used by 2+ features moves to `shared/`.
+- Feature pages are lazy-loaded via `loadComponent` in `app.routes.ts`.
+
+## File naming (Angular 20 style — no type suffixes)
+
+- Components: `hero.ts`, `hero.html`, `hero.scss` in a `hero/` folder. No `.component.*` suffix.
+- Services: `property.service.ts` → class `PropertyService`. Pipes: `price.pipe.ts` → `PricePipe`. Directives: `scroll-reveal.directive.ts` → `ScrollRevealDirective`. Guards: `auth.guard.ts`.
+- Selectors: `app-` prefix, kebab-case (`app-hero`). Directive selectors: camelCase with `app` prefix (`[appScrollReveal]`).
+- Class names: PascalCase, named after what they are (`Hero`, `LandingPage` — no `Component` suffix for components, matching the CLI scaffold `App`).
+
+## When to create things
+
+- **New component** when: a template section exceeds ~80 lines, a block is repeated, a block has its own state/logic, or it is a self-contained visual section (hero, footer, card). Prefer many small dumb components + one smart page component.
+- **New pipe** when the same value transformation appears in 2+ templates (e.g. currency/area formatting). Pipes must be pure and side-effect free.
+- **New directive** when reusable behavior attaches to existing DOM (intersection-observer reveal, click-outside). Never for content — that's a component.
+- **New service** when logic touches data/HTTP/state shared across components. Components never call HTTP directly.
+
+## Components (TS)
+
+- Standalone only (default in v20 — never set `standalone: true` explicitly, never create NgModules).
+- `changeDetection: ChangeDetectionStrategy.OnPush` on every component.
+- Signals everywhere:
+  - `signal()` / `computed()` for local state — no mutable class fields for template state.
+  - `input()` / `input.required()` instead of `@Input()`, `output()` instead of `@Output()`, `model()` for two-way.
+  - `viewChild()` / `contentChild()` signal queries instead of decorators.
+  - `linkedSignal()` / `effect()` sparingly; prefer `computed()`.
+- Use `inject()` instead of constructor injection.
+- `protected` for members used only in the template; `readonly` for signals, inputs, outputs.
+- Keep components thin: presentation + wiring only; logic goes to services or pure functions.
+- Static content (nav links, feature lists, testimonials) lives in typed `*.data.ts` files or component `readonly` fields with interfaces from `models/` — never hardcoded repeatedly in templates.
+
+## Templates (HTML)
+
+- Native control flow only: `@if`, `@for` (always with `track`), `@switch`, `@defer`. Never `*ngIf`/`*ngFor`.
+- Bindings: `[class.foo]`/`[style.width.px]` over `ngClass`/`ngStyle`.
+- Use `@defer (on viewport)` for heavy below-the-fold sections.
+- Semantic HTML (`header`, `section`, `nav`, `footer`, `button`), `alt` on images, `aria-*` where needed.
+- Use `NgOptimizedImage` (`ngSrc`) for static images.
+- No function calls in templates except signals and pure pipes.
+
+## Styles (SCSS)
+
+- Global design tokens (colors, spacing, radii, fonts) as CSS custom properties in `src/styles.scss`; component SCSS consumes `var(--...)` — never hardcode brand hex values in components.
+- Component styles stay encapsulated (default emulated encapsulation); no `::ng-deep`.
+- Class naming: BEM-lite, kebab-case (`.hero`, `.hero__title`, `.hero--dark`).
+- Max nesting depth 2; mobile-first with `@media (min-width: ...)` breakpoints (768px, 1024px, 1280px) via shared SCSS mixins in `src/styles/_mixins.scss` if repetition appears.
+- Use `rem` for typography/spacing, flex/grid for layout.
+
+## State & data
+
+- Feature/app state: signal-based services (`signal` + `computed` exposed as `readonly`), not RxJS subjects.
+- RxJS only at async boundaries (HTTP, router events); convert with `toSignal()` where consumed by templates.
+- `httpResource()` / `resource()` for fetch-and-display data.
+
+## SSR awareness
+
+This app uses Angular SSR. Guard browser-only APIs (`window`, `document`, `IntersectionObserver`) with `afterNextRender()` or `isPlatformBrowser(inject(PLATFORM_ID))`.
+
+## Quality bar
+
+- Strict TypeScript: no `any`, explicit interfaces for all data shapes, `readonly` arrays for static data.
+- After changes: code must pass `ng build` with no errors; fix all linter warnings you introduce.

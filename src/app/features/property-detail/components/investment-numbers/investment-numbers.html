@@ -1,0 +1,23 @@
+<section class="numbers">
+  <div class="container">
+    <app-section-heading
+      align="start"
+      eyebrow="The Numbers"
+      title="Investment breakdown at a glance"
+    />
+
+    <div class="numbers__grid">
+      @for (stat of detail().numbers.stats; track stat.label) {
+        <article class="numbers__card">
+          <p class="numbers__label">{{ stat.label }}</p>
+          <p class="numbers__value" [class.numbers__value--accent]="stat.accent">
+            {{ stat.value }}
+          </p>
+          <p class="numbers__sub">{{ stat.sub }}</p>
+        </article>
+      }
+    </div>
+
+    <p class="numbers__disclaimer">{{ detail().numbers.disclaimer }}</p>
+  </div>
+</section>

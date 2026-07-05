@@ -1,0 +1,105 @@
+.explore {
+  padding-block: var(--section-pad-y);
+  background: var(--color-bg);
+
+  &__grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    text-decoration: none;
+    transition: box-shadow var(--transition), transform var(--transition);
+
+    &:hover {
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-2px);
+    }
+  }
+
+  &__media {
+    position: relative;
+    aspect-ratio: 16 / 10;
+
+    img {
+      object-fit: cover;
+    }
+  }
+
+  &__badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-navy-800);
+    color: var(--color-text-inverse);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+
+    &--accent {
+      background: var(--color-primary);
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.25rem 1.5rem;
+  }
+
+  &__name {
+    font-size: var(--font-size-lg);
+    font-weight: 800;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__yield {
+    padding: 0.3rem 0.75rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+  }
+
+  &__view {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  &__back {
+    margin-top: 2.5rem;
+    text-align: center;
+  }
+
+  &__back-link {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color var(--transition);
+
+    &:hover {
+      color: var(--color-heading);
+    }
+  }
+}

@@ -1,0 +1,91 @@
+.take {
+  padding-block: var(--section-pad-y);
+
+  &__grid {
+    display: grid;
+    gap: 2.5rem;
+
+    @media (min-width: 1024px) {
+      grid-template-columns: 1.6fr 1fr;
+      align-items: start;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    align-items: flex-start;
+  }
+
+  &__eyebrow {
+    font-size: var(--font-size-xs);
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  &__title {
+    font-size: clamp(1.5rem, 3.2vw, var(--font-size-2xl));
+    font-weight: 800;
+  }
+
+  &__paragraph {
+    font-size: var(--font-size-sm);
+    line-height: 1.75;
+  }
+
+  &__note {
+    font-size: var(--font-size-sm);
+    line-height: 1.75;
+    color: var(--color-text-muted);
+  }
+
+  &__checklist {
+    padding: 1.75rem;
+    border-radius: var(--radius-xl);
+    background: var(--color-bg);
+  }
+
+  &__checklist-title {
+    font-size: var(--font-size-md);
+    font-weight: 800;
+  }
+
+  &__checks {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--font-size-sm);
+    color: var(--color-heading);
+  }
+
+  &__check {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__check-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 1.35rem;
+    height: 1.35rem;
+    border-radius: 50%;
+    background: var(--color-success);
+    color: var(--color-text-inverse);
+  }
+
+  &__verified {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-border);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+  }
+}

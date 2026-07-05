@@ -1,0 +1,15 @@
+<div class="field">
+  <label class="field__label" [for]="id">{{ label() }}</label>
+  <input
+    class="field__control"
+    [id]="id"
+    [type]="type()"
+    [placeholder]="placeholder()"
+    [required]="required()"
+    [value]="value()"
+    (input)="onInput($event)"
+  />
+  @if (hint()) {
+    <p class="field__hint">{{ hint() }}</p>
+  }
+</div>

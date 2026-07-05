@@ -1,0 +1,40 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1.75rem;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-md);
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius-md);
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+  }
+
+  &__title {
+    margin-top: 1.25rem;
+    font-size: var(--font-size-lg);
+    font-weight: 800;
+  }
+
+  &__description {
+    margin-top: 0.6rem;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  &__body {
+    margin-top: auto;
+    padding-top: 1.25rem;
+
+    &:empty {
+      padding-top: 0;
+    }
+  }
+}

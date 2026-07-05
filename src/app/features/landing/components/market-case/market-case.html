@@ -1,0 +1,70 @@
+<section class="market">
+  <div class="container">
+    <app-section-heading
+      eyebrow="The Market Case"
+      title="Why serious investors are looking at Batumi right now"
+    />
+
+    <div class="market__grid">
+      <app-stat-card
+        icon="bars"
+        title="The Yield"
+        description="Short-term rental yields in Batumi consistently beat regional alternatives. Sea-view units average 8–10% gross annually — without leverage."
+      >
+        <dl class="yield">
+          @for (stat of yieldStats; track stat.city) {
+            <div class="yield__row">
+              <dt class="yield__city">{{ stat.city }}</dt>
+              <dd class="yield__bar-wrap">
+                <span
+                  class="yield__bar"
+                  [class.yield__bar--highlight]="stat.highlight"
+                  [style.width.%]="stat.barPercent"
+                ></span>
+              </dd>
+              <dd class="yield__value">{{ stat.value }}</dd>
+            </div>
+          }
+        </dl>
+      </app-stat-card>
+
+      <app-stat-card
+        icon="document"
+        title="The Access"
+        description="Georgia has one of the most accessible property markets globally for foreign nationals."
+      >
+        <ul class="access">
+          @for (point of accessPoints; track point) {
+            <li class="access__item">{{ point }}</li>
+          }
+        </ul>
+      </app-stat-card>
+
+      <app-stat-card
+        icon="trend"
+        title="The Growth"
+        description="Tourist arrivals have grown dramatically since 2019. Infrastructure investment and rising demand support a long-term capital appreciation thesis."
+      >
+        <figure class="growth">
+          <svg viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true">
+            <polyline
+              points="0,48 30,44 60,46 90,36 120,30 150,22 180,18 200,8"
+              fill="none"
+              stroke="var(--color-primary)"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <figcaption class="growth__caption">
+            <span>'19</span>
+            <span class="growth__label">Tourist arrivals 2019–2025</span>
+            <span>'25</span>
+          </figcaption>
+        </figure>
+      </app-stat-card>
+    </div>
+
+    <blockquote class="market__quote">{{ quote }}</blockquote>
+  </div>
+</section>

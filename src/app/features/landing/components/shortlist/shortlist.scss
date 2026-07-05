@@ -1,0 +1,14 @@
+.shortlist {
+  padding-block: var(--section-pad-y);
+  background: var(--color-surface);
+
+  &__grid {
+    display: grid;
+    gap: 2rem;
+    margin-top: 3rem;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}

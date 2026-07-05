@@ -1,0 +1,38 @@
+.switcher {
+  display: inline-flex;
+  padding: 0.2rem;
+  border-radius: var(--radius-sm);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+
+  &__option {
+    border: 0;
+    background: transparent;
+    padding: 0.3rem 0.7rem;
+    border-radius: calc(var(--radius-sm) - 0.15rem);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition);
+
+    &--active {
+      background: var(--color-navy-800);
+      color: var(--color-text-inverse);
+    }
+  }
+
+  &--dark {
+    background: rgb(255 255 255 / 0.08);
+    border-color: rgb(255 255 255 / 0.15);
+
+    .switcher__option {
+      color: var(--color-text-inverse-muted);
+
+      &--active {
+        background: var(--color-surface);
+        color: var(--color-navy-800);
+      }
+    }
+  }
+}

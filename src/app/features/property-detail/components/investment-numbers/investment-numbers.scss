@@ -1,0 +1,59 @@
+.numbers {
+  padding-block: var(--section-pad-y);
+  background: var(--color-bg);
+
+  &__grid {
+    display: grid;
+    gap: 1.25rem;
+    margin-top: 2.5rem;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1.5rem 1.75rem;
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+  }
+
+  &__label {
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  &__value {
+    font-size: var(--font-size-2xl);
+    font-weight: 800;
+    color: var(--color-heading);
+    line-height: 1.15;
+
+    &--accent {
+      color: var(--color-primary);
+    }
+  }
+
+  &__sub {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  &__disclaimer {
+    margin-top: 1.5rem;
+    font-size: var(--font-size-xs);
+    font-style: italic;
+    color: var(--color-text-muted);
+  }
+}

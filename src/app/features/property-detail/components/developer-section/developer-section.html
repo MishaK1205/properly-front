@@ -1,0 +1,59 @@
+<section class="developer">
+  <div class="container">
+    <p class="developer__eyebrow">The Developer</p>
+
+    <div class="developer__grid">
+      <div class="developer__identity">
+        <span class="developer__logo" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21h18M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16M9 7h1m4 0h1M9 11h1m4 0h1M9 15h1m4 0h1M10 21v-3h4v3" />
+          </svg>
+        </span>
+        <h2 class="developer__name">{{ detail().developer.name }}</h2>
+        <p class="developer__meta">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <path d="M16 2v4M8 2v4M3 10h18" />
+          </svg>
+          {{ detail().developer.since }}
+        </p>
+        <p class="developer__meta">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" />
+            <circle cx="12" cy="10" r="2.5" />
+          </svg>
+          {{ detail().developer.location }}
+        </p>
+      </div>
+
+      <ul class="developer__stats">
+        @for (stat of detail().developer.stats; track stat.label) {
+          <li class="developer__stat">
+            <span class="developer__stat-icon" aria-hidden="true">
+              @switch (stat.icon) {
+                @case ('projects') {
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16M9 7h1m4 0h1M9 11h1m4 0h1M9 15h1m4 0h1" /></svg>
+                }
+                @case ('units') {
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V10Z" /></svg>
+                }
+                @case ('clock') {
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 3" /></svg>
+                }
+                @case ('key') {
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4" /><path d="m10.8 12.2 8.2-8.2M15 5l3 3" /></svg>
+                }
+              }
+            </span>
+            <span class="developer__stat-label">{{ stat.label }}</span>
+            <span class="developer__stat-value">{{ stat.value }}</span>
+          </li>
+        }
+      </ul>
+    </div>
+
+    <blockquote class="developer__quote">{{ detail().developer.quote }}</blockquote>
+
+    <p class="developer__footnote">{{ detail().developer.footnote }}</p>
+  </div>
+</section>

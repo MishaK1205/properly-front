@@ -1,0 +1,16 @@
+<section class="faq">
+  <div class="container">
+    <app-section-heading eyebrow="FAQ" title="Questions from foreign buyers" />
+
+    <div class="faq__list">
+      @for (entry of entries; track entry.question; let i = $index) {
+        <app-faq-item
+          [question]="entry.question"
+          [answer]="entry.answer"
+          [expanded]="openIndex() === i"
+          (toggled)="toggle(i)"
+        />
+      }
+    </div>
+  </div>
+</section>
