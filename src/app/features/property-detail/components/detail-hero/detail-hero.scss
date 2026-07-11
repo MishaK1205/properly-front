@@ -1,3 +1,15 @@
+@keyframes detail-rise {
+  from {
+    opacity: 0;
+    translate: 0 1.25rem;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
 .hero {
   padding-block: 2.5rem;
 
@@ -15,6 +27,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    animation: detail-rise 0.6s var(--ease-out) both;
   }
 
   &__media {
@@ -25,6 +38,11 @@
 
     img {
       object-fit: cover;
+      transition: scale 0.6s var(--ease-out);
+    }
+
+    &:hover img {
+      scale: 1.04;
     }
   }
 
@@ -59,10 +77,23 @@
     overflow: hidden;
     cursor: pointer;
     background: none;
-    transition: border-color var(--transition);
+    transition:
+      border-color var(--transition),
+      transform var(--transition),
+      box-shadow var(--transition);
 
     img {
       object-fit: cover;
+      transition: scale 0.4s var(--ease-out);
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+
+      img {
+        scale: 1.08;
+      }
     }
 
     &--active,
@@ -80,6 +111,7 @@
     border-radius: var(--radius-xl);
     background: var(--color-surface);
     box-shadow: var(--shadow-md);
+    animation: detail-rise 0.6s var(--ease-out) 0.12s both;
   }
 
   &__name {
@@ -127,6 +159,16 @@
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     text-align: center;
+    transition:
+      border-color var(--transition),
+      transform var(--transition),
+      box-shadow var(--transition);
+
+    &:hover {
+      border-color: var(--color-navy-600);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
   }
 
   &__stat-label {
@@ -221,10 +263,19 @@
     font-weight: 700;
     color: var(--color-heading);
     cursor: pointer;
-    transition: background var(--transition);
+    transition:
+      background var(--transition),
+      border-color var(--transition),
+      transform var(--transition);
 
     &:hover {
       background: var(--color-bg-blue);
+      border-color: var(--color-navy-600);
+      transform: translateY(-1px);
+    }
+
+    &:active {
+      transform: scale(0.96);
     }
   }
 
@@ -235,10 +286,15 @@
     height: 2.25rem;
     border-radius: 50%;
     color: var(--color-text-inverse);
-    transition: opacity var(--transition);
+    transition:
+      opacity var(--transition),
+      transform var(--transition),
+      box-shadow var(--transition);
 
     &:hover {
-      opacity: 0.85;
+      opacity: 0.92;
+      transform: translateY(-2px) scale(1.06);
+      box-shadow: var(--shadow-md);
     }
 
     &--whatsapp {

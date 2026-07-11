@@ -1,0 +1,87 @@
+<div class="page">
+  <header class="page__header">
+    <div>
+      <h1 class="page__title">Companies</h1>
+      <p class="page__subtitle">Developer companies shown across the site</p>
+    </div>
+    <button matButton="filled" (click)="openCreate()">
+      <mat-icon>add</mat-icon>
+      Add company
+    </button>
+  </header>
+
+  @if (loading()) {
+    <div class="page__state">
+      <mat-spinner diameter="44" />
+    </div>
+  } @else if (error()) {
+    <div class="page__state">
+      <mat-icon class="page__state-icon" aria-hidden="true">cloud_off</mat-icon>
+      <p>Could not load companies. Is the backend running?</p>
+      <button matButton="outlined" (click)="load()">Retry</button>
+    </div>
+  } @else if (companies().length === 0) {
+    <div class="page__state">
+      <mat-icon class="page__state-icon" aria-hidden="true">domain_disabled</mat-icon>
+      <p>No companies yet. Add the first one.</p>
+      <button matButton="filled" (click)="openCreate()">
+        <mat-icon>add</mat-icon>
+        Add company
+      </button>
+    </div>
+  } @else {
+    <div class="companies__grid">
+      @for (company of companies(); track company._id) {
+        <mat-card appearance="outlined" class="company-card">
+          <mat-card-header class="company-card__header">
+            <div class="company-card__avatar" mat-card-avatar>
+              {{ company.companyName.charAt(0).toUpperCase() }}
+            </div>
+            <mat-card-title>{{ company.companyName }}</mat-card-title>
+            <mat-card-subtitle>
+              <mat-icon aria-hidden="true" inline>place</mat-icon>
+              {{ company.companyLocationEn }}
+            </mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="company-card__stats">
+              <div class="company-card__stat">
+                <span class="company-card__stat-value">{{ company.projectsCompleted }}</span>
+                <span class="company-card__stat-label">Completed</span>
+              </div>
+              <div class="company-card__stat">
+                <span class="company-card__stat-value">{{ company.activeProjects }}</span>
+                <span class="company-card__stat-label">Active</span>
+              </div>
+              <div class="company-card__stat">
+                <span class="company-card__stat-value">{{ company.unitsDelivered }}</span>
+                <span class="company-card__stat-label">Units</span>
+              </div>
+              <div class="company-card__stat">
+                <span class="company-card__stat-value">{{ company.operatingSince }}</span>
+                <span class="company-card__stat-label">Since</span>
+              </div>
+            </div>
+            <p class="company-card__description">{{ company.companyDescriptionEn }}</p>
+          </mat-card-content>
+
+          <mat-card-actions align="end">
+            <button matIconButton matTooltip="Edit" aria-label="Edit company" (click)="openEdit(company)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              matIconButton
+              matTooltip="Delete"
+              aria-label="Delete company"
+              class="company-card__delete"
+              (click)="confirmDelete(company)"
+            >
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  }
+</div>

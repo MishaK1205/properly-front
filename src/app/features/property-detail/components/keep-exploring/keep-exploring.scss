@@ -20,21 +20,29 @@
     box-shadow: var(--shadow-sm);
     overflow: hidden;
     text-decoration: none;
-    transition: box-shadow var(--transition), transform var(--transition);
+    transition:
+      box-shadow 0.3s var(--ease-out),
+      transform 0.3s var(--ease-out);
 
     &:hover {
       box-shadow: var(--shadow-lg);
-      transform: translateY(-2px);
+      transform: translateY(-4px);
     }
   }
 
   &__media {
     position: relative;
     aspect-ratio: 16 / 10;
+    overflow: hidden;
 
     img {
       object-fit: cover;
+      transition: scale 0.6s var(--ease-out);
     }
+  }
+
+  &__card:hover &__media img {
+    scale: 1.05;
   }
 
   &__badge {
@@ -84,6 +92,11 @@
     font-size: var(--font-size-sm);
     font-weight: 700;
     color: var(--color-primary);
+    transition: translate 0.3s var(--ease-out);
+  }
+
+  &__card:hover &__view {
+    translate: 4px 0;
   }
 
   &__back {
@@ -99,7 +112,7 @@
     transition: color var(--transition);
 
     &:hover {
-      color: var(--color-heading);
+      color: var(--color-primary);
     }
   }
 }

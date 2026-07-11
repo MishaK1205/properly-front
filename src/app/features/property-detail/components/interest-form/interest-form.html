@@ -1,12 +1,13 @@
 <section class="interest">
   <div class="container">
     <app-section-heading
+      appScrollReveal
       eyebrow="Get in Touch"
       [title]="'Interested in ' + propertyName() + '?'"
       subtitle="Tell us a little about your goals and we'll send you the full investment pack — floor plans, payment schedule, rental yield analysis and legal process overview."
     />
 
-    <form class="interest__card" (submit)="submit($event)">
+    <form class="interest__card" [appScrollReveal]="100" (submit)="submit($event)">
       @if (submitted()) {
         <div class="interest__success">
           <h3 class="interest__success-title">Request received ✓</h3>

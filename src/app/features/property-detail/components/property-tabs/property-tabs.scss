@@ -1,3 +1,15 @@
+@keyframes tab-panel-in {
+  from {
+    opacity: 0;
+    translate: 0 0.75rem;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
 .tabs {
   padding-block: var(--section-pad-y);
 
@@ -10,24 +22,49 @@
   }
 
   &__tab {
+    position: relative;
     padding: 0.75rem 1.25rem;
     border: none;
-    border-bottom: 2px solid transparent;
     background: none;
     font-size: var(--font-size-sm);
     font-weight: 700;
     color: var(--color-text-muted);
     white-space: nowrap;
     cursor: pointer;
-    transition: color var(--transition), border-color var(--transition);
+    transition: color var(--transition), background var(--transition);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+
+    /* Animated underline that grows from the center on hover/active. */
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 2px;
+      background: var(--color-primary);
+      scale: 0 1;
+      transition: scale 0.3s var(--ease-out);
+    }
 
     &:hover {
       color: var(--color-heading);
+      background: var(--color-bg);
+
+      &::after {
+        scale: 0.6 1;
+      }
     }
 
     &--active {
       color: var(--color-primary);
-      border-bottom-color: var(--color-primary);
+
+      &,
+      &:hover {
+        &::after {
+          scale: 1 1;
+        }
+      }
     }
   }
 
@@ -74,6 +111,14 @@
     border-radius: var(--radius-sm);
     background: var(--color-bg);
     color: var(--color-navy-600);
+    transition:
+      background var(--transition),
+      color var(--transition);
+  }
+
+  &__fact:hover &__fact-icon {
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
   }
 
   &__fact-label {
@@ -111,6 +156,13 @@
     padding: 0.85rem 1.25rem;
     font-size: var(--font-size-sm);
     color: var(--color-text-muted);
+  }
+
+  /* Panels re-enter the DOM on tab switch, so a keyframe entrance runs each time. */
+  &__overview,
+  &__plans,
+  &__payment {
+    animation: tab-panel-in 0.4s var(--ease-out) both;
   }
 
   &__plans {
@@ -156,6 +208,14 @@
     border-radius: var(--radius-md);
     background: var(--color-bg);
     text-align: center;
+    transition:
+      transform 0.3s var(--ease-out),
+      box-shadow 0.3s var(--ease-out);
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
   }
 
   &__plan-stat-label {
@@ -200,6 +260,14 @@
     }
 
     tbody {
+      tr {
+        transition: background var(--transition);
+
+        &:hover {
+          background: var(--color-bg);
+        }
+      }
+
       th,
       td {
         padding: 1rem 1.5rem;

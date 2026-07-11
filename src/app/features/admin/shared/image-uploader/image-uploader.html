@@ -1,0 +1,42 @@
+<div class="uploader">
+  <div class="uploader__header">
+    <span class="uploader__label">{{ label() }}</span>
+    <button matButton="outlined" type="button" (click)="fileInput.click()" [disabled]="uploading()">
+      @if (uploading()) {
+        <mat-spinner diameter="16" />
+      } @else {
+        <mat-icon>upload</mat-icon>
+      }
+      Upload images
+    </button>
+    <input
+      #fileInput
+      class="uploader__input"
+      type="file"
+      accept="image/*"
+      multiple
+      (change)="onFilesSelected($event)"
+    />
+  </div>
+
+  @if (imageIds().length === 0) {
+    <p class="uploader__empty">No images uploaded yet.</p>
+  } @else {
+    <div class="uploader__grid">
+      @for (id of imageIds(); track id) {
+        <div class="uploader__thumb">
+          <img [src]="imageUrl(id)" alt="Uploaded image" loading="lazy" />
+          <button
+            matIconButton
+            type="button"
+            class="uploader__remove"
+            aria-label="Remove image"
+            (click)="remove(id)"
+          >
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      }
+    </div>
+  }
+</div>

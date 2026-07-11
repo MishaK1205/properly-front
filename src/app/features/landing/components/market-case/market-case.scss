@@ -57,17 +57,29 @@
     height: 100%;
     border-radius: var(--radius-pill);
     background: #c3cddd;
+    transform-origin: left;
+    animation: yield-grow 1s var(--ease-out) 0.3s both;
 
     &--highlight {
       background: var(--color-primary);
     }
   }
+}
 
-  &__value {
-    font-size: var(--font-size-xs);
-    font-weight: 800;
-    color: var(--color-heading);
-    text-align: right;
+.yield__value {
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  color: var(--color-heading);
+  text-align: right;
+}
+
+@keyframes yield-grow {
+  from {
+    scale: 0 1;
+  }
+
+  to {
+    scale: 1 1;
   }
 }
 

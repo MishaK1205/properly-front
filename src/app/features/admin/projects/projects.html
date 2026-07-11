@@ -1,0 +1,87 @@
+<div class="page">
+  <header class="page__header">
+    <div>
+      <h1 class="page__title">Projects</h1>
+      <p class="page__subtitle">Investment projects listed on the site</p>
+    </div>
+    <button matButton="filled" (click)="openCreate()">
+      <mat-icon>add</mat-icon>
+      Add project
+    </button>
+  </header>
+
+  @if (loading()) {
+    <div class="page__state">
+      <mat-spinner diameter="44" />
+    </div>
+  } @else if (error()) {
+    <div class="page__state">
+      <mat-icon class="page__state-icon" aria-hidden="true">cloud_off</mat-icon>
+      <p>Could not load projects. Is the backend running?</p>
+      <button matButton="outlined" (click)="load()">Retry</button>
+    </div>
+  } @else if (projects().length === 0) {
+    <div class="page__state">
+      <mat-icon class="page__state-icon" aria-hidden="true">location_city</mat-icon>
+      <p>No projects yet. Add the first one.</p>
+      <button matButton="filled" (click)="openCreate()">
+        <mat-icon>add</mat-icon>
+        Add project
+      </button>
+    </div>
+  } @else {
+    <div class="projects__grid">
+      @for (project of projects(); track project._id) {
+        <mat-card appearance="outlined" class="project-card">
+          <div class="project-card__media">
+            @if (coverImage(project); as cover) {
+              <img [src]="cover" [alt]="project.projectName" loading="lazy" />
+            } @else {
+              <div class="project-card__placeholder">
+                <mat-icon aria-hidden="true">image_not_supported</mat-icon>
+              </div>
+            }
+            <span class="project-card__images-badge">
+              <mat-icon aria-hidden="true" inline>photo_library</mat-icon>
+              {{ project.projectImages.length }}
+            </span>
+          </div>
+
+          <mat-card-content class="project-card__body">
+            <h2 class="project-card__name">{{ project.projectName }}</h2>
+            <p class="project-card__meta">
+              <mat-icon aria-hidden="true" inline>place</mat-icon>
+              {{ project.projectLocationEn }}
+            </p>
+            @if (project.companyInfo; as company) {
+              <p class="project-card__meta">
+                <mat-icon aria-hidden="true" inline>domain</mat-icon>
+                {{ company.companyName }}
+              </p>
+            }
+            <div class="project-card__facts">
+              <span class="project-card__fact">{{ project.totalFloors }} floors</span>
+              <span class="project-card__fact">{{ project.unitsInBuilding }} units</span>
+              <span class="project-card__fact">{{ project.buildingTypeEn }}</span>
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions align="end">
+            <button matIconButton matTooltip="Edit" aria-label="Edit project" (click)="openEdit(project)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              matIconButton
+              matTooltip="Delete"
+              aria-label="Delete project"
+              class="project-card__delete"
+              (click)="confirmDelete(project)"
+            >
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  }
+</div>

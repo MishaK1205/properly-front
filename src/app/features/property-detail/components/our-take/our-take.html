@@ -1,6 +1,6 @@
 <section class="take">
   <div class="take__grid container">
-    <article class="take__content">
+    <article class="take__content" appScrollReveal>
       <p class="take__eyebrow">Our Take</p>
       <h2 class="take__title">{{ detail().ourTake.title }}</h2>
 
@@ -11,7 +11,7 @@
       <p class="take__note">{{ detail().ourTake.honestNote }}</p>
     </article>
 
-    <aside class="take__checklist">
+    <aside class="take__checklist" [appScrollReveal]="150">
       <h3 class="take__checklist-title">Verification checklist</h3>
 
       <ul class="take__checks">

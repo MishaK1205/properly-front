@@ -3,7 +3,7 @@
     <p class="developer__eyebrow">The Developer</p>
 
     <div class="developer__grid">
-      <div class="developer__identity">
+      <div class="developer__identity" appScrollReveal>
         <span class="developer__logo" aria-hidden="true">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 21h18M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16M9 7h1m4 0h1M9 11h1m4 0h1M9 15h1m4 0h1M10 21v-3h4v3" />
@@ -26,7 +26,7 @@
         </p>
       </div>
 
-      <ul class="developer__stats">
+      <ul class="developer__stats" [appScrollReveal]="120">
         @for (stat of detail().developer.stats; track stat.label) {
           <li class="developer__stat">
             <span class="developer__stat-icon" aria-hidden="true">
@@ -52,7 +52,7 @@
       </ul>
     </div>
 
-    <blockquote class="developer__quote">{{ detail().developer.quote }}</blockquote>
+    <blockquote class="developer__quote" appScrollReveal>{{ detail().developer.quote }}</blockquote>
 
     <p class="developer__footnote">{{ detail().developer.footnote }}</p>
   </div>

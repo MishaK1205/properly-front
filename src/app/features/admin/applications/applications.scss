@@ -1,0 +1,61 @@
+@use '../shared/admin-page' as *;
+
+.applications__table-wrap {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.applications__table {
+  width: 100%;
+}
+
+.applications__whatsapp {
+  color: var(--color-whatsapp-hover);
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.applications__cards {
+  display: grid;
+  gap: 1rem;
+}
+
+.application-card {
+  border-radius: var(--radius-lg);
+}
+
+.application-card__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.application-card__name {
+  font-weight: 700;
+  color: var(--color-heading);
+  font-size: var(--font-size-md);
+}
+
+.application-card__date {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  white-space: nowrap;
+}
+
+.application-card__row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}

@@ -22,7 +22,9 @@
     </svg>
   </button>
 
-  @if (expanded()) {
-    <p class="item__answer">{{ answer() }}</p>
-  }
+  <div class="item__panel" [attr.aria-hidden]="!expanded()" [inert]="!expanded()">
+    <div class="item__panel-inner">
+      <p class="item__answer">{{ answer() }}</p>
+    </div>
+  </div>
 </div>

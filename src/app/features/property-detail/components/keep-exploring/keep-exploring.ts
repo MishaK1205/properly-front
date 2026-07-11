@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 import { RouterLink } from '@angular/router';
 import { Property } from '../../../../core/models/property';
 import { SectionHeading } from '../../../../shared/components/section-heading/section-heading';
+import { ScrollRevealDirective } from '../../../../shared/directives/scroll-reveal.directive';
 
 interface ExploreCard {
   readonly property: Property;
@@ -11,7 +12,7 @@ interface ExploreCard {
 
 @Component({
   selector: 'app-keep-exploring',
-  imports: [NgOptimizedImage, RouterLink, SectionHeading],
+  imports: [NgOptimizedImage, RouterLink, SectionHeading, ScrollRevealDirective],
   templateUrl: './keep-exploring.html',
   styleUrl: './keep-exploring.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

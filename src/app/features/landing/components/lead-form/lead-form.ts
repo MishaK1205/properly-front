@@ -11,11 +11,20 @@ import { SectionHeading } from '../../../../shared/components/section-heading/se
 import { SelectInput } from '../../../../shared/components/select-input/select-input';
 import { TextInput } from '../../../../shared/components/text-input/text-input';
 import { WhatsappIcon } from '../../../../shared/components/whatsapp-icon/whatsapp-icon';
+import { ScrollRevealDirective } from '../../../../shared/directives/scroll-reveal.directive';
 import { FORM_PROPERTY_HINT, FORM_TRUST_ITEMS } from '../../landing.data';
 
 @Component({
   selector: 'app-lead-form',
-  imports: [Button, ButtonLink, SectionHeading, SelectInput, TextInput, WhatsappIcon],
+  imports: [
+    Button,
+    ButtonLink,
+    SectionHeading,
+    SelectInput,
+    TextInput,
+    WhatsappIcon,
+    ScrollRevealDirective,
+  ],
   templateUrl: './lead-form.html',
   styleUrl: './lead-form.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

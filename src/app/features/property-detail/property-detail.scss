@@ -2,6 +2,20 @@
   display: block;
 }
 
+@keyframes fab-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(36 201 93 / 0.45);
+  }
+
+  70% {
+    box-shadow: 0 0 0 14px rgb(36 201 93 / 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgb(36 201 93 / 0);
+  }
+}
+
 .whatsapp-fab {
   position: fixed;
   right: 1.5rem;
@@ -15,11 +29,15 @@
   background: var(--color-whatsapp);
   color: var(--color-text-inverse);
   box-shadow: var(--shadow-lg);
-  transition: background var(--transition), transform var(--transition);
+  animation: fab-pulse 2.5s ease-out infinite;
+  transition:
+    background var(--transition),
+    transform 0.3s var(--ease-out);
 
   &:hover {
     background: var(--color-whatsapp-hover);
-    transform: scale(1.05);
+    transform: scale(1.1) rotate(6deg);
+    animation-play-state: paused;
   }
 }
 

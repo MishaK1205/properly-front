@@ -1,0 +1,454 @@
+<h2 mat-dialog-title>{{ project ? 'Edit project' : 'Add project' }}</h2>
+
+<mat-dialog-content class="project-dialog__content">
+  <form [formGroup]="form" id="project-form" class="project-form" (ngSubmit)="save()">
+    <mat-accordion multi>
+      <!-- ============ Basics ============ -->
+      <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon aria-hidden="true">info_outline</mat-icon>
+            Basics
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="project-form__grid">
+          <mat-form-field appearance="outline" class="project-form__span-2">
+            <mat-label>Project name</mat-label>
+            <input matInput formControlName="projectName" />
+            <mat-error>Project name is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Company</mat-label>
+            <mat-select formControlName="company">
+              @for (company of companies(); track company._id) {
+                <mat-option [value]="company._id">{{ company.companyName }}</mat-option>
+              }
+            </mat-select>
+            <mat-error>Company is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Last verified</mat-label>
+            <input matInput [matDatepicker]="verifiedPicker" formControlName="lastVerified" />
+            <mat-datepicker-toggle matSuffix [for]="verifiedPicker" />
+            <mat-datepicker #verifiedPicker />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Total floors</mat-label>
+            <input matInput type="number" min="0" formControlName="totalFloors" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Units in building</mat-label>
+            <input matInput type="number" min="0" formControlName="unitsInBuilding" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Unit sizes available</mat-label>
+            <input matInput formControlName="unitSizesAvailable" placeholder="e.g. 28–75 m²" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Distance to sea</mat-label>
+            <input matInput formControlName="distanceToSea" placeholder="e.g. 250 m" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Distance to city center</mat-label>
+            <input matInput formControlName="distanceToCityCenter" placeholder="e.g. 2 km" />
+          </mat-form-field>
+        </div>
+
+        <mat-tab-group dynamicHeight>
+          @for (language of languages; track language.suffix) {
+            <mat-tab [label]="language.label">
+              <div class="project-form__grid project-form__tab-body">
+                <mat-form-field appearance="outline">
+                  <mat-label>Building type ({{ language.label }})</mat-label>
+                  <input matInput [formControlName]="'buildingType' + language.suffix" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Finishing ({{ language.label }})</mat-label>
+                  <input matInput [formControlName]="'finishing' + language.suffix" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>Furniture package ({{ language.label }})</mat-label>
+                  <input matInput [formControlName]="'furniturePackage' + language.suffix" />
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                  <mat-label>STR management on site ({{ language.label }})</mat-label>
+                  <input matInput [formControlName]="'strManagementOnSite' + language.suffix" />
+                </mat-form-field>
+              </div>
+            </mat-tab>
+          }
+        </mat-tab-group>
+      </mat-expansion-panel>
+
+      <!-- ============ Location ============ -->
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon aria-hidden="true">place</mat-icon>
+            Location
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="project-form__grid">
+          @for (language of languages; track language.suffix) {
+            <mat-form-field appearance="outline">
+              <mat-label>Location ({{ language.label }})</mat-label>
+              <input matInput [formControlName]="'projectLocation' + language.suffix" />
+              <mat-error>Location is required</mat-error>
+            </mat-form-field>
+          }
+          <mat-form-field appearance="outline">
+            <mat-label>Latitude</mat-label>
+            <input matInput type="number" step="any" formControlName="projectLatitude" />
+            <mat-error>Latitude must be between -90 and 90</mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Longitude</mat-label>
+            <input matInput type="number" step="any" formControlName="projectLongitude" />
+            <mat-error>Longitude must be between -180 and 180</mat-error>
+          </mat-form-field>
+        </div>
+      </mat-expansion-panel>
+
+      <!-- ============ Images ============ -->
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon aria-hidden="true">photo_library</mat-icon>
+            Images
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="project-form__stack">
+          <app-image-uploader label="Project images" [(imageIds)]="projectImages" />
+          <app-image-uploader label="Floor plan images" [(imageIds)]="floorPlanImages" />
+        </div>
+      </mat-expansion-panel>
+
+      <!-- ============ Description ============ -->
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon aria-hidden="true">notes</mat-icon>
+            Description
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div formGroupName="projectDescription">
+          <mat-tab-group dynamicHeight>
+            @for (language of languages; track language.suffix) {
+              <mat-tab [label]="language.label">
+                <div class="project-form__stack project-form__tab-body">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Title ({{ language.label }})</mat-label>
+                    <input matInput [formControlName]="'projectDescriptionTitle' + language.suffix" />
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Short description ({{ language.label }})</mat-label>
+                    <textarea
+                      matInput
+                      rows="2"
+                      [formControlName]="'projectShortDescription' + language.suffix"
+                    ></textarea>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Content ({{ language.label }})</mat-label>
+                    <textarea
+                      matInput
+                      rows="5"
+                      [formControlName]="'projectDescriptionContent' + language.suffix"
+                    ></textarea>
+                  </mat-form-field>
+                </div>
+              </mat-tab>
+            }
+          </mat-tab-group>
+        </div>
+
+        <h3 class="project-form__section-title">Description cards</h3>
+        <div formArrayName="projectDescriptionCards" class="project-form__stack">
+          @for (card of descriptionCards.controls; track card; let i = $index) {
+            <div class="project-form__item" [formGroupName]="i">
+              <div class="project-form__item-header">
+                <span>Card {{ i + 1 }}</span>
+                <button
+                  matIconButton
+                  type="button"
+                  aria-label="Remove card"
+                  (click)="removeAt(descriptionCards, i)"
+                >
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+              </div>
+              <mat-tab-group dynamicHeight>
+                @for (language of languages; track language.suffix) {
+                  <mat-tab [label]="language.label">
+                    <div class="project-form__stack project-form__tab-body">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Title ({{ language.label }})</mat-label>
+                        <input
+                          matInput
+                          [formControlName]="'projectDescriptionCardTitle' + language.suffix"
+                        />
+                      </mat-form-field>
+                      <mat-form-field appearance="outline">
+                        <mat-label>Content ({{ language.label }})</mat-label>
+                        <input
+                          matInput
+                          [formControlName]="'projectDescriptionCardContent' + language.suffix"
+                        />
+                      </mat-form-field>
+                      <mat-form-field appearance="outline">
+                        <mat-label>Description ({{ language.label }})</mat-label>
+                        <textarea
+                          matInput
+                          rows="3"
+                          [formControlName]="'projectDescriptionCardDescription' + language.suffix"
+                        ></textarea>
+                      </mat-form-field>
+                    </div>
+                  </mat-tab>
+                }
+              </mat-tab-group>
+            </div>
+          }
+          <button matButton="outlined" type="button" class="project-form__add" (click)="addDescriptionCard()">
+            <mat-icon>add</mat-icon>
+            Add description card
+          </button>
+        </div>
+      </mat-expansion-panel>
+
+      <!-- ============ Advantages & verification ============ -->
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon aria-hidden="true">verified</mat-icon>
+            Advantages &amp; verification
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <p class="project-form__hint">Write one item per line.</p>
+        <div formGroupName="lists">
+          <mat-tab-group dynamicHeight>
+            @for (language of languages; track language.suffix) {
+              <mat-tab [label]="language.label">
+                <div class="project-form__stack project-form__tab-body">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Project advantages ({{ language.label }})</mat-label>
+                    <textarea
+                      matInput
+                      rows="4"
+                      [formControlName]="'projectAdvantages' + language.suffix"
+                    ></textarea>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline">
+                    <mat-label>Verification checklist ({{ language.label }})</mat-label>
+                    <textarea
+                      matInput
+                      rows="4"
+                      [formControlName]="'verificationChecklist' + language.suffix"
+                    ></textarea>
+                  </mat-form-field>
+                </div>
+              </mat-tab>
+            }
+          </mat-tab-group>
+        </div>
+      </mat-expansion-panel>
+
+      <!-- ============ Investment cards ============ -->
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon aria-hidden="true">trending_up</mat-icon>
+            Investment cards
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div formArrayName="investmentCards" class="project-form__stack">
+          @for (card of investmentCardsArray.controls; track card; let i = $index) {
+            <div class="project-form__item" [formGroupName]="i">
+              <div class="project-form__item-header">
+                <span>Investment card {{ i + 1 }}</span>
+                <button
+                  matIconButton
+                  type="button"
+                  aria-label="Remove card"
+                  (click)="removeAt(investmentCardsArray, i)"
+                >
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+              </div>
+              <mat-tab-group dynamicHeight>
+                @for (language of languages; track language.suffix) {
+                  <mat-tab [label]="language.label">
+                    <div class="project-form__stack project-form__tab-body">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Title ({{ language.label }})</mat-label>
+                        <input matInput [formControlName]="'investmentCardTitle' + language.suffix" />
+                      </mat-form-field>
+                      <mat-form-field appearance="outline">
+                        <mat-label>Content ({{ language.label }})</mat-label>
+                        <input matInput [formControlName]="'investmentCardContent' + language.suffix" />
+                      </mat-form-field>
+                      <mat-form-field appearance="outline">
+                        <mat-label>Description ({{ language.label }})</mat-label>
+                        <textarea
+                          matInput
+                          rows="3"
+                          [formControlName]="'investmentCardDescription' + language.suffix"
+                        ></textarea>
+                      </mat-form-field>
+                    </div>
+                  </mat-tab>
+                }
+              </mat-tab-group>
+            </div>
+          }
+          <button matButton="outlined" type="button" class="project-form__add" (click)="addInvestmentCard()">
+            <mat-icon>add</mat-icon>
+            Add investment card
+          </button>
+        </div>
+      </mat-expansion-panel>
+
+      <!-- ============ Pricing & payment ============ -->
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <mat-icon aria-hidden="true">payments</mat-icon>
+            Pricing &amp; payment
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <h3 class="project-form__section-title">Pricing by square meters</h3>
+        <div formArrayName="pricingBySquareMeters" class="project-form__stack">
+          @for (row of pricingRows.controls; track row; let i = $index) {
+            <div class="project-form__row" [formGroupName]="i">
+              <mat-form-field appearance="outline">
+                <mat-label>Square meter range</mat-label>
+                <input matInput formControlName="squareMeterRange" placeholder="e.g. 30–45 m²" />
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Starting price</mat-label>
+                <input matInput type="number" min="0" formControlName="startingPrice" />
+                <span matTextPrefix>$&nbsp;</span>
+              </mat-form-field>
+              <button
+                matIconButton
+                type="button"
+                aria-label="Remove pricing row"
+                (click)="removeAt(pricingRows, i)"
+              >
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </div>
+          }
+          <button matButton="outlined" type="button" class="project-form__add" (click)="addPricingRow()">
+            <mat-icon>add</mat-icon>
+            Add pricing row
+          </button>
+        </div>
+
+        <h3 class="project-form__section-title">Payment plans</h3>
+        <div formArrayName="paymentPlans" class="project-form__stack">
+          @for (plan of paymentPlansArray.controls; track plan; let i = $index) {
+            <div class="project-form__item" [formGroupName]="i">
+              <div class="project-form__item-header">
+                <span>Payment plan {{ i + 1 }}</span>
+                <button
+                  matIconButton
+                  type="button"
+                  aria-label="Remove payment plan"
+                  (click)="removeAt(paymentPlansArray, i)"
+                >
+                  <mat-icon>delete_outline</mat-icon>
+                </button>
+              </div>
+              <mat-form-field appearance="outline" class="project-form__amount">
+                <mat-label>Payment amount (%)</mat-label>
+                <input matInput type="number" min="0" formControlName="paymentAmount" />
+              </mat-form-field>
+              <mat-tab-group dynamicHeight>
+                @for (language of languages; track language.suffix) {
+                  <mat-tab [label]="language.label">
+                    <div class="project-form__stack project-form__tab-body">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Payment stage ({{ language.label }})</mat-label>
+                        <input matInput [formControlName]="'paymentStage' + language.suffix" />
+                      </mat-form-field>
+                      <mat-form-field appearance="outline">
+                        <mat-label>When ({{ language.label }})</mat-label>
+                        <input matInput [formControlName]="'when' + language.suffix" />
+                      </mat-form-field>
+                    </div>
+                  </mat-tab>
+                }
+              </mat-tab-group>
+            </div>
+          }
+          <button matButton="outlined" type="button" class="project-form__add" (click)="addPaymentPlan()">
+            <mat-icon>add</mat-icon>
+            Add payment plan
+          </button>
+        </div>
+
+        <h3 class="project-form__section-title">Payment description &amp; advantages</h3>
+        <p class="project-form__hint">Advantages: one item per line.</p>
+        <mat-tab-group dynamicHeight>
+          @for (language of languages; track language.suffix) {
+            <mat-tab [label]="language.label">
+              <div class="project-form__stack project-form__tab-body">
+                <mat-form-field appearance="outline">
+                  <mat-label>Payment description ({{ language.label }})</mat-label>
+                  <textarea
+                    matInput
+                    rows="3"
+                    [formControlName]="'paymentDescription' + language.suffix"
+                  ></textarea>
+                </mat-form-field>
+                <div formGroupName="lists">
+                  <mat-form-field appearance="outline" class="project-form__full">
+                    <mat-label>Payment advantages ({{ language.label }})</mat-label>
+                    <textarea
+                      matInput
+                      rows="4"
+                      [formControlName]="'paymentAdvantages' + language.suffix"
+                    ></textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+            </mat-tab>
+          }
+        </mat-tab-group>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    @if (saveError(); as message) {
+      <p class="project-form__error" role="alert">
+        <mat-icon aria-hidden="true">error_outline</mat-icon>
+        {{ message }}
+      </p>
+    }
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button matButton mat-dialog-close [disabled]="saving()">Cancel</button>
+  <button matButton="filled" type="submit" form="project-form" [disabled]="saving()">
+    @if (saving()) {
+      <mat-spinner diameter="18" />
+    } @else {
+      {{ project ? 'Save changes' : 'Create project' }}
+    }
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,72 @@
+<mat-sidenav-container class="shell">
+  <mat-sidenav
+    class="shell__sidenav"
+    [mode]="isDesktop() ? 'side' : 'over'"
+    [opened]="isDesktop()"
+    [fixedInViewport]="!isDesktop()"
+  >
+    <div class="shell__brand">
+      <span class="shell__logo">
+        <mat-icon aria-hidden="true">apartment</mat-icon>
+      </span>
+      <div class="shell__brand-text">
+        <span class="shell__brand-name">Batumi Top 10</span>
+        <span class="shell__brand-role">Admin</span>
+      </div>
+    </div>
+
+    <mat-nav-list class="shell__nav">
+      @for (link of navLinks; track link.path) {
+        <a
+          mat-list-item
+          [routerLink]="link.path"
+          routerLinkActive="shell__nav-link--active"
+          class="shell__nav-link"
+          (click)="closeOnMobile()"
+        >
+          <mat-icon matListItemIcon>{{ link.icon }}</mat-icon>
+          <span matListItemTitle>{{ link.label }}</span>
+        </a>
+      }
+    </mat-nav-list>
+
+    <div class="shell__sidenav-footer">
+      @if (adminEmail(); as email) {
+        <div class="shell__admin">
+          <mat-icon aria-hidden="true">account_circle</mat-icon>
+          <span class="shell__admin-email">{{ email }}</span>
+        </div>
+      }
+      <button matButton class="shell__logout" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Sign out
+      </button>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="shell__content">
+    <mat-toolbar class="shell__toolbar">
+      @if (!isDesktop()) {
+        <button matIconButton aria-label="Open navigation menu" (click)="sidenav().toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      }
+      <span class="shell__toolbar-title">Admin Panel</span>
+      <span class="shell__toolbar-spacer"></span>
+      <a
+        matIconButton
+        href="/"
+        target="_blank"
+        rel="noopener"
+        matTooltip="Open public site"
+        aria-label="Open public site"
+      >
+        <mat-icon>open_in_new</mat-icon>
+      </a>
+    </mat-toolbar>
+
+    <main class="shell__main">
+      <router-outlet />
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

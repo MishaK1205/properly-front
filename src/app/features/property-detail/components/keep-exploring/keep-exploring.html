@@ -1,14 +1,15 @@
 <section class="explore">
   <div class="container">
     <app-section-heading
+      appScrollReveal
       align="start"
       eyebrow="Keep Exploring"
       title="Other verified investments you might like"
     />
 
     <div class="explore__grid">
-      @for (card of cards(); track card.property.slug) {
-        <a class="explore__card" [routerLink]="['/property', card.property.slug]">
+      @for (card of cards(); track card.property.slug; let i = $index) {
+        <a class="explore__card" [appScrollReveal]="i * 100" [routerLink]="['/property', card.property.slug]">
           <div class="explore__media">
             <img [ngSrc]="card.imageUrl" [alt]="card.property.name" fill />
             @if (card.property.badge; as badge) {

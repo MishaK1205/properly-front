@@ -1,10 +1,10 @@
 <section class="process">
   <div class="container">
-    <app-section-heading eyebrow="The Process" title="How this works for you as a buyer" />
+    <app-section-heading appScrollReveal eyebrow="The Process" title="How this works for you as a buyer" />
 
     <ol class="process__steps">
-      @for (step of steps; track step.title; let last = $last) {
-        <li class="process__step">
+      @for (step of steps; track step.title; let last = $last; let i = $index) {
+        <li class="process__step" [appScrollReveal]="i * 120">
           <span class="process__icon" aria-hidden="true">
             @switch (step.icon) {
               @case ('search') {
@@ -35,6 +35,6 @@
       }
     </ol>
 
-    <p class="process__note">{{ note }}</p>
+    <p class="process__note" appScrollReveal>{{ note }}</p>
   </div>
 </section>

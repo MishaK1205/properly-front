@@ -35,6 +35,16 @@
     background: var(--color-primary);
     color: var(--color-text-inverse);
     rotate: -4deg;
+    transition:
+      rotate 0.3s var(--ease-out),
+      scale 0.3s var(--ease-out),
+      box-shadow var(--transition);
+  }
+
+  &__step:hover &__icon {
+    rotate: 4deg;
+    scale: 1.1;
+    box-shadow: 0 8px 20px rgb(244 101 42 / 0.35);
   }
 
   &__title {

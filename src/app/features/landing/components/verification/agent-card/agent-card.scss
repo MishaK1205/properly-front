@@ -8,11 +8,24 @@
   border-radius: var(--radius-xl);
   background: var(--color-bg);
   border: 1px solid var(--color-border);
+  transition:
+    box-shadow 0.3s var(--ease-out),
+    transform 0.3s var(--ease-out);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+  }
 
   &__photo {
     border-radius: 50%;
     border: 3px solid var(--color-surface);
     box-shadow: var(--shadow-sm);
+    transition: transform 0.3s var(--ease-out);
+  }
+
+  &:hover &__photo {
+    transform: scale(1.05);
   }
 
   &__name {

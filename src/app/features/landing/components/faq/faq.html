@@ -1,10 +1,11 @@
 <section class="faq">
   <div class="container">
-    <app-section-heading eyebrow="FAQ" title="Questions from foreign buyers" />
+    <app-section-heading appScrollReveal eyebrow="FAQ" title="Questions from foreign buyers" />
 
     <div class="faq__list">
       @for (entry of entries; track entry.question; let i = $index) {
         <app-faq-item
+          [appScrollReveal]="i * 60"
           [question]="entry.question"
           [answer]="entry.answer"
           [expanded]="openIndex() === i"

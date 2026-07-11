@@ -1,13 +1,14 @@
 <section class="lead">
   <div class="container">
     <app-section-heading
+      appScrollReveal
       tone="dark"
       eyebrow="Get in Touch"
       title="Get your personalized Batumi investment brief"
       subtitle="Tell us your budget and goals — we'll send a tailored brief within 24 hours."
     />
 
-    <form class="lead__card" (submit)="submit($event)">
+    <form class="lead__card" [appScrollReveal]="100" (submit)="submit($event)">
       @if (submitted()) {
         <div class="lead__success">
           <h3 class="lead__success-title">Request received ✓</h3>

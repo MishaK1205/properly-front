@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { SectionHeading } from '../../../../shared/components/section-heading/section-heading';
+import { ScrollRevealDirective } from '../../../../shared/directives/scroll-reveal.directive';
 import { FAQ_ENTRIES } from '../../landing.data';
 import { FaqItem } from './faq-item/faq-item';
 
 @Component({
   selector: 'app-faq',
-  imports: [SectionHeading, FaqItem],
+  imports: [SectionHeading, FaqItem, ScrollRevealDirective],
   templateUrl: './faq.html',
   styleUrl: './faq.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -11,6 +11,7 @@ import { Property } from '../../../../core/models/property';
 import { Button } from '../../../../shared/components/button/button';
 import { SectionHeading } from '../../../../shared/components/section-heading/section-heading';
 import { SelectInput } from '../../../../shared/components/select-input/select-input';
+import { ScrollRevealDirective } from '../../../../shared/directives/scroll-reveal.directive';
 import { PropertyDetailContent, UnitPlan } from '../../property-detail.models';
 
 type TabId = 'overview' | 'plans' | 'payment';
@@ -22,7 +23,7 @@ interface Tab {
 
 @Component({
   selector: 'app-property-tabs',
-  imports: [Button, NgOptimizedImage, SectionHeading, SelectInput],
+  imports: [Button, NgOptimizedImage, SectionHeading, SelectInput, ScrollRevealDirective],
   templateUrl: './property-tabs.html',
   styleUrl: './property-tabs.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

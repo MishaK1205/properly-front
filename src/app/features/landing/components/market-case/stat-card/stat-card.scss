@@ -6,6 +6,14 @@
   border-radius: var(--radius-lg);
   background: var(--color-surface);
   box-shadow: var(--shadow-md);
+  transition:
+    box-shadow 0.3s var(--ease-out),
+    transform 0.3s var(--ease-out);
+
+  &:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+  }
 
   &__icon {
     display: grid;
@@ -15,6 +23,16 @@
     border-radius: var(--radius-md);
     background: var(--color-primary-soft);
     color: var(--color-primary);
+    transition:
+      background var(--transition),
+      color var(--transition),
+      transform 0.3s var(--ease-out);
+  }
+
+  &:hover &__icon {
+    background: var(--color-primary);
+    color: var(--color-text-inverse);
+    transform: rotate(-6deg) scale(1.08);
   }
 
   &__title {

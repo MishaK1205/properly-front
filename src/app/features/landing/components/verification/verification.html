@@ -1,6 +1,6 @@
 <section class="verify">
   <div class="verify__grid container">
-    <div class="verify__content">
+    <div class="verify__content" appScrollReveal>
       <h2 class="verify__title">How we verify every property on this list</h2>
 
       <ul class="verify__list">
@@ -19,6 +19,6 @@
       <p class="verify__note">{{ note }}</p>
     </div>
 
-    <app-agent-card [agent]="agent" />
+    <app-agent-card [appScrollReveal]="150" [agent]="agent" />
   </div>
 </section>

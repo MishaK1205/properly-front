@@ -1,0 +1,71 @@
+<h2 mat-dialog-title>{{ company ? 'Edit company' : 'Add company' }}</h2>
+
+<mat-dialog-content>
+  <form class="company-form" [formGroup]="form" id="company-form" (ngSubmit)="save()">
+    <mat-form-field appearance="outline" class="company-form__full">
+      <mat-label>Company name</mat-label>
+      <input matInput formControlName="companyName" />
+      <mat-error>Company name is required</mat-error>
+    </mat-form-field>
+
+    <div class="company-form__numbers">
+      <mat-form-field appearance="outline">
+        <mat-label>Projects completed</mat-label>
+        <input matInput type="number" min="0" formControlName="projectsCompleted" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Units delivered</mat-label>
+        <input matInput type="number" min="0" formControlName="unitsDelivered" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Active projects</mat-label>
+        <input matInput type="number" min="0" formControlName="activeProjects" />
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Operating since</mat-label>
+        <input matInput type="number" min="1800" max="2100" formControlName="operatingSince" />
+      </mat-form-field>
+    </div>
+
+    <mat-tab-group class="company-form__tabs" dynamicHeight>
+      @for (language of languages; track language.suffix) {
+        <mat-tab [label]="language.label">
+          <div class="company-form__tab-body">
+            <mat-form-field appearance="outline" class="company-form__full">
+              <mat-label>Location ({{ language.label }})</mat-label>
+              <input matInput [formControlName]="'companyLocation' + language.suffix" />
+              <mat-error>Location is required</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="company-form__full">
+              <mat-label>Description ({{ language.label }})</mat-label>
+              <textarea
+                matInput
+                rows="4"
+                [formControlName]="'companyDescription' + language.suffix"
+              ></textarea>
+              <mat-error>Description is required</mat-error>
+            </mat-form-field>
+          </div>
+        </mat-tab>
+      }
+    </mat-tab-group>
+
+    @if (saveError()) {
+      <p class="company-form__error" role="alert">
+        <mat-icon aria-hidden="true">error_outline</mat-icon>
+        Failed to save. Check that all fields in every language are filled.
+      </p>
+    }
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button matButton mat-dialog-close [disabled]="saving()">Cancel</button>
+  <button matButton="filled" type="submit" form="company-form" [disabled]="saving()">
+    @if (saving()) {
+      <mat-spinner diameter="18" />
+    } @else {
+      {{ company ? 'Save changes' : 'Create company' }}
+    }
+  </button>
+</mat-dialog-actions>

@@ -3,9 +3,16 @@
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   overflow: hidden;
-  transition: box-shadow var(--transition);
+  transition:
+    box-shadow var(--transition),
+    border-color var(--transition);
+
+  &:hover {
+    border-color: var(--color-navy-600);
+  }
 
   &--open {
+    border-color: var(--color-primary);
     box-shadow: var(--shadow-md);
   }
 
@@ -24,21 +31,56 @@
     color: var(--color-heading);
     text-align: start;
     cursor: pointer;
+    transition: color var(--transition);
+
+    .item--open & {
+      color: var(--color-primary);
+    }
   }
 
   &__chevron {
     flex-shrink: 0;
     color: var(--color-text-muted);
-    transition: rotate var(--transition);
+    transition:
+      rotate 0.3s var(--ease-out),
+      color var(--transition);
 
     .item--open & {
       rotate: 180deg;
+      color: var(--color-primary);
     }
+  }
+
+  /* Collapsible panel: animating grid rows 0fr -> 1fr lets the content
+     transition smoothly between height 0 and its natural height. */
+  &__panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s var(--ease-out);
+
+    .item--open & {
+      grid-template-rows: 1fr;
+    }
+  }
+
+  &__panel-inner {
+    overflow: hidden;
+    min-height: 0;
   }
 
   &__answer {
     padding: 0 1.5rem 1.25rem;
     font-size: var(--font-size-sm);
     color: var(--color-text-muted);
+    opacity: 0;
+    translate: 0 -0.35rem;
+    transition:
+      opacity 0.3s ease 0.1s,
+      translate 0.3s var(--ease-out) 0.1s;
+
+    .item--open & {
+      opacity: 1;
+      translate: 0 0;
+    }
   }
 }

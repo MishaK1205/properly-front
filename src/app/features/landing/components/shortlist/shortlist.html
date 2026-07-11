@@ -1,6 +1,7 @@
 <section class="shortlist">
   <div class="container">
     <app-section-heading
+      appScrollReveal
       align="start"
       eyebrow="The Shortlist"
       title="10 Verified Investments, Ranked and Reviewed"
@@ -8,8 +9,12 @@
     />
 
     <div class="shortlist__grid">
-      @for (property of properties(); track property.rank) {
-        <app-property-card [property]="property" (interested)="interested.emit($event)" />
+      @for (property of properties(); track property.rank; let i = $index) {
+        <app-property-card
+          [appScrollReveal]="(i % 2) * 100"
+          [property]="property"
+          (interested)="interested.emit($event)"
+        />
       }
     </div>
   </div>

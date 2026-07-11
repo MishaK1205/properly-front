@@ -1,0 +1,79 @@
+@use '../shared/admin-page' as *;
+
+.companies__grid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: 1fr;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 1280px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.company-card {
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+.company-card__avatar {
+  display: grid;
+  place-items: center;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+  font-weight: 800;
+  font-size: var(--font-size-lg);
+}
+
+.company-card__header {
+  padding-bottom: 0.5rem;
+
+  mat-card-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+}
+
+.company-card__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  margin-block: 0.75rem;
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+}
+
+.company-card__stat {
+  display: grid;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.company-card__stat-value {
+  font-weight: 800;
+  color: var(--color-heading);
+}
+
+.company-card__stat-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.company-card__description {
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.company-card__delete {
+  --mat-icon-button-icon-color: #b3261e;
+}
