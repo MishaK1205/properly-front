@@ -1,14 +1,36 @@
 .lead {
+  position: relative;
   padding-block: var(--section-pad-y);
-  background: var(--color-navy-800);
+  background: var(--gradient-ink);
+  overflow: hidden;
+
+  /* Pastel aurora glow behind the form, Holo-style */
+  &::before {
+    content: '';
+    position: absolute;
+    top: -30%;
+    left: 50%;
+    width: 64rem;
+    height: 34rem;
+    margin-left: -32rem;
+    background:
+      radial-gradient(closest-side, rgb(225 190 255 / 0.32), transparent 70%),
+      radial-gradient(closest-side at 70% 70%, rgb(166 204 255 / 0.3), transparent 70%);
+    filter: blur(70px);
+    pointer-events: none;
+  }
+
+  .container {
+    position: relative;
+  }
 
   &__card {
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
-    max-width: 26rem;
+    max-width: 27rem;
     margin: 3rem auto 0;
-    padding: 2rem 1.75rem;
+    padding: 2.25rem 2rem;
     border-radius: var(--radius-xl);
     background: var(--color-surface);
     box-shadow: var(--shadow-lg);

@@ -1,14 +1,29 @@
 .footer {
+  position: relative;
   background: var(--color-navy-900);
   color: var(--color-text-inverse-muted);
+  overflow: hidden;
+
+  /* Soft pastel glow, Holo-style */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: auto -20% -60% -20%;
+    height: 18rem;
+    background: var(--gradient-accent);
+    filter: blur(90px);
+    opacity: 0.16;
+    pointer-events: none;
+  }
 
   &__top {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 2rem;
-    padding-block: 2.5rem;
+    padding-block: 3rem;
   }
 
   &__logo-row {
@@ -20,17 +35,18 @@
   &__logo {
     display: grid;
     place-items: center;
-    width: 2rem;
-    height: 2rem;
-    border-radius: var(--radius-sm);
-    background: var(--color-primary);
-    color: var(--color-text-inverse);
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 0.7rem;
+    background: var(--gradient-accent);
+    color: var(--color-ink);
     font-weight: 800;
     font-size: var(--font-size-sm);
   }
 
   &__name {
-    font-weight: 800;
+    font-weight: 700;
+    letter-spacing: -0.02em;
     color: var(--color-text-inverse);
   }
 
@@ -57,6 +73,7 @@
   }
 
   &__actions {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -90,7 +107,8 @@
   }
 
   &__bottom {
-    border-top: 1px solid rgb(255 255 255 / 0.1);
+    position: relative;
+    border-top: 1px solid rgb(255 255 255 / 0.08);
   }
 
   &__legal {

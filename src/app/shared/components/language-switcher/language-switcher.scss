@@ -1,7 +1,7 @@
 .switcher {
   display: inline-flex;
   padding: 0.2rem;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   background: var(--color-bg);
   border: 1px solid var(--color-border);
 
@@ -9,7 +9,7 @@
     border: 0;
     background: transparent;
     padding: 0.3rem 0.7rem;
-    border-radius: calc(var(--radius-sm) - 0.15rem);
+    border-radius: var(--radius-pill);
     font-size: var(--font-size-xs);
     font-weight: 700;
     color: var(--color-text-muted);

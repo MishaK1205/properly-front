@@ -1,5 +1,7 @@
 /* ============================================================
    Design system — global tokens & base styles
+   Holo-inspired: ink-on-porcelain, periwinkle accent, pastel
+   gradients, pill CTAs, oversized radii, generous whitespace.
    All components must consume these via var(--...).
    ============================================================ */
 
@@ -11,70 +13,85 @@ html {
   @include mat.theme((
     color: (
       theme-type: light,
-      primary: mat.$azure-palette,
-      tertiary: mat.$orange-palette,
+      primary: mat.$violet-palette,
+      tertiary: mat.$azure-palette,
     ),
-    typography: 'Plus Jakarta Sans',
+    typography: 'Inter',
     density: 0,
   ));
 }
 
 :root {
-  /* Brand colors */
-  --color-navy-900: #10233a;
-  --color-navy-800: #16304f;
-  --color-navy-700: #1e3d63;
-  --color-navy-600: #2c4d75;
-  --color-primary: #f4652a;
-  --color-primary-hover: #de5418;
-  --color-primary-soft: #fdeee5;
+  /* Brand colors — ink scale (kept as navy-* names for admin compat) */
+  --color-navy-900: #121217;
+  --color-navy-800: #1c1c24;
+  --color-navy-700: #2a2a35;
+  --color-navy-600: #3f3f50;
+  --color-ink: #121217;
+
+  /* Accent — periwinkle */
+  --color-primary: #6e69f5;
+  --color-primary-hover: #5652e0;
+  --color-primary-soft: #eeedfe;
   --color-whatsapp: #24c95d;
   --color-whatsapp-hover: #1cab4d;
-  --color-success: #1aa251;
+  --color-success: #2dca72;
+
+  /* Pastel accents & gradients */
+  --color-lavender: #e1beff;
+  --color-sky: #a6ccff;
+  --color-mint: #33eee3;
+  --color-pink: #f173ba;
+  --gradient-accent: linear-gradient(180deg, #e1beff, #a6ccff);
+  --gradient-card: linear-gradient(180deg, #c8d0ff, #c2d9fd);
+  --gradient-hero: linear-gradient(180deg, #ffffff, #f4f8ff 70%, #eef4ff);
+  --gradient-ink: linear-gradient(135deg, #1c1c24, #121217 60%, #26263a);
 
   /* Surfaces */
-  --color-bg: #f4f6fa;
-  --color-bg-blue: #e9f0fb;
+  --color-bg: #f7f7f8;
+  --color-bg-blue: #eef4ff;
   --color-surface: #ffffff;
-  --color-border: #e4e9f1;
+  --color-border: #ebebef;
+  --color-border-strong: #d1d1db;
 
   /* Text */
-  --color-heading: var(--color-navy-800);
-  --color-text: #3d4d66;
-  --color-text-muted: #8b95a7;
+  --color-heading: var(--color-ink);
+  --color-text: #3f3f50;
+  --color-text-muted: #8a8aa3;
   --color-text-inverse: #ffffff;
-  --color-text-inverse-muted: #a9b8cc;
+  --color-text-inverse-muted: #a9a9bc;
 
   /* Typography */
   --font-family:
-    'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     Helvetica, Arial, sans-serif;
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
   --font-size-md: 1rem;
   --font-size-lg: 1.125rem;
   --font-size-xl: 1.5rem;
-  --font-size-2xl: 2rem;
-  --font-size-3xl: 2.75rem;
+  --font-size-2xl: 2.25rem;
+  --font-size-3xl: 3.25rem;
+  --tracking-tight: -0.035em;
 
   /* Shape & elevation */
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
+  --radius-sm: 0.625rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2rem;
   --radius-pill: 62.5rem;
-  --shadow-sm: 0 1px 3px rgb(16 35 58 / 0.08);
-  --shadow-md: 0 6px 20px rgb(16 35 58 / 0.08);
-  --shadow-lg: 0 16px 40px rgb(16 35 58 / 0.16);
+  --shadow-sm: 0 1px 3px rgb(18 18 23 / 0.06);
+  --shadow-md: 0 10px 30px rgb(18 18 23 / 0.07);
+  --shadow-lg: 0 24px 60px rgb(18 18 23 / 0.12);
 
   /* Layout */
-  --container-max: 70rem;
+  --container-max: 72rem;
   --container-pad: 1.25rem;
-  --section-pad-y: 5rem;
+  --section-pad-y: 6rem;
 
   --transition: 0.2s ease;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --transition-slow: 0.5s var(--ease-out);
+  --transition-slow: 0.6s var(--ease-out);
 }
 
 *,
@@ -91,7 +108,7 @@ body {
   margin: 0;
   font-family: var(--font-family);
   font-size: var(--font-size-md);
-  line-height: 1.6;
+  line-height: 1.65;
   color: var(--color-text);
   background: var(--color-surface);
   -webkit-font-smoothing: antialiased;
@@ -104,8 +121,9 @@ h3,
 h4 {
   margin: 0;
   color: var(--color-heading);
-  line-height: 1.2;
+  line-height: 1.12;
   font-weight: 700;
+  letter-spacing: var(--tracking-tight);
 }
 
 p {
@@ -136,10 +154,10 @@ button {
    the directive toggles classes on host elements across components). */
 .reveal {
   opacity: 0;
-  translate: 0 1.75rem;
+  translate: 0 2.25rem;
   transition:
-    opacity 0.65s var(--ease-out),
-    translate 0.65s var(--ease-out);
+    opacity 0.8s var(--ease-out),
+    translate 0.8s var(--ease-out);
   transition-delay: var(--reveal-delay, 0s);
 }
 

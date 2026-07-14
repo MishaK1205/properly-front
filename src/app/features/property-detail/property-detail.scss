@@ -2,6 +2,10 @@
   display: block;
 }
 
+.page {
+  position: relative;
+}
+
 @keyframes fab-pulse {
   0% {
     box-shadow: 0 0 0 0 rgb(36 201 93 / 0.45);

@@ -14,8 +14,8 @@
 
   &:hover {
     box-shadow: var(--shadow-lg);
-    border-color: transparent;
-    transform: translateY(-4px);
+    border-color: rgb(110 105 245 / 0.35);
+    transform: translateY(-6px);
   }
 
   &__media {
@@ -39,13 +39,14 @@
     left: 1rem;
     padding: 0.3rem 0.8rem;
     border-radius: var(--radius-pill);
-    background: var(--color-navy-800);
+    background: var(--color-ink);
     color: var(--color-text-inverse);
     font-size: var(--font-size-xs);
-    font-weight: 700;
+    font-weight: 600;
 
     &--accent {
-      background: var(--color-primary);
+      background: var(--gradient-accent);
+      color: var(--color-ink);
     }
   }
 
@@ -163,6 +164,7 @@
 
   &__status {
     font-size: var(--font-size-xs);
-    color: var(--color-text-muted);
+    font-weight: 500;
+    color: var(--color-success);
   }
 }

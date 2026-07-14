@@ -3,11 +3,25 @@
   background: var(--color-bg);
 
   &__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-primary-soft);
     font-size: var(--font-size-xs);
-    font-weight: 800;
-    letter-spacing: 0.14em;
+    font-weight: 600;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--color-primary);
+
+    &::before {
+      content: '';
+      width: 0.4rem;
+      height: 0.4rem;
+      border-radius: 50%;
+      background: currentcolor;
+    }
   }
 
   &__grid {

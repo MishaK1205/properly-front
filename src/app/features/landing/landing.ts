@@ -11,6 +11,7 @@ import { Hero } from './components/hero/hero';
 import { HowItWorks } from './components/how-it-works/how-it-works';
 import { LeadForm } from './components/lead-form/lead-form';
 import { MarketCase } from './components/market-case/market-case';
+import { ScrollProgress } from './components/scroll-progress/scroll-progress';
 import { Shortlist } from './components/shortlist/shortlist';
 import { Verification } from './components/verification/verification';
 
@@ -26,6 +27,7 @@ import { Verification } from './components/verification/verification';
     Verification,
     Faq,
     LeadForm,
+    ScrollProgress,
     SiteFooter,
     WhatsappIcon,
   ],

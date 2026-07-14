@@ -11,7 +11,8 @@
 }
 
 .hero {
-  padding-block: 2.5rem;
+  padding-block: 3rem;
+  background: var(--gradient-hero);
 
   &__grid {
     display: grid;
@@ -52,13 +53,14 @@
     left: 1rem;
     padding: 0.35rem 0.85rem;
     border-radius: var(--radius-pill);
-    background: var(--color-navy-800);
+    background: var(--color-ink);
     color: var(--color-text-inverse);
     font-size: var(--font-size-xs);
-    font-weight: 700;
+    font-weight: 600;
 
     &--accent {
-      background: var(--color-primary);
+      background: var(--gradient-accent);
+      color: var(--color-ink);
     }
   }
 

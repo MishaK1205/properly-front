@@ -1,7 +1,7 @@
 @if (property(); as property) {
   <app-site-header [breadcrumb]="property.name" />
 
-  <main>
+  <main class="page">
     <app-detail-hero [property]="property" [detail]="detail()!" (interested)="scrollTo('contact')" />
     <app-our-take [detail]="detail()!" />
     <app-investment-numbers [detail]="detail()!" />

@@ -1,40 +1,51 @@
 <section class="hero">
-  <div class="hero__media">
-    <img
-      ngSrc="https://picsum.photos/seed/batumi-sunset/1920/1080"
-      alt="Batumi coastline at sunset"
-      fill
-      priority
-    />
-    <div class="hero__overlay" aria-hidden="true"></div>
-  </div>
+  <div class="hero__glow" aria-hidden="true"></div>
 
   <div class="hero__content container">
     <p class="hero__edition">2025 Edition · Updated June 2025</p>
 
-    <h1 class="hero__title">Top 10 Properties to Invest in Batumi, Georgia</h1>
+    <h1 class="hero__title">
+      Top 10 Properties to Invest in <span class="hero__title-accent">Batumi, Georgia</span>
+    </h1>
     <p class="hero__subtitle">Curated from 200+ developments. Verified prices. Honest assessments.</p>
+
+    <div class="hero__cta">
+      <app-button variant="primary" size="lg" (clicked)="briefRequested.emit()">
+        Get the Full Investment Brief
+      </app-button>
+      <button type="button" class="hero__scroll" (click)="shortlistRequested.emit()">
+        Or scroll to see the Top 10 ↓
+      </button>
+    </div>
 
     <ul class="hero__chips">
       @for (chip of chips; track chip) {
         <li class="hero__chip">{{ chip }}</li>
       }
     </ul>
+  </div>
 
-    <div class="hero__cta">
-      <app-button variant="primary" size="lg" (clicked)="briefRequested.emit()">
-        Get the Full Investment Brief ↓
-      </app-button>
+  <div class="hero__media container">
+    <div class="hero__media-frame">
+      <img
+        ngSrc="https://picsum.photos/seed/batumi-sunset/1920/1080"
+        alt="Batumi coastline at sunset"
+        width="1920"
+        height="1080"
+        priority
+      />
     </div>
-    <button type="button" class="hero__scroll" (click)="shortlistRequested.emit()">
-      Or scroll to see the Top 10 ↓
-    </button>
   </div>
 
   <div class="hero__trust">
     <ul class="hero__trust-list container">
       @for (item of trustItems; track item) {
-        <li class="hero__trust-item">✓ {{ item }}</li>
+        <li class="hero__trust-item">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m5 13 4 4L19 7" />
+          </svg>
+          {{ item }}
+        </li>
       }
     </ul>
   </div>
