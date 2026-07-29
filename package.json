@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:vercel": "ng build --define \"NG_API_BASE_URL='$API_BASE_URL'\"",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:real-estate-ivestment": "node dist/real-estate-ivestment/server/server.mjs"
