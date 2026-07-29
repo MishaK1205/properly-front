@@ -1,0 +1,71 @@
+<article class="card">
+  <!-- Covers the card so the whole surface opens the property, except the raised link and button. -->
+  <a
+    class="card__link"
+    [routerLink]="['/property', project()._id]"
+    [attr.aria-label]="'View ' + project().projectName"
+  ></a>
+
+  <div class="card__media">
+    @if (imageUrl(); as url) {
+      <img
+        class="card__image"
+        [src]="url"
+        [alt]="project().projectName"
+        loading="lazy"
+        decoding="async"
+      />
+    } @else {
+      <div class="card__placeholder" aria-hidden="true">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3 21V7l9-4 9 4v14h-7v-6h-4v6H3Z" />
+        </svg>
+      </div>
+    }
+  </div>
+
+  <div class="card__body">
+    @if (companyName()) {
+      <p class="card__company">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M3 21V7l9-4 9 4v14h-7v-6h-4v6H3Z" />
+        </svg>
+        {{ companyName() }}
+      </p>
+    }
+
+    <h3 class="card__name">{{ project().projectName }}</h3>
+
+    <a
+      class="card__location"
+      [href]="mapsUrl()"
+      target="_blank"
+      rel="noopener"
+      [attr.aria-label]="'Open ' + location() + ' in Google Maps'"
+    >
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" />
+        <circle cx="12" cy="10" r="2.5" />
+      </svg>
+      {{ location() }}
+    </a>
+
+    @if (advantages().length) {
+      <ul class="card__chips">
+        @for (advantage of advantages(); track advantage) {
+          <li class="card__chip">{{ advantage }}</li>
+        }
+      </ul>
+    }
+
+    @if (shortDescription()) {
+      <p class="card__description">{{ shortDescription() }}</p>
+    }
+  </div>
+
+  <footer class="card__footer">
+    <app-button variant="primary" size="md" (clicked)="interested.emit(project().projectName)">
+      I'm Interested →
+    </app-button>
+  </footer>
+</article>

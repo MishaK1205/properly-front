@@ -1,18 +1,16 @@
-@if (property(); as property) {
-  <app-site-header [breadcrumb]="property.name" />
+@if (detail(); as detail) {
+  <app-site-header [breadcrumb]="detail.name" />
 
   <main class="page">
-    <app-detail-hero [property]="property" [detail]="detail()!" (interested)="scrollTo('contact')" />
-    <app-our-take [detail]="detail()!" />
-    <app-investment-numbers [detail]="detail()!" />
-    <app-property-tabs
-      [property]="property"
-      [detail]="detail()!"
-      (paymentDetailsRequested)="scrollTo('contact')"
-    />
-    <app-developer-section [detail]="detail()!" />
-    <app-interest-form id="contact" [propertyName]="property.name" />
-    <app-keep-exploring [properties]="related()" />
+    <app-detail-hero [detail]="detail" (interested)="scrollTo('contact')" />
+    <app-our-take [detail]="detail" />
+    <app-investment-numbers [detail]="detail" />
+    <app-property-tabs [detail]="detail" (paymentDetailsRequested)="scrollTo('contact')" />
+    <app-developer-section [detail]="detail" />
+    <app-interest-form id="contact" [propertyName]="detail.name" />
+    @if (related().length) {
+      <app-keep-exploring [cards]="related()" />
+    }
   </main>
 
   <app-site-footer />
@@ -30,9 +28,19 @@
   <app-site-header />
 
   <main class="not-found container">
-    <h1 class="not-found__title">Property not found</h1>
-    <p class="not-found__text">This property is no longer on our shortlist.</p>
-    <a class="not-found__link" routerLink="/">← Back to the full Top 10 list</a>
+    @if (loading()) {
+      <h1 class="not-found__title">Loading property…</h1>
+    } @else {
+      <h1 class="not-found__title">Property not found</h1>
+      <p class="not-found__text">
+        @if (failed()) {
+          We couldn't load this property right now. Please try again.
+        } @else {
+          This property is no longer on our shortlist.
+        }
+      </p>
+      <a class="not-found__link" routerLink="/">← Back to the full Top 10 list</a>
+    }
   </main>
 
   <app-site-footer />

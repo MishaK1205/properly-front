@@ -1,13 +1,14 @@
 <div class="switcher" [class.switcher--dark]="appearance() === 'dark'" role="group" aria-label="Language">
-  @for (lang of languages; track lang) {
+  @for (lang of languages; track lang.code) {
     <button
       type="button"
       class="switcher__option"
-      [class.switcher__option--active]="language() === lang"
-      [attr.aria-pressed]="language() === lang"
-      (click)="language.set(lang)"
+      [class.switcher__option--active]="active() === lang.code"
+      [attr.aria-pressed]="active() === lang.code"
+      [attr.aria-label]="lang.label"
+      (click)="select(lang.code)"
     >
-      {{ lang }}
+      {{ lang.code }}
     </button>
   }
 </div>

@@ -1,12 +1,10 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
-import { PROPERTIES } from './core/data/properties.data';
 
 export const serverRoutes: ServerRoute[] = [
+  // Property pages are browser-only: their content comes from the live projects API.
   {
-    path: 'property/:slug',
-    renderMode: RenderMode.Prerender,
-    getPrerenderParams: () =>
-      Promise.resolve(PROPERTIES.map((property) => ({ slug: property.slug }))),
+    path: 'property/:id',
+    renderMode: RenderMode.Client,
   },
   // Admin area is browser-only: it depends on localStorage auth and live API data.
   {

@@ -1,13 +1,10 @@
-/** Stat box in the hero summary card (price / yield / completion). */
-export interface SummaryStat {
-  readonly label: string;
-  readonly value: string;
-  readonly sub: string;
-  readonly accent: boolean;
-}
+/**
+ * View model for the property detail page. Every field is already localized and formatted,
+ * so the template components stay presentational.
+ */
 
-/** Big stat tile in "The numbers" section. */
-export interface NumberStat {
+/** Stat tile used both in the hero summary card and the investment breakdown grid. */
+export interface DetailStat {
   readonly label: string;
   readonly value: string;
   readonly sub: string;
@@ -35,8 +32,7 @@ export interface UnitPlan {
   readonly type: string;
   readonly size: string;
   readonly startingPrice: string;
-  readonly monthlyInstallment: string;
-  readonly imageSeed: string;
+  readonly imageUrl: string | null;
 }
 
 export interface PaymentStage {
@@ -45,7 +41,7 @@ export interface PaymentStage {
   readonly when: string;
 }
 
-export type DeveloperStatIcon = 'projects' | 'units' | 'clock' | 'key';
+export type DeveloperStatIcon = 'projects' | 'units' | 'key';
 
 export interface DeveloperStat {
   readonly icon: DeveloperStatIcon;
@@ -62,32 +58,42 @@ export interface DeveloperProfile {
   readonly footnote: string;
 }
 
+/** Card in the "Keep exploring" strip, linking to another project's detail page. */
+export interface ExploreCard {
+  readonly id: string;
+  readonly name: string;
+  readonly location: string;
+  readonly imageUrl: string | null;
+}
+
 export interface PropertyDetailContent {
-  readonly slug: string;
-  /** Picsum seeds for the gallery: first is the initial main image. */
-  readonly gallerySeeds: readonly string[];
-  readonly summaryStats: readonly SummaryStat[];
+  readonly id: string;
+  readonly name: string;
+  readonly companyName: string;
+  readonly location: string;
+  readonly mapsUrl: string;
+  readonly galleryUrls: readonly string[];
+  readonly summaryStats: readonly DetailStat[];
   readonly tags: readonly string[];
   readonly paymentNote: string;
-  readonly ourTake: {
+  readonly description: {
     readonly title: string;
     readonly paragraphs: readonly string[];
-    /** Candid caveat rendered in muted style below the main paragraphs. */
-    readonly honestNote: string;
   };
   readonly verification: {
     readonly checks: readonly string[];
     readonly lastVerified: string;
   };
   readonly numbers: {
-    readonly stats: readonly NumberStat[];
+    readonly stats: readonly DetailStat[];
     readonly disclaimer: string;
   };
   readonly overviewFacts: readonly OverviewFact[];
+  readonly overviewImageUrl: string | null;
   readonly unitPlans: readonly UnitPlan[];
   readonly paymentPlan: {
     readonly stages: readonly PaymentStage[];
     readonly notes: readonly string[];
   };
-  readonly developer: DeveloperProfile;
+  readonly developer: DeveloperProfile | null;
 }

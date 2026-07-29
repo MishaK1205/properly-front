@@ -8,14 +8,34 @@
       subtitle="Each property passed our verification checklist. Click 'I'm Interested' and we'll send you the full investment brief for that property."
     />
 
-    <div class="shortlist__grid">
-      @for (property of properties(); track property.rank; let i = $index) {
-        <app-property-card
-          [appScrollReveal]="(i % 2) * 100"
-          [property]="property"
-          (interested)="interested.emit($event)"
-        />
-      }
-    </div>
+    @if (loading()) {
+      <div class="shortlist__grid">
+        @for (skeleton of skeletons; track skeleton) {
+          <div class="shortlist__skeleton" aria-hidden="true"></div>
+        }
+      </div>
+      <p class="shortlist__status" role="status">Loading projects…</p>
+    } @else if (failed()) {
+      <div class="shortlist__notice">
+        <p class="shortlist__notice-text">
+          We couldn't load the projects right now. Please try again.
+        </p>
+        <app-button variant="primary" size="md" (clicked)="retry.emit()">Try again</app-button>
+      </div>
+    } @else if (projects().length === 0) {
+      <div class="shortlist__notice">
+        <p class="shortlist__notice-text">No projects have been published yet.</p>
+      </div>
+    } @else {
+      <div class="shortlist__grid">
+        @for (project of projects(); track project._id; let i = $index) {
+          <app-project-card
+            [appScrollReveal]="(i % 2) * 100"
+            [project]="project"
+            (interested)="interested.emit($event)"
+          />
+        }
+      </div>
+    }
   </div>
 </section>

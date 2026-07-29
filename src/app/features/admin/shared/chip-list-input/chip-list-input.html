@@ -1,0 +1,20 @@
+<mat-form-field appearance="outline" class="chip-list">
+  <mat-label>{{ label() }}</mat-label>
+  <mat-chip-grid #chipGrid [disabled]="disabled()" [attr.aria-label]="label()">
+    @for (item of items(); track item) {
+      <mat-chip-row [editable]="true" (removed)="remove(item)" (edited)="edit(item, $event)">
+        {{ item }}
+        <button matChipRemove type="button" [attr.aria-label]="'Remove ' + item">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+    }
+  </mat-chip-grid>
+  <input
+    [placeholder]="placeholder()"
+    [matChipInputFor]="chipGrid"
+    (matChipInputTokenEnd)="add($event)"
+    (blur)="onTouched()"
+  />
+  <mat-hint>{{ items().length }} item(s) &middot; press Enter to add, double-click a chip to edit</mat-hint>
+</mat-form-field>

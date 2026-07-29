@@ -1,4 +1,4 @@
-import { DOCUMENT, NgOptimizedImage } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,7 +9,6 @@ import {
   signal,
 } from '@angular/core';
 import { TELEGRAM_URL, WHATSAPP_URL } from '../../../../core/data/site.data';
-import { Property } from '../../../../core/models/property';
 import { Button } from '../../../../shared/components/button/button';
 import { ButtonLink } from '../../../../shared/components/button-link/button-link';
 import { TelegramIcon } from '../../../../shared/components/telegram-icon/telegram-icon';
@@ -18,13 +17,12 @@ import { PropertyDetailContent } from '../../property-detail.models';
 
 @Component({
   selector: 'app-detail-hero',
-  imports: [Button, ButtonLink, NgOptimizedImage, TelegramIcon, WhatsappIcon],
+  imports: [Button, ButtonLink, TelegramIcon, WhatsappIcon],
   templateUrl: './detail-hero.html',
   styleUrl: './detail-hero.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetailHero {
-  readonly property = input.required<Property>();
   readonly detail = input.required<PropertyDetailContent>();
 
   readonly interested = output<void>();
@@ -37,11 +35,12 @@ export class DetailHero {
   protected readonly selectedIndex = signal(0);
   protected readonly copied = signal(false);
 
-  protected readonly galleryUrls = computed(() =>
-    this.detail().gallerySeeds.map((seed) => `https://picsum.photos/seed/${seed}/960/640`),
-  );
+  protected readonly mainImageUrl = computed(() => {
+    const urls = this.detail().galleryUrls;
+    return urls[this.selectedIndex()] ?? urls[0] ?? null;
+  });
 
-  protected readonly mainImageUrl = computed(() => this.galleryUrls()[this.selectedIndex()]);
+  protected readonly thumbnails = computed(() => this.detail().galleryUrls.slice(1));
 
   protected selectImage(index: number): void {
     this.selectedIndex.set(index);

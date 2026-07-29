@@ -2,72 +2,91 @@
   <div class="hero__grid container">
     <div class="hero__gallery">
       <div class="hero__media">
-        <img [ngSrc]="mainImageUrl()" [alt]="property().name" fill priority />
-        @if (property().badge; as badge) {
-          <span class="hero__badge" [class.hero__badge--accent]="badge.kind === 'accent'">
-            🏆 {{ badge.label }}
-          </span>
-        }
-      </div>
-
-      <div class="hero__thumbs" role="tablist" aria-label="Property photos">
-        @for (url of galleryUrls().slice(1); track url; let i = $index) {
-          <button
-            type="button"
-            class="hero__thumb"
-            [class.hero__thumb--active]="selectedIndex() === i + 1"
-            (click)="selectImage(i + 1)"
-            [attr.aria-label]="'Photo ' + (i + 2) + ' of ' + property().name"
-          >
-            <img [ngSrc]="url" alt="" fill />
-          </button>
-        }
-      </div>
-    </div>
-
-    <aside class="hero__card">
-      <h1 class="hero__name">{{ property().name }}</h1>
-
-      <p class="hero__developer">
-        {{ property().developer }}
-        <span class="hero__verified">✓ Verified</span>
-      </p>
-
-      <p class="hero__location">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" />
-          <circle cx="12" cy="10" r="2.5" />
-        </svg>
-        {{ property().location }}, Georgia
-      </p>
-
-      <div class="hero__stats">
-        @for (stat of detail().summaryStats; track stat.label) {
-          <div class="hero__stat">
-            <span class="hero__stat-label">{{ stat.label }}</span>
-            <span class="hero__stat-value" [class.hero__stat-value--accent]="stat.accent">
-              {{ stat.value }}
-            </span>
-            <span class="hero__stat-sub">{{ stat.sub }}</span>
+        @if (mainImageUrl(); as url) {
+          <img [src]="url" [alt]="detail().name" decoding="async" />
+        } @else {
+          <div class="hero__placeholder" aria-hidden="true">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M3 21V7l9-4 9 4v14h-7v-6h-4v6H3Z" />
+            </svg>
           </div>
         }
       </div>
 
-      <ul class="hero__tags">
-        @for (tag of detail().tags; track tag) {
-          <li class="hero__tag">{{ tag }}</li>
-        }
-      </ul>
+      @if (thumbnails().length) {
+        <div class="hero__thumbs" role="tablist" aria-label="Property photos">
+          @for (url of thumbnails(); track url; let i = $index) {
+            <button
+              type="button"
+              class="hero__thumb"
+              [class.hero__thumb--active]="selectedIndex() === i + 1"
+              (click)="selectImage(i + 1)"
+              [attr.aria-label]="'Photo ' + (i + 2) + ' of ' + detail().name"
+            >
+              <img [src]="url" alt="" loading="lazy" decoding="async" />
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <aside class="hero__card">
+      <h1 class="hero__name">{{ detail().name }}</h1>
+
+      @if (detail().companyName) {
+        <p class="hero__developer">
+          {{ detail().companyName }}
+          <span class="hero__verified">✓ Verified</span>
+        </p>
+      }
+
+      <a
+        class="hero__location"
+        [href]="detail().mapsUrl"
+        target="_blank"
+        rel="noopener"
+        [attr.aria-label]="'Open ' + detail().location + ' in Google Maps'"
+      >
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" />
+          <circle cx="12" cy="10" r="2.5" />
+        </svg>
+        {{ detail().location }}
+      </a>
+
+      @if (detail().summaryStats.length) {
+        <div class="hero__stats">
+          @for (stat of detail().summaryStats; track stat.label) {
+            <div class="hero__stat">
+              <span class="hero__stat-label">{{ stat.label }}</span>
+              <span class="hero__stat-value" [class.hero__stat-value--accent]="stat.accent">
+                {{ stat.value }}
+              </span>
+              <span class="hero__stat-sub">{{ stat.sub }}</span>
+            </div>
+          }
+        </div>
+      }
+
+      @if (detail().tags.length) {
+        <ul class="hero__tags">
+          @for (tag of detail().tags; track tag) {
+            <li class="hero__tag">{{ tag }}</li>
+          }
+        </ul>
+      }
 
       <div class="hero__divider" role="separator"></div>
 
-      <p class="hero__payment">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-          <rect x="2" y="5" width="20" height="14" rx="2" />
-          <path d="M2 10h20" />
-        </svg>
-        {{ detail().paymentNote }}
-      </p>
+      @if (detail().paymentNote) {
+        <p class="hero__payment">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <rect x="2" y="5" width="20" height="14" rx="2" />
+            <path d="M2 10h20" />
+          </svg>
+          {{ detail().paymentNote }}
+        </p>
+      }
 
       <app-button variant="primary" size="lg" [block]="true" (clicked)="interested.emit()">
         I'm Interested — Get Details →

@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, input, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 
-export type Language = 'EN' | 'RU';
-
-const LANGUAGES: readonly Language[] = ['EN', 'RU'];
+import { LANGUAGES } from '../../../core/data/languages.data';
+import { LanguageCode } from '../../../core/models/language';
+import { LanguageService } from '../../../core/services/language.service';
 
 @Component({
   selector: 'app-language-switcher',
@@ -11,9 +11,15 @@ const LANGUAGES: readonly Language[] = ['EN', 'RU'];
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LanguageSwitcher {
+  private readonly languageService = inject(LanguageService);
+
   /** 'light' for white surfaces (header), 'dark' for navy surfaces (footer). */
   readonly appearance = input<'light' | 'dark'>('light');
-  readonly language = model<Language>('EN');
 
   protected readonly languages = LANGUAGES;
+  protected readonly active = this.languageService.language;
+
+  protected select(code: LanguageCode): void {
+    this.languageService.setLanguage(code);
+  }
 }

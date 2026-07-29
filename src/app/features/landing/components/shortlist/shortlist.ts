@@ -1,18 +1,27 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+
+import { ProjectResponse } from '../../../../core/models/api.models';
+import { Button } from '../../../../shared/components/button/button';
 import { SectionHeading } from '../../../../shared/components/section-heading/section-heading';
 import { ScrollRevealDirective } from '../../../../shared/directives/scroll-reveal.directive';
-import { Property } from '../../../../core/models/property';
-import { PropertyCard } from './property-card/property-card';
+import { ProjectCard } from './project-card/project-card';
+
+const SKELETON_COUNT = 4;
 
 @Component({
   selector: 'app-shortlist',
-  imports: [SectionHeading, PropertyCard, ScrollRevealDirective],
+  imports: [SectionHeading, ProjectCard, Button, ScrollRevealDirective],
   templateUrl: './shortlist.html',
   styleUrl: './shortlist.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Shortlist {
-  readonly properties = input.required<readonly Property[]>();
+  readonly projects = input.required<readonly ProjectResponse[]>();
+  readonly loading = input(false);
+  readonly failed = input(false);
 
   readonly interested = output<string>();
+  readonly retry = output<void>();
+
+  protected readonly skeletons = Array.from({ length: SKELETON_COUNT }, (_, i) => i);
 }

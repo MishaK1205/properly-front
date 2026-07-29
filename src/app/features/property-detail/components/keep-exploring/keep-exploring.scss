@@ -34,8 +34,11 @@
     position: relative;
     aspect-ratio: 16 / 10;
     overflow: hidden;
+    background: var(--color-bg);
 
     img {
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       transition: scale 0.6s var(--ease-out);
     }
@@ -45,21 +48,13 @@
     scale: 1.05;
   }
 
-  &__badge {
-    position: absolute;
-    top: 0.75rem;
-    left: 0.75rem;
-    padding: 0.25rem 0.7rem;
-    border-radius: var(--radius-pill);
-    background: var(--color-ink);
-    color: var(--color-text-inverse);
-    font-size: var(--font-size-xs);
-    font-weight: 600;
-
-    &--accent {
-      background: var(--gradient-accent);
-      color: var(--color-ink);
-    }
+  &__placeholder {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    color: var(--color-border-strong);
+    background: var(--gradient-card);
   }
 
   &__body {
@@ -80,7 +75,7 @@
     justify-content: space-between;
   }
 
-  &__yield {
+  &__location {
     padding: 0.3rem 0.75rem;
     border-radius: var(--radius-pill);
     background: var(--color-primary-soft);

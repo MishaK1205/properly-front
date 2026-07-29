@@ -18,53 +18,37 @@
     transform: translateY(-6px);
   }
 
+  &__link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
   &__media {
     position: relative;
     aspect-ratio: 8 / 5;
     overflow: hidden;
-
-    img {
-      object-fit: cover;
-      transition: scale 0.6s var(--ease-out);
-    }
+    background: var(--color-bg);
   }
 
-  &:hover &__media img {
+  &__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: scale 0.6s var(--ease-out);
+  }
+
+  &:hover &__image {
     scale: 1.05;
   }
 
-  &__badge {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    padding: 0.3rem 0.8rem;
-    border-radius: var(--radius-pill);
-    background: var(--color-ink);
-    color: var(--color-text-inverse);
-    font-size: var(--font-size-xs);
-    font-weight: 600;
-
-    &--accent {
-      background: var(--gradient-accent);
-      color: var(--color-ink);
-    }
-  }
-
-  &__rank {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
+  &__placeholder {
     display: grid;
     place-items: center;
-    min-width: 2rem;
-    height: 2rem;
-    padding-inline: 0.4rem;
-    border-radius: var(--radius-pill);
-    background: var(--color-surface);
-    color: var(--color-heading);
-    font-size: var(--font-size-xs);
-    font-weight: 800;
-    box-shadow: var(--shadow-sm);
+    width: 100%;
+    height: 100%;
+    color: var(--color-border-strong);
+    background: var(--gradient-card);
   }
 
   &__body {
@@ -75,7 +59,7 @@
     padding: 1.5rem 1.5rem 1rem;
   }
 
-  &__developer {
+  &__company {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
@@ -89,30 +73,21 @@
     font-weight: 800;
   }
 
-  /* Stretched link: makes the whole card navigate to the detail page. */
-  &__link {
-    color: inherit;
-    text-decoration: none;
-    transition: color var(--transition);
-
-    &:hover {
-      color: var(--color-primary);
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-    }
-  }
-
   &__location {
+    position: relative;
+    z-index: 2;
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
     font-size: var(--font-size-sm);
     color: var(--color-text-muted);
+    text-decoration: none;
+    transition: color var(--transition);
+
+    &:hover {
+      color: var(--color-primary);
+      text-decoration: underline;
+    }
   }
 
   &__chips {
@@ -134,18 +109,8 @@
     color: var(--color-heading);
   }
 
-  &__income {
-    padding: 0.3rem 0.75rem;
-    border-radius: var(--radius-pill);
-    background: var(--color-primary-soft);
-    color: var(--color-primary);
-    font-size: var(--font-size-xs);
-    font-weight: 700;
-  }
-
-  &__note {
+  &__description {
     font-size: var(--font-size-sm);
-    font-style: italic;
     color: var(--color-text-muted);
   }
 
@@ -154,17 +119,11 @@
     z-index: 2;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: 1rem;
     flex-wrap: wrap;
     margin-top: auto;
     padding: 1rem 1.5rem;
     border-top: 1px solid var(--color-border);
-  }
-
-  &__status {
-    font-size: var(--font-size-xs);
-    font-weight: 500;
-    color: var(--color-success);
   }
 }

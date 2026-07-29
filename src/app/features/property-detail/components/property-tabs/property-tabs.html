@@ -1,144 +1,156 @@
-<section class="tabs">
-  <div class="container">
-    <app-section-heading appScrollReveal align="start" eyebrow="The Property" title="Everything you need to know" />
+@if (tabs().length) {
+  <section class="tabs">
+    <div class="container">
+      <app-section-heading appScrollReveal align="start" eyebrow="The Property" title="Everything you need to know" />
 
-    <div class="tabs__nav" role="tablist" aria-label="Property details">
-      @for (tab of tabs; track tab.id) {
-        <button
-          type="button"
-          class="tabs__tab"
-          role="tab"
-          [class.tabs__tab--active]="activeTab() === tab.id"
-          [attr.aria-selected]="activeTab() === tab.id"
-          (click)="selectTab(tab.id)"
-        >
-          {{ tab.label }}
-        </button>
+      <div class="tabs__nav" role="tablist" aria-label="Property details">
+        @for (tab of tabs(); track tab.id) {
+          <button
+            type="button"
+            class="tabs__tab"
+            role="tab"
+            [class.tabs__tab--active]="activeTab() === tab.id"
+            [attr.aria-selected]="activeTab() === tab.id"
+            (click)="selectTab(tab.id)"
+          >
+            {{ tab.label }}
+          </button>
+        }
+      </div>
+
+      @switch (activeTab()) {
+        @case ('overview') {
+          <div class="tabs__overview" role="tabpanel">
+            <ul class="tabs__facts">
+              @for (fact of detail().overviewFacts; track fact.label) {
+                <li class="tabs__fact">
+                  <span class="tabs__fact-icon" aria-hidden="true">
+                    @switch (fact.icon) {
+                      @case ('building') {
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16M9 7h1m4 0h1M9 11h1m4 0h1M9 15h1m4 0h1" /></svg>
+                      }
+                      @case ('floors') {
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
+                      }
+                      @case ('units') {
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></svg>
+                      }
+                      @case ('size') {
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3 3 21M21 3h-6m6 0v6M3 21h6m-6 0v-6" /></svg>
+                      }
+                      @case ('finish') {
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5 4 4L8 20l-5 1 1-5L15 5Z" /></svg>
+                      }
+                      @case ('furniture') {
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4M3 15a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4H3v-4Zm2 4v2m14-2v2" /></svg>
+                      }
+                      @case ('management') {
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+                      }
+                      @case ('distance') {
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0" /></svg>
+                      }
+                      @case ('location') {
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" /><circle cx="12" cy="10" r="2.5" /></svg>
+                      }
+                    }
+                  </span>
+                  <span class="tabs__fact-label">{{ fact.label }}</span>
+                  <span class="tabs__fact-value">{{ fact.value }}</span>
+                </li>
+              }
+            </ul>
+
+            @if (detail().overviewImageUrl; as imageUrl) {
+              <figure class="tabs__figure">
+                <div class="tabs__figure-media">
+                  <img [src]="imageUrl" [alt]="detail().name" loading="lazy" decoding="async" />
+                </div>
+                <figcaption class="tabs__figure-caption">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" />
+                    <circle cx="12" cy="10" r="2.5" />
+                  </svg>
+                  {{ detail().location }}
+                </figcaption>
+              </figure>
+            }
+          </div>
+        }
+
+        @case ('plans') {
+          <div class="tabs__plans" role="tabpanel">
+            @if (unitTypes().length > 1) {
+              <div class="tabs__plans-select">
+                <app-select-input
+                  label="Select unit size:"
+                  [options]="unitTypes()"
+                  [placeholder]="unitTypes()[0]"
+                  [(value)]="unitType"
+                />
+              </div>
+            }
+
+            @if (selectedPlan(); as plan) {
+              @if (plan.imageUrl; as planImageUrl) {
+                <div class="tabs__plan-media">
+                  <img [src]="planImageUrl" [alt]="plan.type + ' floor plan'" loading="lazy" decoding="async" />
+                </div>
+              }
+
+              <div class="tabs__plan-stats">
+                @if (plan.size) {
+                  <div class="tabs__plan-stat">
+                    <span class="tabs__plan-stat-label">Unit size</span>
+                    <span class="tabs__plan-stat-value">{{ plan.size }}</span>
+                  </div>
+                }
+                @if (plan.startingPrice) {
+                  <div class="tabs__plan-stat">
+                    <span class="tabs__plan-stat-label">Price per m²</span>
+                    <span class="tabs__plan-stat-value">{{ plan.startingPrice }}</span>
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        @case ('payment') {
+          <div class="tabs__payment" role="tabpanel">
+            <table class="tabs__table">
+              <thead>
+                <tr>
+                  <th scope="col">Stage</th>
+                  <th scope="col">Amount</th>
+                  <th scope="col">When</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (stage of detail().paymentPlan.stages; track stage.stage) {
+                  <tr>
+                    <th scope="row">{{ stage.stage }}</th>
+                    <td class="tabs__table-amount">{{ stage.amount }}</td>
+                    <td class="tabs__table-when">{{ stage.when }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+
+            @if (detail().paymentPlan.notes.length) {
+              <ul class="tabs__payment-notes">
+                @for (note of detail().paymentPlan.notes; track note) {
+                  <li>✓ {{ note }}</li>
+                }
+              </ul>
+            }
+
+            <app-button variant="outline" size="md" (clicked)="paymentDetailsRequested.emit()">
+              Request payment plan details
+            </app-button>
+          </div>
+        }
       }
     </div>
-
-    @switch (activeTab()) {
-      @case ('overview') {
-        <div class="tabs__overview" role="tabpanel">
-          <ul class="tabs__facts">
-            @for (fact of detail().overviewFacts; track fact.label) {
-              <li class="tabs__fact">
-                <span class="tabs__fact-icon" aria-hidden="true">
-                  @switch (fact.icon) {
-                    @case ('building') {
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16M9 7h1m4 0h1M9 11h1m4 0h1M9 15h1m4 0h1" /></svg>
-                    }
-                    @case ('floors') {
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
-                    }
-                    @case ('units') {
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1" /><rect x="14" y="3" width="7" height="7" rx="1" /><rect x="3" y="14" width="7" height="7" rx="1" /><rect x="14" y="14" width="7" height="7" rx="1" /></svg>
-                    }
-                    @case ('size') {
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3 3 21M21 3h-6m6 0v6M3 21h6m-6 0v-6" /></svg>
-                    }
-                    @case ('finish') {
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5 4 4L8 20l-5 1 1-5L15 5Z" /></svg>
-                    }
-                    @case ('furniture') {
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 11V7a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4M3 15a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4H3v-4Zm2 4v2m14-2v2" /></svg>
-                    }
-                    @case ('management') {
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
-                    }
-                    @case ('distance') {
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0" /></svg>
-                    }
-                    @case ('location') {
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" /><circle cx="12" cy="10" r="2.5" /></svg>
-                    }
-                  }
-                </span>
-                <span class="tabs__fact-label">{{ fact.label }}</span>
-                <span class="tabs__fact-value">{{ fact.value }}</span>
-              </li>
-            }
-          </ul>
-
-          <figure class="tabs__figure">
-            <div class="tabs__figure-media">
-              <img [ngSrc]="overviewImageUrl()" [alt]="property().name + ' area view'" fill />
-            </div>
-            <figcaption class="tabs__figure-caption">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" />
-                <circle cx="12" cy="10" r="2.5" />
-              </svg>
-              {{ property().location }}, Georgia
-            </figcaption>
-          </figure>
-        </div>
-      }
-
-      @case ('plans') {
-        <div class="tabs__plans" role="tabpanel">
-          <div class="tabs__plans-select">
-            <app-select-input
-              label="Select unit type:"
-              [options]="unitTypes()"
-              [placeholder]="unitTypes()[0]"
-              [(value)]="unitType"
-            />
-          </div>
-
-          <div class="tabs__plan-media">
-            <img [ngSrc]="planImageUrl()" [alt]="selectedPlan().type + ' floor plan'" fill />
-          </div>
-
-          <div class="tabs__plan-stats">
-            <div class="tabs__plan-stat">
-              <span class="tabs__plan-stat-label">Unit size</span>
-              <span class="tabs__plan-stat-value">{{ selectedPlan().size }}</span>
-            </div>
-            <div class="tabs__plan-stat">
-              <span class="tabs__plan-stat-label">Starting price</span>
-              <span class="tabs__plan-stat-value">{{ selectedPlan().startingPrice }}</span>
-            </div>
-            <div class="tabs__plan-stat">
-              <span class="tabs__plan-stat-label">Monthly installment</span>
-              <span class="tabs__plan-stat-value">{{ selectedPlan().monthlyInstallment }}</span>
-            </div>
-          </div>
-        </div>
-      }
-
-      @case ('payment') {
-        <div class="tabs__payment" role="tabpanel">
-          <table class="tabs__table">
-            <thead>
-              <tr>
-                <th scope="col">Stage</th>
-                <th scope="col">Amount</th>
-                <th scope="col">When</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (stage of detail().paymentPlan.stages; track stage.stage) {
-                <tr>
-                  <th scope="row">{{ stage.stage }}</th>
-                  <td class="tabs__table-amount">{{ stage.amount }}</td>
-                  <td class="tabs__table-when">{{ stage.when }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
-
-          <ul class="tabs__payment-notes">
-            @for (note of detail().paymentPlan.notes; track note) {
-              <li>✓ {{ note }}</li>
-            }
-          </ul>
-
-          <app-button variant="outline" size="md" (clicked)="paymentDetailsRequested.emit()">
-            Request payment plan details
-          </app-button>
-        </div>
-      }
-    }
-  </div>
-</section>
+  </section>
+}

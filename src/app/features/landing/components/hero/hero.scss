@@ -170,15 +170,14 @@
   }
 
   &__media-frame {
+    position: relative;
+    aspect-ratio: 21 / 9;
     overflow: hidden;
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-lg);
     border: 1px solid rgb(255 255 255 / 0.6);
 
     img {
-      width: 100%;
-      height: auto;
-      aspect-ratio: 21 / 9;
       object-fit: cover;
       transition: scale 1.2s var(--ease-out);
     }

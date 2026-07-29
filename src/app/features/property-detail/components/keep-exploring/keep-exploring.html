@@ -8,21 +8,24 @@
     />
 
     <div class="explore__grid">
-      @for (card of cards(); track card.property.slug; let i = $index) {
-        <a class="explore__card" [appScrollReveal]="i * 100" [routerLink]="['/property', card.property.slug]">
+      @for (card of cards(); track card.id; let i = $index) {
+        <a class="explore__card" [appScrollReveal]="i * 100" [routerLink]="['/property', card.id]">
           <div class="explore__media">
-            <img [ngSrc]="card.imageUrl" [alt]="card.property.name" fill />
-            @if (card.property.badge; as badge) {
-              <span class="explore__badge" [class.explore__badge--accent]="badge.kind === 'accent'">
-                {{ badge.label }}
-              </span>
+            @if (card.imageUrl; as imageUrl) {
+              <img [src]="imageUrl" [alt]="card.name" loading="lazy" decoding="async" />
+            } @else {
+              <div class="explore__placeholder" aria-hidden="true">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path d="M3 21V7l9-4 9 4v14h-7v-6h-4v6H3Z" />
+                </svg>
+              </div>
             }
           </div>
 
           <div class="explore__body">
-            <h3 class="explore__name">{{ card.property.name }}</h3>
+            <h3 class="explore__name">{{ card.name }}</h3>
             <div class="explore__row">
-              <span class="explore__yield">{{ card.property.yieldLabel }}</span>
+              <span class="explore__location">{{ card.location }}</span>
               <span class="explore__view">View →</span>
             </div>
           </div>

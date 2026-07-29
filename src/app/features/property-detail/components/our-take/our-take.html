@@ -2,32 +2,32 @@
   <div class="take__grid container">
     <article class="take__content" appScrollReveal>
       <p class="take__eyebrow">Our Take</p>
-      <h2 class="take__title">{{ detail().ourTake.title }}</h2>
+      <h2 class="take__title">{{ detail().description.title }}</h2>
 
-      @for (paragraph of detail().ourTake.paragraphs; track paragraph) {
+      @for (paragraph of detail().description.paragraphs; track paragraph) {
         <p class="take__paragraph">{{ paragraph }}</p>
       }
-
-      <p class="take__note">{{ detail().ourTake.honestNote }}</p>
     </article>
 
-    <aside class="take__checklist" [appScrollReveal]="150">
-      <h3 class="take__checklist-title">Verification checklist</h3>
+    @if (detail().verification.checks.length) {
+      <aside class="take__checklist" [appScrollReveal]="150">
+        <h3 class="take__checklist-title">Verification checklist</h3>
 
-      <ul class="take__checks">
-        @for (check of detail().verification.checks; track check) {
-          <li class="take__check">
-            <span class="take__check-icon" aria-hidden="true">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m4 12 5 5L20 7" />
-              </svg>
-            </span>
-            {{ check }}
-          </li>
-        }
-      </ul>
+        <ul class="take__checks">
+          @for (check of detail().verification.checks; track check) {
+            <li class="take__check">
+              <span class="take__check-icon" aria-hidden="true">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m4 12 5 5L20 7" />
+                </svg>
+              </span>
+              {{ check }}
+            </li>
+          }
+        </ul>
 
-      <p class="take__verified">{{ detail().verification.lastVerified }}</p>
-    </aside>
+        <p class="take__verified">{{ detail().verification.lastVerified }}</p>
+      </aside>
+    }
   </div>
 </section>

@@ -8,14 +8,21 @@
     (shortlistRequested)="scrollTo('shortlist')"
   />
   <app-market-case />
-  <app-shortlist id="shortlist" [properties]="properties" (interested)="onInterested($event)" />
+  <app-shortlist
+    id="shortlist"
+    [projects]="projects()"
+    [loading]="loading()"
+    [failed]="failed()"
+    (interested)="onInterested($event)"
+    (retry)="loadProjects()"
+  />
   <app-how-it-works />
   <app-verification />
   <app-faq />
   <app-lead-form
     id="contact"
-    [propertyNames]="propertyNames()"
-    [preselectedProperty]="selectedProperty()"
+    [propertyNames]="projectNames()"
+    [preselectedProperty]="selectedProject()"
   />
 </main>
 
