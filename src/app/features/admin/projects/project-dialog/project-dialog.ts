@@ -1,7 +1,5 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import {
-  AbstractControl,
   FormArray,
   FormBuilder,
   FormControl,
@@ -34,49 +32,11 @@ import {
 import { CompanyService } from '../../../../core/services/company.service';
 import { ProjectService } from '../../../../core/services/project.service';
 import { ChipListInput } from '../../shared/chip-list-input/chip-list-input';
+import { backendMessage, deepTrim, missingFieldsMessage } from '../../shared/form-utils';
 import { ImageUploader } from '../../shared/image-uploader/image-uploader';
 import { LANGUAGES } from '../../shared/languages';
 
 type TriField = Record<string, string>;
-
-const MAX_LISTED_FIELDS = 8;
-
-/** The backend rejects blank strings, so whitespace-only input must not slip through. */
-function deepTrim<T>(value: T): T {
-  if (typeof value === 'string') {
-    return value.trim() as T;
-  }
-  if (Array.isArray(value)) {
-    return value.map((item) => deepTrim(item)) as T;
-  }
-  if (value !== null && typeof value === 'object') {
-    return Object.fromEntries(
-      Object.entries(value as Record<string, unknown>).map(([key, item]) => [key, deepTrim(item)]),
-    ) as T;
-  }
-  return value;
-}
-
-/** `projectLocationGe` -> `Project location (Georgian)`. */
-function humanizeField(name: string): string {
-  const match = /^(.*?)(Ge|En|Ru)$/.exec(name);
-  const base = match ? match[1] : name;
-  const words = base.replace(/([A-Z])/g, ' $1').trim().toLowerCase();
-  const label = words.charAt(0).toUpperCase() + words.slice(1);
-  const language = match ? LANGUAGES.find((item) => item.suffix === match[2]) : undefined;
-  return language ? `${label} (${language.label})` : label;
-}
-
-function backendMessage(error: unknown): string | null {
-  if (!(error instanceof HttpErrorResponse)) {
-    return null;
-  }
-  const message = (error.error as { message?: string | string[] } | null)?.message;
-  if (Array.isArray(message)) {
-    return message.join('; ');
-  }
-  return typeof message === 'string' ? message : null;
-}
 
 @Component({
   selector: 'app-project-dialog',
@@ -269,12 +229,7 @@ export class ProjectDialog {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       this.expandAll.set(true);
-      const missing = this.invalidFieldLabels();
-      const shown = missing.slice(0, MAX_LISTED_FIELDS).join(', ');
-      const rest = missing.length - MAX_LISTED_FIELDS;
-      this.saveError.set(
-        `Please fill the required fields: ${shown}${rest > 0 ? ` and ${rest} more` : ''}.`,
-      );
+      this.saveError.set(missingFieldsMessage(this.form));
       return;
     }
 
@@ -344,35 +299,6 @@ export class ProjectDialog {
         );
       },
     });
-  }
-
-  /** Human-readable names of every invalid control, so nothing stays hidden in a collapsed panel. */
-  private invalidFieldLabels(): string[] {
-    const labels: string[] = [];
-
-    const visit = (control: AbstractControl, name: string, prefix: string): void => {
-      if (control.valid) {
-        return;
-      }
-      if (control instanceof FormGroup) {
-        for (const [key, child] of Object.entries(control.controls)) {
-          visit(child, key, prefix);
-        }
-        return;
-      }
-      if (control instanceof FormArray) {
-        control.controls.forEach((child, index) => {
-          visit(child, name, `${humanizeField(name)} ${index + 1}: `);
-        });
-        return;
-      }
-      labels.push(`${prefix}${humanizeField(name)}`);
-    };
-
-    for (const [key, control] of Object.entries(this.form.controls)) {
-      visit(control, key, '');
-    }
-    return labels;
   }
 
   /* ---------- group builders ---------- */

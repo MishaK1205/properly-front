@@ -12,24 +12,38 @@
       <mat-form-field appearance="outline">
         <mat-label>Projects completed</mat-label>
         <input matInput type="number" min="0" formControlName="projectsCompleted" />
+        <mat-error>Enter 0 or more</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Units delivered</mat-label>
         <input matInput type="number" min="0" formControlName="unitsDelivered" />
+        <mat-error>Enter 0 or more</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Active projects</mat-label>
         <input matInput type="number" min="0" formControlName="activeProjects" />
+        <mat-error>Enter 0 or more</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Operating since</mat-label>
         <input matInput type="number" min="1800" max="2100" formControlName="operatingSince" />
+        <mat-error>Enter a year between 1800 and 2100</mat-error>
       </mat-form-field>
     </div>
 
-    <mat-tab-group class="company-form__tabs" dynamicHeight>
+    <mat-tab-group class="company-form__tabs" dynamicHeight [(selectedIndex)]="selectedTab">
       @for (language of languages; track language.suffix) {
-        <mat-tab [label]="language.label">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <span class="company-form__tab-label">
+              {{ language.label }}
+              @if (incompleteLanguages().has(language.suffix)) {
+                <mat-icon class="company-form__tab-warning" aria-label="Missing fields" inline>
+                  error_outline
+                </mat-icon>
+              }
+            </span>
+          </ng-template>
           <div class="company-form__tab-body">
             <mat-form-field appearance="outline" class="company-form__full">
               <mat-label>Location ({{ language.label }})</mat-label>
@@ -50,10 +64,10 @@
       }
     </mat-tab-group>
 
-    @if (saveError()) {
-      <p class="company-form__error" role="alert">
+    @if (saveError(); as message) {
+      <p class="company-form__error" role="alert" #errorBanner>
         <mat-icon aria-hidden="true">error_outline</mat-icon>
-        Failed to save. Check that all fields in every language are filled.
+        {{ message }}
       </p>
     }
   </form>
