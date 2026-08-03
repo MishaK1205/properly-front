@@ -56,7 +56,9 @@
         <blockquote class="developer__quote" appScrollReveal>{{ developer.quote }}</blockquote>
       }
 
-      <p class="developer__footnote">{{ developer.footnote }}</p>
+      @if (developer.footnote) {
+        <p class="developer__footnote">{{ developer.footnote }}</p>
+      }
     </div>
   </section>
 }

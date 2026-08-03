@@ -3,7 +3,13 @@
 
   <main class="page">
     <app-detail-hero [detail]="detail" (interested)="scrollTo('contact')" />
-    <app-our-take [detail]="detail" />
+    @if (
+      detail.description.title ||
+      detail.description.paragraphs.length ||
+      detail.verification.checks.length
+    ) {
+      <app-our-take [detail]="detail" />
+    }
     <app-investment-numbers [detail]="detail" />
     <app-property-tabs [detail]="detail" (paymentDetailsRequested)="scrollTo('contact')" />
     <app-developer-section [detail]="detail" />

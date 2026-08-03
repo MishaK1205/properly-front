@@ -4,6 +4,9 @@
   <form [formGroup]="form" id="project-form" class="project-form" (ngSubmit)="save()">
     <p class="project-form__hint">
       Panels follow the property page from top to bottom, so each one fills in one section of it.
+      Only fields marked * are required — project name, company, English location, coordinates,
+      gallery images and floor plan images. Everything else can be left empty and is then hidden on
+      the page.
     </p>
 
     <mat-accordion multi>
@@ -23,11 +26,14 @@
           The top of the page: the photo gallery on the left and the summary card on the right.
         </p>
 
-        <h3 class="project-form__section-title">Gallery images</h3>
+        <h3 class="project-form__section-title">Gallery images *</h3>
         <p class="project-form__hint">
           The first image is the main photo; the rest become thumbnails under it.
         </p>
         <app-image-uploader label="Project images" [(imageIds)]="projectImages" />
+        @if (projectImagesMissing()) {
+          <p class="project-form__field-error" role="alert">At least one project image is required</p>
+        }
 
         <h3 class="project-form__section-title">Project name &amp; company</h3>
         <p class="project-form__hint">
@@ -60,25 +66,27 @@
             <mat-form-field appearance="outline">
               <mat-label>Location ({{ language.label }})</mat-label>
               <input matInput [formControlName]="'projectLocation' + language.suffix" />
-              <mat-error>Location is required</mat-error>
+              <mat-error>Location ({{ language.label }}) is required</mat-error>
             </mat-form-field>
           }
           <mat-form-field appearance="outline">
             <mat-label>Latitude</mat-label>
             <input matInput type="number" step="any" formControlName="projectLatitude" />
-            <mat-error>Latitude must be between -90 and 90</mat-error>
+            <mat-error>Latitude is required and must be between -90 and 90</mat-error>
           </mat-form-field>
           <mat-form-field appearance="outline">
             <mat-label>Longitude</mat-label>
             <input matInput type="number" step="any" formControlName="projectLongitude" />
-            <mat-error>Longitude must be between -180 and 180</mat-error>
+            <mat-error>Longitude is required and must be between -180 and 180</mat-error>
           </mat-form-field>
         </div>
 
         <h3 class="project-form__section-title">Summary cards</h3>
         <p class="project-form__hint">
           The small cards under the location. Title is the label on top, content is the big value,
-          description is the grey line underneath. Three cards fit the row.
+          description is the grey line underneath. Three cards fit the row. Cards are optional, but
+          each card you add must be filled in all three languages — remove it instead of leaving it
+          half empty.
         </p>
         <div formArrayName="projectDescriptionCards" class="project-form__stack">
           @for (card of descriptionCards.controls; track card; let i = $index) {
@@ -190,8 +198,14 @@
         <p class="project-form__hint">
           Title is the section heading, content is the body text — start a new line for each
           paragraph. The short description is not shown here; it is the teaser on the home page
-          shortlist card.
+          shortlist card. Leave the whole description empty to skip it, or fill all nine fields —
+          the backend does not accept a half-filled description.
         </p>
+        @if (form.controls.projectDescription.invalid && form.controls.projectDescription.touched) {
+          <p class="project-form__field-error" role="alert">
+            Fill the title, content and short description in all three languages, or clear them all
+          </p>
+        }
         <div formGroupName="projectDescription">
           <mat-tab-group dynamicHeight>
             @for (language of languages; track language.suffix) {
@@ -266,7 +280,8 @@
 
         <p class="project-form__hint">
           The "Investment breakdown at a glance" grid. Title is the label on top, content is the big
-          value, description is the grey line underneath.
+          value, description is the grey line underneath. Cards are optional, but each card you add
+          must be filled in all three languages.
         </p>
 
         <div formArrayName="investmentCards" class="project-form__stack">
@@ -398,11 +413,17 @@
 
         <p class="project-form__hint">
           The "Floor Plans" tab. Each pricing row becomes an option in the size selector and is
-          paired with the floor plan image in the same position.
+          paired with the floor plan image in the same position. Pricing rows are optional, but each
+          row you add needs both a range and a price.
         </p>
 
-        <h3 class="project-form__section-title">Floor plan images</h3>
+        <h3 class="project-form__section-title">Floor plan images *</h3>
         <app-image-uploader label="Floor plan images" [(imageIds)]="floorPlanImages" />
+        @if (floorPlanImagesMissing()) {
+          <p class="project-form__field-error" role="alert">
+            At least one floor plan image is required
+          </p>
+        }
 
         <h3 class="project-form__section-title">Pricing by square meters</h3>
         <div formArrayName="pricingBySquareMeters" class="project-form__stack">
@@ -445,6 +466,7 @@
 
         <p class="project-form__hint">
           The "Payment Plan" tab: one row per stage in the table, then the highlighted notes under it.
+          Stages are optional, but each stage you add must be filled in all three languages.
         </p>
 
         <h3 class="project-form__section-title">Payment stages</h3>

@@ -28,6 +28,25 @@ function variant<T>(ge: T, en: T, ru: T, suffix: LanguageSuffix): T {
   return suffix === 'Ru' ? ru : en;
 }
 
+/** Optional backend fields arrive as `null` or missing entirely; the page renders them as blank. */
+function localizedText(
+  ge: string | null | undefined,
+  en: string | null | undefined,
+  ru: string | null | undefined,
+  suffix: LanguageSuffix,
+): string {
+  return variant(ge, en, ru, suffix) ?? '';
+}
+
+function localizedList(
+  ge: string[] | undefined,
+  en: string[] | undefined,
+  ru: string[] | undefined,
+  suffix: LanguageSuffix,
+): readonly string[] {
+  return variant(ge, en, ru, suffix) ?? [];
+}
+
 function toParagraphs(content: string): readonly string[] {
   return content
     .split('\n')
@@ -54,7 +73,7 @@ function buildDescriptionCards(
   project: ProjectResponse,
   suffix: LanguageSuffix,
 ): readonly DetailStat[] {
-  return project.projectDescriptionCards.map((card, index) => ({
+  return (project.projectDescriptionCards ?? []).map((card, index) => ({
     label: variant(
       card.projectDescriptionCardTitleGe,
       card.projectDescriptionCardTitleEn,
@@ -81,7 +100,7 @@ function buildInvestmentCards(
   project: ProjectResponse,
   suffix: LanguageSuffix,
 ): readonly DetailStat[] {
-  return project.investmentCards.map((card, index) => ({
+  return (project.investmentCards ?? []).map((card, index) => ({
     label: variant(
       card.investmentCardTitleGe,
       card.investmentCardTitleEn,
@@ -112,7 +131,7 @@ function buildOverviewFacts(
     {
       icon: 'building',
       label: OVERVIEW_LABELS.buildingType,
-      value: variant(
+      value: localizedText(
         project.buildingTypeGe,
         project.buildingTypeEn,
         project.buildingTypeRu,
@@ -129,16 +148,16 @@ function buildOverviewFacts(
       label: OVERVIEW_LABELS.unitsInBuilding,
       value: project.unitsInBuilding ? String(project.unitsInBuilding) : '',
     },
-    { icon: 'size', label: OVERVIEW_LABELS.unitSizes, value: project.unitSizesAvailable },
+    { icon: 'size', label: OVERVIEW_LABELS.unitSizes, value: project.unitSizesAvailable ?? '' },
     {
       icon: 'finish',
       label: OVERVIEW_LABELS.finishing,
-      value: variant(project.finishingGe, project.finishingEn, project.finishingRu, suffix),
+      value: localizedText(project.finishingGe, project.finishingEn, project.finishingRu, suffix),
     },
     {
       icon: 'furniture',
       label: OVERVIEW_LABELS.furniturePackage,
-      value: variant(
+      value: localizedText(
         project.furniturePackageGe,
         project.furniturePackageEn,
         project.furniturePackageRu,
@@ -148,18 +167,18 @@ function buildOverviewFacts(
     {
       icon: 'management',
       label: OVERVIEW_LABELS.strManagement,
-      value: variant(
+      value: localizedText(
         project.strManagementOnSiteGe,
         project.strManagementOnSiteEn,
         project.strManagementOnSiteRu,
         suffix,
       ),
     },
-    { icon: 'distance', label: OVERVIEW_LABELS.distanceToSea, value: project.distanceToSea },
+    { icon: 'distance', label: OVERVIEW_LABELS.distanceToSea, value: project.distanceToSea ?? '' },
     {
       icon: 'location',
       label: OVERVIEW_LABELS.distanceToCityCenter,
-      value: project.distanceToCityCenter,
+      value: project.distanceToCityCenter ?? '',
     },
   ];
 
@@ -171,8 +190,9 @@ function buildUnitPlans(
   imageUrl: ImageUrlResolver,
 ): readonly UnitPlan[] {
   const planImages = project.floorPlanImages;
+  const pricingTiers = project.pricingBySquareMeters ?? [];
 
-  if (project.pricingBySquareMeters.length === 0) {
+  if (pricingTiers.length === 0) {
     return planImages.map((id, index) => ({
       type: `Floor plan ${index + 1}`,
       size: '',
@@ -181,7 +201,7 @@ function buildUnitPlans(
     }));
   }
 
-  return project.pricingBySquareMeters.map((pricing, index) => {
+  return pricingTiers.map((pricing, index) => {
     // Pricing tiers are paired with floor plan images by position; the first image is the fallback.
     const planImage = planImages[index] ?? planImages[0];
     return {
@@ -197,7 +217,7 @@ function buildPaymentStages(
   project: ProjectResponse,
   suffix: LanguageSuffix,
 ): readonly PaymentStage[] {
-  return project.paymentPlans.map((plan) => ({
+  return (project.paymentPlans ?? []).map((plan) => ({
     stage: variant(plan.paymentStageGe, plan.paymentStageEn, plan.paymentStageRu, suffix),
     amount: formatPrice(plan.paymentAmount),
     when: variant(plan.whenGe, plan.whenEn, plan.whenRu, suffix),
@@ -245,7 +265,9 @@ function buildDeveloper(
       company.companyDescriptionRu,
       suffix,
     ),
-    footnote: `Developer data verified by our team as of ${formatMonthYear(project.lastVerified)}`,
+    footnote: project.lastVerified
+      ? `Developer data verified by our team as of ${formatMonthYear(project.lastVerified)}`
+      : '',
   };
 }
 
@@ -261,7 +283,7 @@ export function buildPropertyDetailContent(
     id: project._id,
     name: project.projectName,
     companyName: project.companyInfo?.companyName ?? '',
-    location: variant(
+    location: localizedText(
       project.projectLocationGe,
       project.projectLocationEn,
       project.projectLocationRu,
@@ -270,42 +292,44 @@ export function buildPropertyDetailContent(
     mapsUrl: mapsUrl(project.projectLatitude, project.projectLongitude),
     galleryUrls,
     summaryStats: buildDescriptionCards(project, suffix),
-    tags: variant(
+    tags: localizedList(
       project.projectAdvantagesGe,
       project.projectAdvantagesEn,
       project.projectAdvantagesRu,
       suffix,
     ),
-    paymentNote: variant(
+    paymentNote: localizedText(
       project.paymentDescriptionGe,
       project.paymentDescriptionEn,
       project.paymentDescriptionRu,
       suffix,
     ),
     description: {
-      title: variant(
-        description.projectDescriptionTitleGe,
-        description.projectDescriptionTitleEn,
-        description.projectDescriptionTitleRu,
+      title: localizedText(
+        description?.projectDescriptionTitleGe,
+        description?.projectDescriptionTitleEn,
+        description?.projectDescriptionTitleRu,
         suffix,
       ),
       paragraphs: toParagraphs(
-        variant(
-          description.projectDescriptionContentGe,
-          description.projectDescriptionContentEn,
-          description.projectDescriptionContentRu,
+        localizedText(
+          description?.projectDescriptionContentGe,
+          description?.projectDescriptionContentEn,
+          description?.projectDescriptionContentRu,
           suffix,
         ),
       ),
     },
     verification: {
-      checks: variant(
+      checks: localizedList(
         project.verificationChecklistGe,
         project.verificationChecklistEn,
         project.verificationChecklistRu,
         suffix,
       ),
-      lastVerified: `Last verified: ${formatMonthYear(project.lastVerified)}`,
+      lastVerified: project.lastVerified
+        ? `Last verified: ${formatMonthYear(project.lastVerified)}`
+        : '',
     },
     numbers: {
       stats: buildInvestmentCards(project, suffix),
@@ -316,7 +340,7 @@ export function buildPropertyDetailContent(
     unitPlans: buildUnitPlans(project, imageUrl),
     paymentPlan: {
       stages: buildPaymentStages(project, suffix),
-      notes: variant(
+      notes: localizedList(
         project.paymentAdvantagesGe,
         project.paymentAdvantagesEn,
         project.paymentAdvantagesRu,
@@ -335,7 +359,7 @@ export function buildExploreCards(
   return projects.map((project) => ({
     id: project._id,
     name: project.projectName,
-    location: variant(
+    location: localizedText(
       project.projectLocationGe,
       project.projectLocationEn,
       project.projectLocationRu,

@@ -1,13 +1,15 @@
 <section class="take">
   <div class="take__grid container">
-    <article class="take__content" appScrollReveal>
-      <p class="take__eyebrow">Our Take</p>
-      <h2 class="take__title">{{ detail().description.title }}</h2>
+    @if (detail().description.title || detail().description.paragraphs.length) {
+      <article class="take__content" appScrollReveal>
+        <p class="take__eyebrow">Our Take</p>
+        <h2 class="take__title">{{ detail().description.title }}</h2>
 
-      @for (paragraph of detail().description.paragraphs; track paragraph) {
-        <p class="take__paragraph">{{ paragraph }}</p>
-      }
-    </article>
+        @for (paragraph of detail().description.paragraphs; track paragraph) {
+          <p class="take__paragraph">{{ paragraph }}</p>
+        }
+      </article>
+    }
 
     @if (detail().verification.checks.length) {
       <aside class="take__checklist" [appScrollReveal]="150">
@@ -26,7 +28,9 @@
           }
         </ul>
 
-        <p class="take__verified">{{ detail().verification.lastVerified }}</p>
+        @if (detail().verification.lastVerified) {
+          <p class="take__verified">{{ detail().verification.lastVerified }}</p>
+        }
       </aside>
     }
   </div>

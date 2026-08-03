@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -32,7 +32,15 @@ import {
 import { CompanyService } from '../../../../core/services/company.service';
 import { ProjectService } from '../../../../core/services/project.service';
 import { ChipListInput } from '../../shared/chip-list-input/chip-list-input';
-import { backendMessage, deepTrim, missingFieldsMessage } from '../../shared/form-utils';
+import {
+  allOrNothing,
+  backendMessage,
+  deepTrim,
+  missingFieldsMessage,
+  notBlank,
+  textOrNull,
+  withoutNulls,
+} from '../../shared/form-utils';
 import { ImageUploader } from '../../shared/image-uploader/image-uploader';
 import { LANGUAGES } from '../../shared/languages';
 
@@ -74,86 +82,96 @@ export class ProjectDialog {
   protected readonly saveError = signal<string | null>(null);
   protected readonly expandAll = signal(false);
   protected readonly heroExpanded = signal(true);
+  /** Image lists live outside the form, so their errors only show once saving was attempted. */
+  protected readonly submitted = signal(false);
 
   protected readonly projectImages = signal<string[]>([...(this.project?.projectImages ?? [])]);
   protected readonly floorPlanImages = signal<string[]>([...(this.project?.floorPlanImages ?? [])]);
 
+  protected readonly projectImagesMissing = computed(
+    () => this.submitted() && this.projectImages().length === 0,
+  );
+  protected readonly floorPlanImagesMissing = computed(
+    () => this.submitted() && this.floorPlanImages().length === 0,
+  );
+
+  /** Only these seven fields are required by the backend; everything else may be left empty. */
   protected readonly form = this.formBuilder.nonNullable.group({
-    projectName: [this.project?.projectName ?? '', Validators.required],
+    projectName: [this.project?.projectName ?? '', [Validators.required, notBlank]],
     company: [this.project?.companyInfo?._id ?? '', Validators.required],
-    lastVerified: [
-      this.project ? new Date(this.project.lastVerified) : new Date(),
-      Validators.required,
-    ],
-    projectLocationGe: [this.project?.projectLocationGe ?? '', Validators.required],
-    projectLocationEn: [this.project?.projectLocationEn ?? '', Validators.required],
-    projectLocationRu: [this.project?.projectLocationRu ?? '', Validators.required],
-    projectLatitude: [
+    projectLocationEn: [this.project?.projectLocationEn ?? '', [Validators.required, notBlank]],
+    projectLatitude: this.formBuilder.control<number | null>(
       this.project?.projectLatitude ?? 41.6461,
       [Validators.required, Validators.min(-90), Validators.max(90)],
-    ],
-    projectLongitude: [
+    ),
+    projectLongitude: this.formBuilder.control<number | null>(
       this.project?.projectLongitude ?? 41.6399,
       [Validators.required, Validators.min(-180), Validators.max(180)],
-    ],
-    buildingTypeGe: [this.project?.buildingTypeGe ?? '', Validators.required],
-    buildingTypeEn: [this.project?.buildingTypeEn ?? '', Validators.required],
-    buildingTypeRu: [this.project?.buildingTypeRu ?? '', Validators.required],
-    totalFloors: [this.project?.totalFloors ?? 0, [Validators.required, Validators.min(0)]],
-    unitsInBuilding: [this.project?.unitsInBuilding ?? 0, [Validators.required, Validators.min(0)]],
-    unitSizesAvailable: [this.project?.unitSizesAvailable ?? '', Validators.required],
-    finishingGe: [this.project?.finishingGe ?? '', Validators.required],
-    finishingEn: [this.project?.finishingEn ?? '', Validators.required],
-    finishingRu: [this.project?.finishingRu ?? '', Validators.required],
-    furniturePackageGe: [this.project?.furniturePackageGe ?? '', Validators.required],
-    furniturePackageEn: [this.project?.furniturePackageEn ?? '', Validators.required],
-    furniturePackageRu: [this.project?.furniturePackageRu ?? '', Validators.required],
-    strManagementOnSiteGe: [this.project?.strManagementOnSiteGe ?? '', Validators.required],
-    strManagementOnSiteEn: [this.project?.strManagementOnSiteEn ?? '', Validators.required],
-    strManagementOnSiteRu: [this.project?.strManagementOnSiteRu ?? '', Validators.required],
-    distanceToSea: [this.project?.distanceToSea ?? '', Validators.required],
-    distanceToCityCenter: [this.project?.distanceToCityCenter ?? '', Validators.required],
-    paymentDescriptionGe: [this.project?.paymentDescriptionGe ?? '', Validators.required],
-    paymentDescriptionEn: [this.project?.paymentDescriptionEn ?? '', Validators.required],
-    paymentDescriptionRu: [this.project?.paymentDescriptionRu ?? '', Validators.required],
-    projectDescription: this.formBuilder.nonNullable.group({
-      projectDescriptionTitleGe: [
-        this.project?.projectDescription?.projectDescriptionTitleGe ?? '',
-        Validators.required,
-      ],
-      projectDescriptionTitleEn: [
-        this.project?.projectDescription?.projectDescriptionTitleEn ?? '',
-        Validators.required,
-      ],
-      projectDescriptionTitleRu: [
-        this.project?.projectDescription?.projectDescriptionTitleRu ?? '',
-        Validators.required,
-      ],
-      projectDescriptionContentGe: [
-        this.project?.projectDescription?.projectDescriptionContentGe ?? '',
-        Validators.required,
-      ],
-      projectDescriptionContentEn: [
-        this.project?.projectDescription?.projectDescriptionContentEn ?? '',
-        Validators.required,
-      ],
-      projectDescriptionContentRu: [
-        this.project?.projectDescription?.projectDescriptionContentRu ?? '',
-        Validators.required,
-      ],
-      projectShortDescriptionGe: [
-        this.project?.projectDescription?.projectShortDescriptionGe ?? '',
-        Validators.required,
-      ],
-      projectShortDescriptionEn: [
-        this.project?.projectDescription?.projectShortDescriptionEn ?? '',
-        Validators.required,
-      ],
-      projectShortDescriptionRu: [
-        this.project?.projectDescription?.projectShortDescriptionRu ?? '',
-        Validators.required,
-      ],
-    }),
+    ),
+    lastVerified: this.formBuilder.control<Date | null>(
+      this.project?.lastVerified ? new Date(this.project.lastVerified) : new Date(),
+    ),
+    projectLocationGe: [this.project?.projectLocationGe ?? ''],
+    projectLocationRu: [this.project?.projectLocationRu ?? ''],
+    buildingTypeGe: [this.project?.buildingTypeGe ?? ''],
+    buildingTypeEn: [this.project?.buildingTypeEn ?? ''],
+    buildingTypeRu: [this.project?.buildingTypeRu ?? ''],
+    totalFloors: this.formBuilder.control<number | null>(
+      this.project?.totalFloors ?? null,
+      Validators.min(0),
+    ),
+    unitsInBuilding: this.formBuilder.control<number | null>(
+      this.project?.unitsInBuilding ?? null,
+      Validators.min(0),
+    ),
+    unitSizesAvailable: [this.project?.unitSizesAvailable ?? ''],
+    finishingGe: [this.project?.finishingGe ?? ''],
+    finishingEn: [this.project?.finishingEn ?? ''],
+    finishingRu: [this.project?.finishingRu ?? ''],
+    furniturePackageGe: [this.project?.furniturePackageGe ?? ''],
+    furniturePackageEn: [this.project?.furniturePackageEn ?? ''],
+    furniturePackageRu: [this.project?.furniturePackageRu ?? ''],
+    strManagementOnSiteGe: [this.project?.strManagementOnSiteGe ?? ''],
+    strManagementOnSiteEn: [this.project?.strManagementOnSiteEn ?? ''],
+    strManagementOnSiteRu: [this.project?.strManagementOnSiteRu ?? ''],
+    distanceToSea: [this.project?.distanceToSea ?? ''],
+    distanceToCityCenter: [this.project?.distanceToCityCenter ?? ''],
+    paymentDescriptionGe: [this.project?.paymentDescriptionGe ?? ''],
+    paymentDescriptionEn: [this.project?.paymentDescriptionEn ?? ''],
+    paymentDescriptionRu: [this.project?.paymentDescriptionRu ?? ''],
+    // The backend requires every field of this object once it is sent, so it is all-or-nothing.
+    projectDescription: this.formBuilder.nonNullable.group(
+      {
+        projectDescriptionTitleGe: [
+          this.project?.projectDescription?.projectDescriptionTitleGe ?? '',
+        ],
+        projectDescriptionTitleEn: [
+          this.project?.projectDescription?.projectDescriptionTitleEn ?? '',
+        ],
+        projectDescriptionTitleRu: [
+          this.project?.projectDescription?.projectDescriptionTitleRu ?? '',
+        ],
+        projectDescriptionContentGe: [
+          this.project?.projectDescription?.projectDescriptionContentGe ?? '',
+        ],
+        projectDescriptionContentEn: [
+          this.project?.projectDescription?.projectDescriptionContentEn ?? '',
+        ],
+        projectDescriptionContentRu: [
+          this.project?.projectDescription?.projectDescriptionContentRu ?? '',
+        ],
+        projectShortDescriptionGe: [
+          this.project?.projectDescription?.projectShortDescriptionGe ?? '',
+        ],
+        projectShortDescriptionEn: [
+          this.project?.projectDescription?.projectShortDescriptionEn ?? '',
+        ],
+        projectShortDescriptionRu: [
+          this.project?.projectDescription?.projectShortDescriptionRu ?? '',
+        ],
+      },
+      { validators: allOrNothing },
+    ),
     projectAdvantagesGe: this.stringList(this.project?.projectAdvantagesGe),
     projectAdvantagesEn: this.stringList(this.project?.projectAdvantagesEn),
     projectAdvantagesRu: this.stringList(this.project?.projectAdvantagesRu),
@@ -226,49 +244,67 @@ export class ProjectDialog {
       return;
     }
 
-    if (this.form.invalid) {
+    this.submitted.set(true);
+
+    const raw = this.form.getRawValue();
+    const { projectLatitude, projectLongitude } = raw;
+    const missingImages = [
+      ...(this.projectImages().length === 0 ? ['Project images'] : []),
+      ...(this.floorPlanImages().length === 0 ? ['Floor plan images'] : []),
+    ];
+
+    if (
+      this.form.invalid ||
+      projectLatitude === null ||
+      projectLongitude === null ||
+      missingImages.length > 0
+    ) {
       this.form.markAllAsTouched();
       this.expandAll.set(true);
-      this.saveError.set(missingFieldsMessage(this.form));
+      this.saveError.set(missingFieldsMessage(this.form, missingImages));
       return;
     }
 
     this.saving.set(true);
     this.saveError.set(null);
 
-    const raw = this.form.getRawValue();
+    // A partially filled description cannot pass validation, so any filled field means all are.
+    const hasDescription = Object.values(raw.projectDescription).some(
+      (value) => textOrNull(value) !== null,
+    );
+
     const payload: CreateProjectDto = {
       projectName: raw.projectName,
       company: raw.company,
-      lastVerified: raw.lastVerified.toISOString(),
       projectImages: this.projectImages(),
       floorPlanImages: this.floorPlanImages(),
-      projectLocationGe: raw.projectLocationGe,
       projectLocationEn: raw.projectLocationEn,
-      projectLocationRu: raw.projectLocationRu,
-      projectLatitude: raw.projectLatitude,
-      projectLongitude: raw.projectLongitude,
-      buildingTypeGe: raw.buildingTypeGe,
-      buildingTypeEn: raw.buildingTypeEn,
-      buildingTypeRu: raw.buildingTypeRu,
+      projectLatitude,
+      projectLongitude,
+      lastVerified: raw.lastVerified?.toISOString() ?? null,
+      projectLocationGe: textOrNull(raw.projectLocationGe),
+      projectLocationRu: textOrNull(raw.projectLocationRu),
+      buildingTypeGe: textOrNull(raw.buildingTypeGe),
+      buildingTypeEn: textOrNull(raw.buildingTypeEn),
+      buildingTypeRu: textOrNull(raw.buildingTypeRu),
       totalFloors: raw.totalFloors,
       unitsInBuilding: raw.unitsInBuilding,
-      unitSizesAvailable: raw.unitSizesAvailable,
-      finishingGe: raw.finishingGe,
-      finishingEn: raw.finishingEn,
-      finishingRu: raw.finishingRu,
-      furniturePackageGe: raw.furniturePackageGe,
-      furniturePackageEn: raw.furniturePackageEn,
-      furniturePackageRu: raw.furniturePackageRu,
-      strManagementOnSiteGe: raw.strManagementOnSiteGe,
-      strManagementOnSiteEn: raw.strManagementOnSiteEn,
-      strManagementOnSiteRu: raw.strManagementOnSiteRu,
-      distanceToSea: raw.distanceToSea,
-      distanceToCityCenter: raw.distanceToCityCenter,
-      paymentDescriptionGe: raw.paymentDescriptionGe,
-      paymentDescriptionEn: raw.paymentDescriptionEn,
-      paymentDescriptionRu: raw.paymentDescriptionRu,
-      projectDescription: raw.projectDescription,
+      unitSizesAvailable: textOrNull(raw.unitSizesAvailable),
+      finishingGe: textOrNull(raw.finishingGe),
+      finishingEn: textOrNull(raw.finishingEn),
+      finishingRu: textOrNull(raw.finishingRu),
+      furniturePackageGe: textOrNull(raw.furniturePackageGe),
+      furniturePackageEn: textOrNull(raw.furniturePackageEn),
+      furniturePackageRu: textOrNull(raw.furniturePackageRu),
+      strManagementOnSiteGe: textOrNull(raw.strManagementOnSiteGe),
+      strManagementOnSiteEn: textOrNull(raw.strManagementOnSiteEn),
+      strManagementOnSiteRu: textOrNull(raw.strManagementOnSiteRu),
+      distanceToSea: textOrNull(raw.distanceToSea),
+      distanceToCityCenter: textOrNull(raw.distanceToCityCenter),
+      paymentDescriptionGe: textOrNull(raw.paymentDescriptionGe),
+      paymentDescriptionEn: textOrNull(raw.paymentDescriptionEn),
+      paymentDescriptionRu: textOrNull(raw.paymentDescriptionRu),
+      projectDescription: hasDescription ? raw.projectDescription : null,
       projectAdvantagesGe: raw.projectAdvantagesGe,
       projectAdvantagesEn: raw.projectAdvantagesEn,
       projectAdvantagesRu: raw.projectAdvantagesRu,
@@ -283,7 +319,8 @@ export class ProjectDialog {
       pricingBySquareMeters: raw.pricingBySquareMeters as PricingBySquareMeter[],
       paymentPlans: raw.paymentPlans as PaymentPlan[],
     };
-    const dto = deepTrim(payload);
+    // On edit, `null` clears a field that was emptied; on create there is nothing to clear.
+    const dto = deepTrim(this.project ? payload : withoutNulls(payload));
 
     const request = this.project
       ? this.projectService.update(this.project._id, dto)

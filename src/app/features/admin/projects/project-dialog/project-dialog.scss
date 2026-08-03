@@ -92,6 +92,13 @@
   justify-self: start;
 }
 
+/** Error for inputs that are not Material form fields, so they have no built-in mat-error. */
+.project-form__field-error {
+  margin-top: 0.5rem;
+  color: #b3261e;
+  font-size: var(--font-size-sm);
+}
+
 .project-form__error {
   display: flex;
   align-items: center;
