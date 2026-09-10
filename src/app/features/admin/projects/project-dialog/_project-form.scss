@@ -1,0 +1,82 @@
+/* Layout styles shared by the project dialog and each of its accordion sections. */
+
+.project-form__panel-icon {
+  margin-right: 0.5rem;
+  color: var(--color-primary);
+}
+
+.project-form__grid {
+  display: grid;
+  gap: 0.25rem 0.75rem;
+  grid-template-columns: 1fr;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.project-form__span-2 {
+  @media (min-width: 768px) {
+    grid-column: span 2;
+  }
+}
+
+.project-form__stack {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.project-form__tab-body {
+  padding-top: 1.25rem;
+}
+
+.project-form__section-title {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-size: var(--font-size-md);
+}
+
+.project-form__hint {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  margin-bottom: 0.5rem;
+}
+
+.project-form__item {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  background: var(--color-bg);
+}
+
+.project-form__item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 700;
+  color: var(--color-heading);
+  margin-bottom: 0.5rem;
+}
+
+.project-form__row {
+  display: grid;
+  gap: 0.25rem 0.75rem;
+  grid-template-columns: 1fr;
+  align-items: center;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr auto;
+  }
+}
+
+.project-form__amount {
+  width: 100%;
+
+  @media (min-width: 768px) {
+    max-width: 16rem;
+  }
+}
+
+.project-form__add {
+  justify-self: start;
+}

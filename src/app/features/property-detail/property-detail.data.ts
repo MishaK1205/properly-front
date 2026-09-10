@@ -21,6 +21,8 @@ export const DEVELOPER_LABELS = {
   activeProjects: 'Active projects',
 } as const;
 
+export const DEVELOPER_FOOTNOTE = 'Developer data verified by our team.';
+
 export const FORM_TRUST_ITEMS: readonly string[] = [
   '✓ Free for buyers',
   '✓ No spam',

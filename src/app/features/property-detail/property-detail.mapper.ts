@@ -1,6 +1,7 @@
 import { ProjectResponse } from '../../core/models/api.models';
 import { LanguageSuffix } from '../../core/models/language';
 import {
+  DEVELOPER_FOOTNOTE,
   DEVELOPER_LABELS,
   OVERVIEW_LABELS,
   YIELD_DISCLAIMER,
@@ -33,13 +34,6 @@ function toParagraphs(content: string): readonly string[] {
     .split('\n')
     .map((paragraph) => paragraph.trim())
     .filter((paragraph) => paragraph.length > 0);
-}
-
-function formatMonthYear(value: string): string {
-  const date = new Date(value);
-  return Number.isNaN(date.getTime())
-    ? value
-    : date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 }
 
 function formatPrice(amount: number): string {
@@ -245,7 +239,7 @@ function buildDeveloper(
       company.companyDescriptionRu,
       suffix,
     ),
-    footnote: `Developer data verified by our team as of ${formatMonthYear(project.lastVerified)}`,
+    footnote: DEVELOPER_FOOTNOTE,
   };
 }
 
@@ -305,7 +299,6 @@ export function buildPropertyDetailContent(
         project.verificationChecklistRu,
         suffix,
       ),
-      lastVerified: `Last verified: ${formatMonthYear(project.lastVerified)}`,
     },
     numbers: {
       stats: buildInvestmentCards(project, suffix),

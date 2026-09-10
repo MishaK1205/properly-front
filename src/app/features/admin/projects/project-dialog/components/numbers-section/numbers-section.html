@@ -1,0 +1,24 @@
+<mat-expansion-panel
+  [expanded]="expandAll() || expanded()"
+  (expandedChange)="expanded.set($event)"
+>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-icon class="project-form__panel-icon" aria-hidden="true">trending_up</mat-icon>
+      3 · The Numbers — investment breakdown
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <p class="project-form__hint">
+    The "Investment breakdown at a glance" grid. Title is the label on top, content is the big
+    value, description is the grey line underneath.
+  </p>
+
+  <app-translated-card-list
+    [cards]="investmentCards()"
+    controlBase="investmentCard"
+    itemLabel="Investment card"
+    addLabel="Add investment card"
+    (add)="addInvestmentCard()"
+  />
+</mat-expansion-panel>

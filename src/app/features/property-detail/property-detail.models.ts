@@ -82,7 +82,6 @@ export interface PropertyDetailContent {
   };
   readonly verification: {
     readonly checks: readonly string[];
-    readonly lastVerified: string;
   };
   readonly numbers: {
     readonly stats: readonly DetailStat[];

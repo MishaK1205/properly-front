@@ -1,0 +1,114 @@
+<mat-expansion-panel
+  [expanded]="expandAll() || expanded()"
+  (expandedChange)="expanded.set($event)"
+>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-icon class="project-form__panel-icon" aria-hidden="true">photo_library</mat-icon>
+      1 · Hero — gallery &amp; summary card
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <div [formGroup]="form()">
+    <p class="project-form__hint">
+      The top of the page: the photo gallery on the left and the summary card on the right.
+    </p>
+
+    <h3 class="project-form__section-title">Gallery images</h3>
+    <p class="project-form__hint">
+      The first image is the main photo; the rest become thumbnails under it.
+    </p>
+    <app-image-uploader label="Project images" [(imageIds)]="images" />
+
+    <h3 class="project-form__section-title">Project name &amp; company</h3>
+    <p class="project-form__hint">
+      The company also fills the "The Developer" section at the bottom of the page.
+    </p>
+    <div class="project-form__grid">
+      <mat-form-field appearance="outline" class="project-form__span-2">
+        <mat-label>Project name</mat-label>
+        <input matInput formControlName="projectName" />
+        <mat-error>Project name is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="project-form__span-2">
+        <mat-label>Company</mat-label>
+        <mat-select formControlName="company">
+          @for (company of companies(); track company._id) {
+            <mat-option [value]="company._id">{{ company.companyName }}</mat-option>
+          }
+        </mat-select>
+        <mat-error>Company is required</mat-error>
+      </mat-form-field>
+    </div>
+
+    <h3 class="project-form__section-title">Location</h3>
+    <p class="project-form__hint">
+      Shown under the company name; clicking it opens Google Maps at the coordinates below.
+    </p>
+    <div class="project-form__grid">
+      @for (language of languages; track language.suffix) {
+        <mat-form-field appearance="outline">
+          <mat-label>Location ({{ language.label }})</mat-label>
+          <input matInput [formControlName]="'projectLocation' + language.suffix" />
+          <mat-error>Location is required</mat-error>
+        </mat-form-field>
+      }
+      <mat-form-field appearance="outline">
+        <mat-label>Latitude</mat-label>
+        <input matInput type="number" step="any" formControlName="projectLatitude" />
+        <mat-error>Latitude must be between -90 and 90</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Longitude</mat-label>
+        <input matInput type="number" step="any" formControlName="projectLongitude" />
+        <mat-error>Longitude must be between -180 and 180</mat-error>
+      </mat-form-field>
+    </div>
+
+    <h3 class="project-form__section-title">Summary cards</h3>
+    <p class="project-form__hint">
+      The small cards under the location. Title is the label on top, content is the big value,
+      description is the grey line underneath. Three cards fit the row.
+    </p>
+    <app-translated-card-list
+      [cards]="summaryCards()"
+      controlBase="projectDescriptionCard"
+      itemLabel="Card"
+      addLabel="Add summary card"
+      (add)="addSummaryCard()"
+    />
+
+    <h3 class="project-form__section-title">Advantage chips</h3>
+    <p class="project-form__hint">
+      The pill-shaped chips under the summary cards. Type an item and press Enter to add it.
+    </p>
+    <app-chip-list-tabs
+      [group]="form()"
+      controlBase="projectAdvantages"
+      label="Project advantages"
+      placeholder="e.g. 250 m to the sea"
+    />
+
+    <h3 class="project-form__section-title">Payment note</h3>
+    <p class="project-form__hint">
+      The single line with the card icon, right above the "I'm Interested" button.
+    </p>
+    <mat-tab-group dynamicHeight>
+      @for (language of languages; track language.suffix) {
+        <mat-tab [label]="language.label">
+          <div class="project-form__stack project-form__tab-body">
+            <mat-form-field appearance="outline">
+              <mat-label>Payment note ({{ language.label }})</mat-label>
+              <textarea
+                matInput
+                rows="2"
+                [formControlName]="'paymentDescription' + language.suffix"
+              ></textarea>
+            </mat-form-field>
+          </div>
+        </mat-tab>
+      }
+    </mat-tab-group>
+  </div>
+</mat-expansion-panel>

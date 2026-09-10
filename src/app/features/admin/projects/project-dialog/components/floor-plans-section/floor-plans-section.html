@@ -1,0 +1,49 @@
+<mat-expansion-panel
+  [expanded]="expandAll() || expanded()"
+  (expandedChange)="expanded.set($event)"
+>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <mat-icon class="project-form__panel-icon" aria-hidden="true">architecture</mat-icon>
+      5 · The Property — Floor Plans tab
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <p class="project-form__hint">
+    The "Floor Plans" tab. Each pricing row becomes an option in the size selector and is paired
+    with the floor plan image in the same position.
+  </p>
+
+  <h3 class="project-form__section-title">Floor plan images</h3>
+  <app-image-uploader label="Floor plan images" [(imageIds)]="images" />
+
+  <h3 class="project-form__section-title">Pricing by square meters</h3>
+  <div class="project-form__stack">
+    @for (row of pricingRows().controls; track row; let i = $index) {
+      <div class="project-form__row" [formGroup]="row">
+        <mat-form-field appearance="outline">
+          <mat-label>Square meter range</mat-label>
+          <input matInput formControlName="squareMeterRange" placeholder="e.g. 30–45 m²" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Price per m²</mat-label>
+          <input matInput type="number" min="0" formControlName="startingPrice" />
+          <span matTextPrefix>$&nbsp;</span>
+        </mat-form-field>
+        <button
+          matIconButton
+          type="button"
+          aria-label="Remove pricing row"
+          (click)="removePricingRow(i)"
+        >
+          <mat-icon>delete_outline</mat-icon>
+        </button>
+      </div>
+    }
+
+    <button matButton="outlined" type="button" class="project-form__add" (click)="addPricingRow()">
+      <mat-icon>add</mat-icon>
+      Add pricing row
+    </button>
+  </div>
+</mat-expansion-panel>

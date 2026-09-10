@@ -127,7 +127,6 @@ export interface CreateProjectDto {
   verificationChecklistGe: string[];
   verificationChecklistEn: string[];
   verificationChecklistRu: string[];
-  lastVerified: string;
   investmentCards: InvestmentCard[];
   buildingTypeGe: string;
   buildingTypeEn: string;
