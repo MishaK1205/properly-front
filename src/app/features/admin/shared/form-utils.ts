@@ -19,6 +19,37 @@ const MAX_LISTED_FIELDS = 8;
 export const notBlank: ValidatorFn = (control: AbstractControl): ValidationErrors | null =>
   typeof control.value === 'string' && control.value.trim() === '' ? { required: true } : null;
 
+/**
+ * The backend rejects blank strings for optional fields, so a field left empty must be sent as
+ * `null` (clears the stored value) rather than as `''`.
+ */
+export function textOrNull(value: string | null | undefined): string | null {
+  const trimmed = (value ?? '').trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+/** Drops `null` values, used when creating a document where there is nothing to clear yet. */
+export function withoutNulls<T extends object>(value: T): T {
+  return Object.fromEntries(
+    Object.entries(value).filter(([, item]) => item !== null),
+  ) as T;
+}
+
+/**
+ * Nested backend objects require every field inside them, so a partially filled group is invalid:
+ * fill all of it, or leave all of it empty and it is left out of the payload.
+ */
+export const allOrNothing: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+  if (!(control instanceof FormGroup)) {
+    return null;
+  }
+  const values: unknown[] = Object.values(control.controls).map((child) => child.value);
+  const filled = values.filter((value) =>
+    typeof value === 'string' ? value.trim().length > 0 : value !== null && value !== undefined,
+  ).length;
+  return filled === 0 || filled === values.length ? null : { incomplete: true };
+};
+
 /** The backend rejects blank strings, so whitespace-only input must not slip through. */
 export function deepTrim<T>(value: T): T {
   if (typeof value === 'string') {
@@ -68,6 +99,10 @@ export function invalidFieldLabels(group: FormGroup): string[] {
       return;
     }
     if (control instanceof FormGroup) {
+      // A group can be invalid on its own (e.g. partially filled), with every child still valid.
+      if (control.errors) {
+        labels.push(`${prefix}${humanizeField(name)}`);
+      }
       for (const [key, child] of Object.entries(control.controls)) {
         visit(child, key, prefix);
       }
@@ -88,9 +123,15 @@ export function invalidFieldLabels(group: FormGroup): string[] {
   return labels;
 }
 
-/** Message naming the fields that block submission, so a failed click is never silent. */
-export function missingFieldsMessage(group: FormGroup): string {
-  const missing = invalidFieldLabels(group);
+/**
+ * Message naming the fields that block submission, so a failed click is never silent.
+ * `extraLabels` covers inputs that live outside the form, such as the image uploaders.
+ */
+export function missingFieldsMessage(
+  group: FormGroup,
+  extraLabels: readonly string[] = [],
+): string {
+  const missing = [...extraLabels, ...invalidFieldLabels(group)];
   const shown = missing.slice(0, MAX_LISTED_FIELDS).join(', ');
   const rest = missing.length - MAX_LISTED_FIELDS;
   return `Please fill the required fields: ${shown}${rest > 0 ? ` and ${rest} more` : ''}.`;

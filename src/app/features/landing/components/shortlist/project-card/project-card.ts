@@ -31,29 +31,35 @@ export class ProjectCard {
 
   protected readonly location = computed(() => {
     const project = this.project();
-    return this.language.localize({
-      Ge: project.projectLocationGe,
-      En: project.projectLocationEn,
-      Ru: project.projectLocationRu,
-    });
+    return (
+      this.language.localize({
+        Ge: project.projectLocationGe,
+        En: project.projectLocationEn,
+        Ru: project.projectLocationRu,
+      }) ?? ''
+    );
   });
 
   protected readonly advantages = computed(() => {
     const project = this.project();
-    return this.language.localize({
-      Ge: project.projectAdvantagesGe,
-      En: project.projectAdvantagesEn,
-      Ru: project.projectAdvantagesRu,
-    });
+    return (
+      this.language.localize({
+        Ge: project.projectAdvantagesGe,
+        En: project.projectAdvantagesEn,
+        Ru: project.projectAdvantagesRu,
+      }) ?? []
+    );
   });
 
   protected readonly shortDescription = computed(() => {
     const description = this.project().projectDescription;
-    return this.language.localize({
-      Ge: description.projectShortDescriptionGe,
-      En: description.projectShortDescriptionEn,
-      Ru: description.projectShortDescriptionRu,
-    });
+    return (
+      this.language.localize({
+        Ge: description?.projectShortDescriptionGe,
+        En: description?.projectShortDescriptionEn,
+        Ru: description?.projectShortDescriptionRu,
+      }) ?? ''
+    );
   });
 
   protected readonly mapsUrl = computed(() => {
