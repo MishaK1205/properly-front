@@ -158,10 +158,8 @@
     margin-top: 0.5rem;
   }
 
+  /* Holds the rich text written in the admin editor; see `.rich-text` in styles.scss. */
   &__stat {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
     padding: 0.85rem 0.75rem;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
@@ -176,27 +174,6 @@
       transform: translateY(-2px);
       box-shadow: var(--shadow-sm);
     }
-  }
-
-  &__stat-label {
-    font-size: var(--font-size-xs);
-    color: var(--color-text-muted);
-  }
-
-  &__stat-value {
-    font-size: var(--font-size-lg);
-    font-weight: 800;
-    color: var(--color-heading);
-    line-height: 1.15;
-
-    &--accent {
-      color: var(--color-primary);
-    }
-  }
-
-  &__stat-sub {
-    font-size: var(--font-size-xs);
-    color: var(--color-text-muted);
   }
 
   &__tags {

@@ -13,11 +13,12 @@ import { Button } from '../../../../shared/components/button/button';
 import { ButtonLink } from '../../../../shared/components/button-link/button-link';
 import { TelegramIcon } from '../../../../shared/components/telegram-icon/telegram-icon';
 import { WhatsappIcon } from '../../../../shared/components/whatsapp-icon/whatsapp-icon';
+import { SafeHtmlPipe } from '../../../../shared/pipes/safe-html.pipe';
 import { PropertyDetailContent } from '../../property-detail.models';
 
 @Component({
   selector: 'app-detail-hero',
-  imports: [Button, ButtonLink, TelegramIcon, WhatsappIcon],
+  imports: [Button, ButtonLink, SafeHtmlPipe, TelegramIcon, WhatsappIcon],
   templateUrl: './detail-hero.html',
   styleUrl: './detail-hero.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

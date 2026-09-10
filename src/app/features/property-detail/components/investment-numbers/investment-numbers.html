@@ -9,14 +9,12 @@
       />
 
       <div class="numbers__grid">
-        @for (stat of detail().numbers.stats; track stat.label; let i = $index) {
-          <article class="numbers__card" [appScrollReveal]="(i % 3) * 90">
-            <p class="numbers__label">{{ stat.label }}</p>
-            <p class="numbers__value" [class.numbers__value--accent]="stat.accent">
-              {{ stat.value }}
-            </p>
-            <p class="numbers__sub">{{ stat.sub }}</p>
-          </article>
+        @for (stat of detail().numbers.stats; track stat; let i = $index) {
+          <article
+            class="numbers__card rich-text rich-text--stat"
+            [appScrollReveal]="(i % 3) * 90"
+            [innerHTML]="stat | safeHtml"
+          ></article>
         }
       </div>
 

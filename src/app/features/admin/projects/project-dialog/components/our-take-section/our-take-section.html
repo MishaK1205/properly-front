@@ -17,35 +17,24 @@
 
     <h3 class="project-form__section-title">Description</h3>
     <p class="project-form__hint">
-      Title is the section heading, content is the body text — start a new line for each
-      paragraph. The short description is not shown here; it is the teaser on the home page
-      shortlist card.
+      The short description is the teaser on the home page shortlist card, not part of this
+      section. The write-up opens with its own heading, so start it with a Heading 2 line.
     </p>
     <div formGroupName="projectDescription">
       <mat-tab-group dynamicHeight>
         @for (language of languages; track language.suffix) {
           <mat-tab [label]="language.label">
             <div class="project-form__stack project-form__tab-body">
-              <mat-form-field appearance="outline">
-                <mat-label>Title ({{ language.label }})</mat-label>
-                <input matInput [formControlName]="'projectDescriptionTitle' + language.suffix" />
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Content ({{ language.label }})</mat-label>
-                <textarea
-                  matInput
-                  rows="6"
-                  [formControlName]="'projectDescriptionContent' + language.suffix"
-                ></textarea>
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Short description — shortlist card ({{ language.label }})</mat-label>
-                <textarea
-                  matInput
-                  rows="2"
-                  [formControlName]="'projectShortDescription' + language.suffix"
-                ></textarea>
-              </mat-form-field>
+              <app-rich-text-editor
+                [label]="'Short description — shortlist card (' + language.label + ')'"
+                placeholder="A sentence or two that sells the property"
+                [formControlName]="'projectShortDescription' + language.suffix"
+              />
+              <app-rich-text-editor
+                [label]="'Write-up (' + language.label + ')'"
+                placeholder="Start with a heading, then the body text"
+                [formControlName]="'projectDescription' + language.suffix"
+              />
             </div>
           </mat-tab>
         }

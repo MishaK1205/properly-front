@@ -21,7 +21,7 @@ import { ImageUploader } from '../../../../shared/image-uploader/image-uploader'
 import { LANGUAGES } from '../../../../shared/languages';
 import { buildDescriptionCard, ProjectForm } from '../../project-form';
 import { ChipListTabs } from '../chip-list-tabs/chip-list-tabs';
-import { TranslatedCardList } from '../translated-card-list/translated-card-list';
+import { RichTextCardList } from '../rich-text-card-list/rich-text-card-list';
 
 /** Top of the property page: gallery, name, location, summary cards, chips and payment note. */
 @Component({
@@ -36,7 +36,7 @@ import { TranslatedCardList } from '../translated-card-list/translated-card-list
     MatTabsModule,
     ChipListTabs,
     ImageUploader,
-    TranslatedCardList,
+    RichTextCardList,
   ],
   templateUrl: './hero-section.html',
   styleUrl: './hero-section.scss',

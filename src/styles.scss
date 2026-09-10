@@ -150,6 +150,121 @@ button {
   padding-inline: var(--container-pad);
 }
 
+/* Quill editor (/admin only). Global because Quill builds its toolbar and editor
+   elements itself, outside Angular's style encapsulation. */
+.rich-text-editor {
+  .ql-toolbar.ql-snow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem 0;
+    border-color: var(--color-border-strong);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    background: var(--color-bg);
+  }
+
+  .ql-container.ql-snow {
+    border-color: var(--color-border-strong);
+    border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+    font-family: var(--font-family);
+    font-size: var(--font-size-md);
+    background: var(--color-surface);
+  }
+
+  .ql-editor {
+    min-height: 8rem;
+  }
+}
+
+/* Admin-authored rich text rendered through `SafeHtmlPipe`. Global because children
+   inserted with `innerHTML` never receive a component's encapsulation attribute. */
+.rich-text {
+  h2,
+  h3,
+  h4 {
+    margin-bottom: 0.35rem;
+    font-size: var(--font-size-md);
+  }
+
+  p + p,
+  ul,
+  ol {
+    margin-top: 0.35rem;
+  }
+
+  ul,
+  ol {
+    padding-left: 1.15rem;
+    text-align: start;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+}
+
+.rich-text--compact {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+
+  h2,
+  h3,
+  h4 {
+    font-size: var(--font-size-sm);
+  }
+}
+
+/* The investment breakdown tiles: the authored heading is the small label, the first
+   paragraph the big value, anything after it the note underneath. */
+.rich-text--stat {
+  h2,
+  h3,
+  h4 {
+    margin-bottom: 0;
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  p:first-of-type {
+    font-size: var(--font-size-2xl);
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--color-heading);
+  }
+
+  p + p {
+    margin-top: 0;
+  }
+}
+
+/* The "Our Take" write-up, whose own first heading leads the section. */
+.rich-text--lead {
+  font-size: var(--font-size-sm);
+  line-height: 1.75;
+
+  h2,
+  h3,
+  h4 {
+    margin-bottom: 0.75rem;
+    font-size: clamp(1.5rem, 3.2vw, var(--font-size-2xl));
+    font-weight: 800;
+  }
+
+  p + p,
+  ul,
+  ol {
+    margin-top: 0.9rem;
+  }
+}
+
 /* Scroll-reveal utility — applied by ScrollRevealDirective (global because
    the directive toggles classes on host elements across components). */
 .reveal {

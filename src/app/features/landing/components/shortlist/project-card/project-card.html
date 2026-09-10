@@ -58,8 +58,8 @@
       </ul>
     }
 
-    @if (shortDescription()) {
-      <p class="card__description">{{ shortDescription() }}</p>
+    @if (shortDescription(); as description) {
+      <div class="card__description rich-text" [innerHTML]="description | safeHtml"></div>
     }
   </div>
 

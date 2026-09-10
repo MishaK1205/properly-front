@@ -16,6 +16,8 @@
     }
   }
 
+  /* Admin-authored HTML; the `.rich-text--stat` block in `src/styles.scss` styles what
+     is inside it, since injected children carry no encapsulation attribute. */
   &__card {
     display: flex;
     flex-direction: column;
@@ -35,30 +37,6 @@
       transform: translateY(-4px);
       border-bottom-color: var(--color-primary);
     }
-  }
-
-  &__label {
-    font-size: var(--font-size-xs);
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-text-muted);
-  }
-
-  &__value {
-    font-size: var(--font-size-2xl);
-    font-weight: 800;
-    color: var(--color-heading);
-    line-height: 1.15;
-
-    &--accent {
-      color: var(--color-primary);
-    }
-  }
-
-  &__sub {
-    font-size: var(--font-size-sm);
-    color: var(--color-text-muted);
   }
 
   &__disclaimer {

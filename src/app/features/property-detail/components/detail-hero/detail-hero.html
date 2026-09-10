@@ -54,16 +54,10 @@
         {{ detail().location }}
       </a>
 
-      @if (detail().summaryStats.length) {
+      @if (detail().summaryCards.length) {
         <div class="hero__stats">
-          @for (stat of detail().summaryStats; track stat.label) {
-            <div class="hero__stat">
-              <span class="hero__stat-label">{{ stat.label }}</span>
-              <span class="hero__stat-value" [class.hero__stat-value--accent]="stat.accent">
-                {{ stat.value }}
-              </span>
-              <span class="hero__stat-sub">{{ stat.sub }}</span>
-            </div>
+          @for (card of detail().summaryCards; track $index) {
+            <div class="hero__stat rich-text rich-text--compact" [innerHTML]="card | safeHtml"></div>
           }
         </div>
       }

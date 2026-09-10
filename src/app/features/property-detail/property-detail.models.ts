@@ -3,14 +3,6 @@
  * so the template components stay presentational.
  */
 
-/** Stat tile used both in the hero summary card and the investment breakdown grid. */
-export interface DetailStat {
-  readonly label: string;
-  readonly value: string;
-  readonly sub: string;
-  readonly accent: boolean;
-}
-
 export type OverviewIcon =
   | 'building'
   | 'floors'
@@ -73,18 +65,18 @@ export interface PropertyDetailContent {
   readonly location: string;
   readonly mapsUrl: string;
   readonly galleryUrls: readonly string[];
-  readonly summaryStats: readonly DetailStat[];
+  /** Hero summary cards, as rich text HTML written in the admin editor. */
+  readonly summaryCards: readonly string[];
   readonly tags: readonly string[];
   readonly paymentNote: string;
-  readonly description: {
-    readonly title: string;
-    readonly paragraphs: readonly string[];
-  };
+  /** The "Our Take" write-up, as rich text HTML carrying its own heading. */
+  readonly description: string;
   readonly verification: {
     readonly checks: readonly string[];
   };
   readonly numbers: {
-    readonly stats: readonly DetailStat[];
+    /** Breakdown tiles, as rich text HTML written in the admin editor. */
+    readonly stats: readonly string[];
     readonly disclaimer: string;
   };
   readonly overviewFacts: readonly OverviewFact[];

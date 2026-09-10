@@ -1,0 +1,104 @@
+<!-- Pressing the mouse down would move focus out of the editor and drop the selection
+     the colour is meant to apply to, so every control here keeps the default away. -->
+<button
+  #origin="cdkOverlayOrigin"
+  cdkOverlayOrigin
+  type="button"
+  class="color-control__trigger"
+  [class.color-control__trigger--open]="open()"
+  [title]="label()"
+  [attr.aria-label]="label()"
+  [attr.aria-expanded]="open()"
+  aria-haspopup="dialog"
+  (mousedown)="$event.preventDefault()"
+  (click)="toggle()"
+>
+  <mat-icon class="color-control__icon" aria-hidden="true">{{ icon() }}</mat-icon>
+  <span
+    class="color-control__bar"
+    [class.color-control__bar--empty]="color() === null"
+    [style.background]="color()"
+  ></span>
+</button>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="origin"
+  [cdkConnectedOverlayOpen]="open()"
+  [cdkConnectedOverlayPositions]="positions"
+  (overlayKeydown)="dismiss($event)"
+  (overlayOutsideClick)="close()"
+  (detach)="close()"
+>
+  <div class="color-control__panel" role="dialog" [attr.aria-label]="label()">
+    <p class="color-control__title">{{ label() }}</p>
+
+    <div class="color-control__presets">
+      @for (preset of presets(); track preset) {
+        <button
+          type="button"
+          class="color-control__preset"
+          [class.color-control__preset--active]="preset === color()"
+          [style.background]="preset"
+          [title]="preset"
+          [attr.aria-label]="preset"
+          (mousedown)="$event.preventDefault()"
+          (click)="pickPreset(preset)"
+        ></button>
+      }
+    </div>
+
+    <div class="color-control__custom">
+      <label class="color-control__native" title="Pick from the colour wheel">
+        <mat-icon class="color-control__icon" aria-hidden="true">colorize</mat-icon>
+        <input
+          type="color"
+          [value]="swatch()"
+          [attr.aria-label]="wheelLabel()"
+          (change)="pickNative($event)"
+        />
+      </label>
+
+      <span class="color-control__hex" [class.color-control__hex--invalid]="invalid()">
+        <span class="color-control__hash" aria-hidden="true">#</span>
+        <input
+          type="text"
+          maxlength="7"
+          spellcheck="false"
+          autocomplete="off"
+          placeholder="6e69f5"
+          [value]="draft()"
+          [attr.aria-label]="hexLabel()"
+          [attr.aria-invalid]="invalid()"
+          (input)="typeHex($event)"
+          (change)="commit($event)"
+          (keydown.enter)="confirm($event)"
+        />
+      </span>
+
+      <button
+        type="button"
+        class="color-control__apply"
+        title="Apply the hex value"
+        aria-label="Apply the hex value"
+        [disabled]="typed() === null"
+        (mousedown)="$event.preventDefault()"
+        (click)="confirm($event)"
+      >
+        <mat-icon class="color-control__icon" aria-hidden="true">check</mat-icon>
+      </button>
+    </div>
+
+    <p class="color-control__hint">Press Enter to apply the hex value.</p>
+
+    <button
+      type="button"
+      class="color-control__remove"
+      (mousedown)="$event.preventDefault()"
+      (click)="clear()"
+    >
+      <mat-icon class="color-control__icon" aria-hidden="true">format_color_reset</mat-icon>
+      {{ removeLabel() }}
+    </button>
+  </div>
+</ng-template>

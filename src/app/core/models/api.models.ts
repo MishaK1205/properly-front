@@ -57,40 +57,31 @@ export interface Image extends MongoDocument {
 
 /* ---------- Project ---------- */
 
+/** One summary card of the hero, written as rich text HTML in the admin editor. */
 export interface ProjectDescriptionCard {
-  projectDescriptionCardTitleGe: string;
-  projectDescriptionCardTitleEn: string;
-  projectDescriptionCardTitleRu: string;
   projectDescriptionCardContentGe: string;
   projectDescriptionCardContentEn: string;
   projectDescriptionCardContentRu: string;
-  projectDescriptionCardDescriptionGe: string;
-  projectDescriptionCardDescriptionEn: string;
-  projectDescriptionCardDescriptionRu: string;
 }
 
+/**
+ * The "Our Take" write-up. The long form is rich text HTML carrying its own heading;
+ * the short one is the plain teaser of the shortlist card on the home page.
+ */
 export interface ProjectDescription {
-  projectDescriptionTitleGe: string;
-  projectDescriptionTitleEn: string;
-  projectDescriptionTitleRu: string;
-  projectDescriptionContentGe: string;
-  projectDescriptionContentEn: string;
-  projectDescriptionContentRu: string;
+  projectDescriptionGe: string;
+  projectDescriptionEn: string;
+  projectDescriptionRu: string;
   projectShortDescriptionGe: string;
   projectShortDescriptionEn: string;
   projectShortDescriptionRu: string;
 }
 
+/** One tile of the investment breakdown, written as rich text HTML in the admin editor. */
 export interface InvestmentCard {
-  investmentCardTitleGe: string;
-  investmentCardTitleEn: string;
-  investmentCardTitleRu: string;
   investmentCardContentGe: string;
   investmentCardContentEn: string;
   investmentCardContentRu: string;
-  investmentCardDescriptionGe: string;
-  investmentCardDescriptionEn: string;
-  investmentCardDescriptionRu: string;
 }
 
 export interface PricingBySquareMeter {

@@ -5,10 +5,11 @@ import { ProjectResponse } from '../../../../../core/models/api.models';
 import { ImageService } from '../../../../../core/services/image.service';
 import { LanguageService } from '../../../../../core/services/language.service';
 import { Button } from '../../../../../shared/components/button/button';
+import { SafeHtmlPipe } from '../../../../../shared/pipes/safe-html.pipe';
 
 @Component({
   selector: 'app-project-card',
-  imports: [Button, RouterLink],
+  imports: [Button, RouterLink, SafeHtmlPipe],
   templateUrl: './project-card.html',
   styleUrl: './project-card.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

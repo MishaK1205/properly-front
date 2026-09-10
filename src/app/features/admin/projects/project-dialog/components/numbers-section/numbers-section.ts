@@ -3,12 +3,12 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 
 import { buildInvestmentCard, ProjectForm } from '../../project-form';
-import { TranslatedCardList } from '../translated-card-list/translated-card-list';
+import { RichTextCardList } from '../rich-text-card-list/rich-text-card-list';
 
 /** "The Numbers" section: the investment breakdown grid. */
 @Component({
   selector: 'app-numbers-section',
-  imports: [MatExpansionModule, MatIconModule, TranslatedCardList],
+  imports: [MatExpansionModule, MatIconModule, RichTextCardList],
   templateUrl: './numbers-section.html',
   styleUrl: './numbers-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

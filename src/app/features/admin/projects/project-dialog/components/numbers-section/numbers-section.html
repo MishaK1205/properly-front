@@ -10,15 +10,16 @@
   </mat-expansion-panel-header>
 
   <p class="project-form__hint">
-    The "Investment breakdown at a glance" grid. Title is the label on top, content is the big
-    value, description is the grey line underneath.
+    The "Investment breakdown at a glance" grid, written as rich text: a heading for the label,
+    then the value underneath. Any paragraph after the first is the grey note at the bottom.
   </p>
 
-  <app-translated-card-list
+  <app-rich-text-card-list
     [cards]="investmentCards()"
     controlBase="investmentCard"
     itemLabel="Investment card"
     addLabel="Add investment card"
+    placeholder="e.g. Rental yield — 9-11%"
     (add)="addInvestmentCard()"
   />
 </mat-expansion-panel>

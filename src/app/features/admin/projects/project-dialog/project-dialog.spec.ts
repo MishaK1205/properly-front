@@ -44,15 +44,9 @@ const PROJECT: ProjectResponse = {
   projectLongitude: 41.64,
   projectDescriptionCards: [
     {
-      projectDescriptionCardTitleGe: 'სათაური',
-      projectDescriptionCardTitleEn: 'Title',
-      projectDescriptionCardTitleRu: 'Заголовок',
-      projectDescriptionCardContentGe: '8%',
-      projectDescriptionCardContentEn: '8%',
-      projectDescriptionCardContentRu: '8%',
-      projectDescriptionCardDescriptionGe: 'აღწერა',
-      projectDescriptionCardDescriptionEn: 'Description',
-      projectDescriptionCardDescriptionRu: 'Описание',
+      projectDescriptionCardContentGe: '<h3>მდებარეობა</h3><p>ისტორიული ცენტრი</p>',
+      projectDescriptionCardContentEn: '<h3>Location</h3><p>Historic centre</p>',
+      projectDescriptionCardContentRu: '<h3>Расположение</h3><p>Исторический центр</p>',
     },
   ],
   projectAdvantagesGe: ['ზღვასთან ახლოს'],
@@ -62,30 +56,21 @@ const PROJECT: ProjectResponse = {
   paymentDescriptionEn: 'Payment note',
   paymentDescriptionRu: 'Примечание об оплате',
   projectDescription: {
-    projectDescriptionTitleGe: 'ჩვენი შეფასება',
-    projectDescriptionTitleEn: 'Our take',
-    projectDescriptionTitleRu: 'Наше мнение',
-    projectDescriptionContentGe: 'ტექსტი',
-    projectDescriptionContentEn: 'Body text',
-    projectDescriptionContentRu: 'Текст',
-    projectShortDescriptionGe: 'მოკლე',
-    projectShortDescriptionEn: 'Short',
-    projectShortDescriptionRu: 'Кратко',
+    projectDescriptionGe: '<h2>ჩვენი შეფასება</h2><p>ტექსტი</p>',
+    projectDescriptionEn: '<h2>Our take</h2><p>Body text</p>',
+    projectDescriptionRu: '<h2>Наше мнение</h2><p>Текст</p>',
+    projectShortDescriptionGe: '<p>მოკლე</p>',
+    projectShortDescriptionEn: '<p>Short</p>',
+    projectShortDescriptionRu: '<p>Кратко</p>',
   },
   verificationChecklistGe: ['ნებართვა შემოწმებულია'],
   verificationChecklistEn: ['Construction permit verified'],
   verificationChecklistRu: ['Разрешение проверено'],
   investmentCards: [
     {
-      investmentCardTitleGe: 'ფასი',
-      investmentCardTitleEn: 'Price',
-      investmentCardTitleRu: 'Цена',
-      investmentCardContentGe: '$75,000',
-      investmentCardContentEn: '$75,000',
-      investmentCardContentRu: '$75,000',
-      investmentCardDescriptionGe: 'საშუალო',
-      investmentCardDescriptionEn: 'Average unit',
-      investmentCardDescriptionRu: 'Средняя',
+      investmentCardContentGe: '<h3>ფასი</h3><p>$75,000</p>',
+      investmentCardContentEn: '<h3>Price</h3><p>$75,000</p>',
+      investmentCardContentRu: '<h3>Цена</h3><p>$75,000</p>',
     },
   ],
   buildingTypeGe: 'საცხოვრებელი',
@@ -172,6 +157,10 @@ function panels(fixture: ComponentFixture<ProjectDialog>): HTMLElement[] {
   return Array.from(fixture.nativeElement.querySelectorAll('mat-expansion-panel'));
 }
 
+function editors(fixture: ComponentFixture<ProjectDialog>): number {
+  return fixture.nativeElement.querySelectorAll('app-rich-text-editor').length;
+}
+
 /** Copies the fixture's plain fields into the form, leaving the lists empty. */
 function fillRequiredFields(fixture: ComponentFixture<ProjectDialog>): void {
   const { _id, createdAt, updatedAt, companyInfo, ...fields } = PROJECT;
@@ -211,11 +200,9 @@ describe('ProjectDialog', () => {
 
     expect(values).toContain('Sea Tower');
     expect(values).toContain('Batumi, Ninoshvili 12');
-    expect(values).toContain('Body text');
     expect(values).toContain('Residential');
     expect(values).toContain('30–45 m²');
     expect(values).toContain('Down payment');
-    expect(values).toContain('$75,000');
     // Chips only render when the chip list resolved its control through the tabs component.
     expect(fixture.nativeElement.textContent).toContain('250 m to the sea');
     expect(fixture.nativeElement.textContent).toContain('Construction permit verified');
@@ -250,6 +237,7 @@ describe('ProjectDialog', () => {
     const fixture = TestBed.createComponent(ProjectDialog);
     fixture.detectChanges();
 
+    const editorsBefore = editors(fixture);
     clickByText(fixture, 'Add summary card');
     clickByText(fixture, 'Add investment card');
     clickByText(fixture, 'Add pricing row');
@@ -263,9 +251,10 @@ describe('ProjectDialog', () => {
     expect(text).toContain('Card 1');
     expect(text).toContain('Investment card 1');
     expect(text).toContain('Stage 1');
-    expect(labels).toContain('Title (English)');
     expect(labels).toContain('Square meter range');
     expect(labels).toContain('Payment stage (English)');
+    // The summary and investment cards are rich text, one editor each in the open language tab.
+    expect(editors(fixture)).toBe(editorsBefore + 2);
   });
 
   it('removes a payment stage again', () => {

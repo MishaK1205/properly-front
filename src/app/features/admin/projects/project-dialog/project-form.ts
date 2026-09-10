@@ -55,8 +55,7 @@ export function buildProjectForm(project: ProjectResponse | null) {
     distanceToCityCenter: requiredText(project?.distanceToCityCenter),
     ...translatedText('paymentDescription', project),
     projectDescription: new FormGroup({
-      ...translatedText('projectDescriptionTitle', description),
-      ...translatedText('projectDescriptionContent', description),
+      ...translatedText('projectDescription', description),
       ...translatedText('projectShortDescription', description),
     }),
     ...translatedLists('projectAdvantages', project),
@@ -77,21 +76,17 @@ export function buildProjectForm(project: ProjectResponse | null) {
   });
 }
 
-/** One card of the summary row under the hero location. */
+/** One card of the summary row under the hero location, holding rich text HTML. */
 export function buildDescriptionCard(card?: ProjectDescriptionCard) {
   return new FormGroup({
-    ...translatedText('projectDescriptionCardTitle', card),
     ...translatedText('projectDescriptionCardContent', card),
-    ...translatedText('projectDescriptionCardDescription', card),
   });
 }
 
-/** One tile of the investment breakdown grid. */
+/** One tile of the investment breakdown grid, holding rich text HTML. */
 export function buildInvestmentCard(card?: InvestmentCard) {
   return new FormGroup({
-    ...translatedText('investmentCardTitle', card),
     ...translatedText('investmentCardContent', card),
-    ...translatedText('investmentCardDescription', card),
   });
 }
 

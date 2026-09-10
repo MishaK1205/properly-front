@@ -1,12 +1,11 @@
 import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 
 import { LANGUAGES } from '../../../../shared/languages';
+import { RichTextEditor } from '../../../../shared/rich-text-editor/rich-text-editor';
 import { ProjectForm } from '../../project-form';
 import { ChipListTabs } from '../chip-list-tabs/chip-list-tabs';
 
@@ -16,11 +15,10 @@ import { ChipListTabs } from '../chip-list-tabs/chip-list-tabs';
   imports: [
     ReactiveFormsModule,
     MatExpansionModule,
-    MatFormFieldModule,
     MatIconModule,
-    MatInputModule,
     MatTabsModule,
     ChipListTabs,
+    RichTextEditor,
   ],
   templateUrl: './our-take-section.html',
   styleUrl: './our-take-section.scss',

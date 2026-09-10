@@ -17,22 +17,11 @@
         @for (language of languages; track language.suffix) {
           <mat-tab [label]="language.label">
             <div class="project-form__stack project-form__tab-body">
-              <mat-form-field appearance="outline">
-                <mat-label>Title ({{ language.label }})</mat-label>
-                <input matInput [formControlName]="controlBase() + 'Title' + language.suffix" />
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Content ({{ language.label }})</mat-label>
-                <input matInput [formControlName]="controlBase() + 'Content' + language.suffix" />
-              </mat-form-field>
-              <mat-form-field appearance="outline">
-                <mat-label>Description ({{ language.label }})</mat-label>
-                <textarea
-                  matInput
-                  rows="3"
-                  [formControlName]="controlBase() + 'Description' + language.suffix"
-                ></textarea>
-              </mat-form-field>
+              <app-rich-text-editor
+                [label]="'Content (' + language.label + ')'"
+                [placeholder]="placeholder()"
+                [formControlName]="controlBase() + 'Content' + language.suffix"
+              />
             </div>
           </mat-tab>
         }

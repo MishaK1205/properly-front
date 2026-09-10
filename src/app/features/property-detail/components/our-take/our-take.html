@@ -2,10 +2,9 @@
   <div class="take__grid container">
     <article class="take__content" appScrollReveal>
       <p class="take__eyebrow">Our Take</p>
-      <h2 class="take__title">{{ detail().description.title }}</h2>
 
-      @for (paragraph of detail().description.paragraphs; track paragraph) {
-        <p class="take__paragraph">{{ paragraph }}</p>
+      @if (detail().description; as description) {
+        <div class="take__body rich-text rich-text--lead" [innerHTML]="description | safeHtml"></div>
       }
     </article>
 

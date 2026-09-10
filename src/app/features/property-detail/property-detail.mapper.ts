@@ -7,7 +7,6 @@ import {
   YIELD_DISCLAIMER,
 } from './property-detail.data';
 import {
-  DetailStat,
   DeveloperProfile,
   ExploreCard,
   OverviewFact,
@@ -19,21 +18,11 @@ import {
 /** Resolves a backend image id to a streamable URL. */
 export type ImageUrlResolver = (id: string) => string;
 
-/** The middle tile of a card row is highlighted in the accent colour by design. */
-const ACCENT_INDEX = 1;
-
 function variant<T>(ge: T, en: T, ru: T, suffix: LanguageSuffix): T {
   if (suffix === 'Ge') {
     return ge;
   }
   return suffix === 'Ru' ? ru : en;
-}
-
-function toParagraphs(content: string): readonly string[] {
-  return content
-    .split('\n')
-    .map((paragraph) => paragraph.trim())
-    .filter((paragraph) => paragraph.length > 0);
 }
 
 function formatPrice(amount: number): string {
@@ -44,58 +33,38 @@ function mapsUrl(latitude: number, longitude: number): string {
   return `https://www.google.com/maps/search/?api=1&query=${latitude},${longitude}`;
 }
 
+/** The summary cards are authored as rich text, so each one is a single HTML string. */
 function buildDescriptionCards(
   project: ProjectResponse,
   suffix: LanguageSuffix,
-): readonly DetailStat[] {
-  return project.projectDescriptionCards.map((card, index) => ({
-    label: variant(
-      card.projectDescriptionCardTitleGe,
-      card.projectDescriptionCardTitleEn,
-      card.projectDescriptionCardTitleRu,
-      suffix,
-    ),
-    value: variant(
-      card.projectDescriptionCardContentGe,
-      card.projectDescriptionCardContentEn,
-      card.projectDescriptionCardContentRu,
-      suffix,
-    ),
-    sub: variant(
-      card.projectDescriptionCardDescriptionGe,
-      card.projectDescriptionCardDescriptionEn,
-      card.projectDescriptionCardDescriptionRu,
-      suffix,
-    ),
-    accent: index === ACCENT_INDEX,
-  }));
+): readonly string[] {
+  return project.projectDescriptionCards
+    .map((card) =>
+      variant(
+        card.projectDescriptionCardContentGe,
+        card.projectDescriptionCardContentEn,
+        card.projectDescriptionCardContentRu,
+        suffix,
+      ),
+    )
+    .filter((html) => html.trim().length > 0);
 }
 
+/** The breakdown tiles are authored as rich text, so each one is a single HTML string. */
 function buildInvestmentCards(
   project: ProjectResponse,
   suffix: LanguageSuffix,
-): readonly DetailStat[] {
-  return project.investmentCards.map((card, index) => ({
-    label: variant(
-      card.investmentCardTitleGe,
-      card.investmentCardTitleEn,
-      card.investmentCardTitleRu,
-      suffix,
-    ),
-    value: variant(
-      card.investmentCardContentGe,
-      card.investmentCardContentEn,
-      card.investmentCardContentRu,
-      suffix,
-    ),
-    sub: variant(
-      card.investmentCardDescriptionGe,
-      card.investmentCardDescriptionEn,
-      card.investmentCardDescriptionRu,
-      suffix,
-    ),
-    accent: index === ACCENT_INDEX,
-  }));
+): readonly string[] {
+  return project.investmentCards
+    .map((card) =>
+      variant(
+        card.investmentCardContentGe,
+        card.investmentCardContentEn,
+        card.investmentCardContentRu,
+        suffix,
+      ),
+    )
+    .filter((html) => html.trim().length > 0);
 }
 
 function buildOverviewFacts(
@@ -263,7 +232,7 @@ export function buildPropertyDetailContent(
     ),
     mapsUrl: mapsUrl(project.projectLatitude, project.projectLongitude),
     galleryUrls,
-    summaryStats: buildDescriptionCards(project, suffix),
+    summaryCards: buildDescriptionCards(project, suffix),
     tags: variant(
       project.projectAdvantagesGe,
       project.projectAdvantagesEn,
@@ -276,22 +245,12 @@ export function buildPropertyDetailContent(
       project.paymentDescriptionRu,
       suffix,
     ),
-    description: {
-      title: variant(
-        description.projectDescriptionTitleGe,
-        description.projectDescriptionTitleEn,
-        description.projectDescriptionTitleRu,
-        suffix,
-      ),
-      paragraphs: toParagraphs(
-        variant(
-          description.projectDescriptionContentGe,
-          description.projectDescriptionContentEn,
-          description.projectDescriptionContentRu,
-          suffix,
-        ),
-      ),
-    },
+    description: variant(
+      description.projectDescriptionGe,
+      description.projectDescriptionEn,
+      description.projectDescriptionRu,
+      suffix,
+    ),
     verification: {
       checks: variant(
         project.verificationChecklistGe,

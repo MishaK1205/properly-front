@@ -1,0 +1,67 @@
+<div class="rich-text-editor">
+  <span class="rich-text-editor__label">{{ label() }}</span>
+
+  <!-- Quill wires up every control carrying a `ql-` class and styles it with the snow theme.
+       The plain inputs after them are handled by this component instead. -->
+  <div #toolbar>
+    <span class="ql-formats">
+      <select class="ql-header">
+        <option value="2"></option>
+        <option value="3"></option>
+        <option value="4"></option>
+        <option selected></option>
+      </select>
+    </span>
+
+    <span class="ql-formats">
+      <button type="button" class="ql-bold"></button>
+      <button type="button" class="ql-italic"></button>
+      <button type="button" class="ql-underline"></button>
+    </span>
+
+    <span class="ql-formats">
+      <button type="button" class="ql-list" value="bullet"></button>
+      <button type="button" class="ql-list" value="ordered"></button>
+      <button type="button" class="ql-link"></button>
+      <button type="button" class="ql-clean"></button>
+    </span>
+
+    <span class="ql-formats">
+      <label class="rich-text-editor__field">
+        Size
+        <input
+          class="rich-text-editor__size"
+          type="number"
+          [min]="minSize"
+          [max]="maxSize"
+          [value]="size() ?? ''"
+          placeholder="auto"
+          aria-label="Font size in pixels"
+          (change)="setSize($event)"
+          (keydown.enter)="commitSize($event)"
+        />
+        px
+      </label>
+    </span>
+
+    <span class="ql-formats">
+      <app-color-control
+        kind="text"
+        label="Text colour"
+        [color]="color()"
+        (picked)="setColor($event)"
+        (cleared)="clearColor()"
+      />
+      <app-color-control
+        kind="highlight"
+        label="Highlight"
+        [color]="highlight()"
+        (picked)="setHighlight($event)"
+        (cleared)="clearHighlight()"
+      />
+    </span>
+  </div>
+
+  <!-- Quill replaces this element's content with the editable area. -->
+  <div #host></div>
+</div>

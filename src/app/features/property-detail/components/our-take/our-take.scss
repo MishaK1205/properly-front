@@ -40,14 +40,10 @@
     }
   }
 
-  &__title {
-    font-size: clamp(1.5rem, 3.2vw, var(--font-size-2xl));
-    font-weight: 800;
-  }
-
-  &__paragraph {
-    font-size: var(--font-size-sm);
-    line-height: 1.75;
+  /* Admin-authored HTML; the `.rich-text--lead` block in `src/styles.scss` styles what
+     is inside it, since injected children carry no encapsulation attribute. */
+  &__body {
+    align-self: stretch;
   }
 
   &__checklist {

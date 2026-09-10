@@ -68,14 +68,16 @@
 
     <h3 class="project-form__section-title">Summary cards</h3>
     <p class="project-form__hint">
-      The small cards under the location. Title is the label on top, content is the big value,
-      description is the grey line underneath. Three cards fit the row.
+      The small cards under the location, written as rich text: a heading for the label and
+      paragraphs underneath. Use the toolbar to bold text or change its colour. Three cards fit
+      the row.
     </p>
-    <app-translated-card-list
+    <app-rich-text-card-list
       [cards]="summaryCards()"
       controlBase="projectDescriptionCard"
       itemLabel="Card"
       addLabel="Add summary card"
+      placeholder="e.g. Location — Historic centre, Mtskheta"
       (add)="addSummaryCard()"
     />
 
