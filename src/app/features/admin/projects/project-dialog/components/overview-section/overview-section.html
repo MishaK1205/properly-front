@@ -1,50 +1,26 @@
-<mat-expansion-panel
-  [expanded]="expandAll() || expanded()"
-  (expandedChange)="expanded.set($event)"
->
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      <mat-icon class="project-form__panel-icon" aria-hidden="true">apartment</mat-icon>
-      4 · The Property — Overview tab
-    </mat-panel-title>
-  </mat-expansion-panel-header>
-
-  <div [formGroup]="form()">
-    <p class="project-form__hint">
-      The rows of the "Overview" tab, in page order: building type, total floors, units in building,
-      unit sizes, finishing, furniture package, STR management, distance to sea, distance to city
-      center. Empty rows are hidden on the page. The photo beside the rows is the first gallery
-      image.
-    </p>
-
-    <h3 class="project-form__section-title">Translated rows</h3>
-    <mat-tab-group dynamicHeight>
-      @for (language of languages; track language.suffix) {
-        <mat-tab [label]="language.label">
-          <div class="project-form__grid project-form__tab-body">
-            <mat-form-field appearance="outline">
-              <mat-label>Building type ({{ language.label }})</mat-label>
-              <input matInput [formControlName]="'buildingType' + language.suffix" />
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Finishing ({{ language.label }})</mat-label>
-              <input matInput [formControlName]="'finishing' + language.suffix" />
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Furniture package ({{ language.label }})</mat-label>
-              <input matInput [formControlName]="'furniturePackage' + language.suffix" />
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>STR management on site ({{ language.label }})</mat-label>
-              <input matInput [formControlName]="'strManagementOnSite' + language.suffix" />
-            </mat-form-field>
-          </div>
-        </mat-tab>
-      }
-    </mat-tab-group>
-
-    <h3 class="project-form__section-title">Numbers &amp; distances</h3>
+<div class="project-form__stack">
+  <app-field-group
+    label="Building"
+    translated
+    help="The first rows of the Overview tab, in page order: building type, finishing, furniture package and STR management. The photo beside the rows is the first gallery image."
+  >
     <div class="project-form__grid">
+      <app-translated-field [group]="form()" base="buildingType" label="Building type" />
+      <app-translated-field [group]="form()" base="finishing" label="Finishing" />
+      <app-translated-field [group]="form()" base="furniturePackage" label="Furniture package" />
+      <app-translated-field
+        [group]="form()"
+        base="strManagementOnSite"
+        label="STR management on site"
+      />
+    </div>
+  </app-field-group>
+
+  <app-field-group
+    label="Size & distances"
+    help="The remaining Overview rows. They read the same in every language, so they are entered once."
+  >
+    <div class="project-form__grid" [formGroup]="form()">
       <mat-form-field appearance="outline">
         <mat-label>Total floors</mat-label>
         <input matInput type="number" min="0" formControlName="totalFloors" />
@@ -58,17 +34,20 @@
       <mat-form-field appearance="outline">
         <mat-label>Unit sizes available</mat-label>
         <input matInput formControlName="unitSizesAvailable" placeholder="e.g. 28–75 m²" />
+        <mat-error>Required</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Distance to sea</mat-label>
         <input matInput formControlName="distanceToSea" placeholder="e.g. 250 m" />
+        <mat-error>Required</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Distance to city center</mat-label>
         <input matInput formControlName="distanceToCityCenter" placeholder="e.g. 2 km" />
+        <mat-error>Required</mat-error>
       </mat-form-field>
     </div>
-  </div>
-</mat-expansion-panel>
+  </app-field-group>
+</div>

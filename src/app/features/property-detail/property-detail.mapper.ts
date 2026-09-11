@@ -129,31 +129,24 @@ function buildOverviewFacts(
   return facts.filter((fact) => fact.value.trim().length > 0);
 }
 
+/** One entry per apartment type, each carrying only its own plan images and cards. */
 function buildUnitPlans(
   project: ProjectResponse,
+  suffix: LanguageSuffix,
   imageUrl: ImageUrlResolver,
 ): readonly UnitPlan[] {
-  const planImages = project.floorPlanImages;
-
-  if (project.pricingBySquareMeters.length === 0) {
-    return planImages.map((id, index) => ({
-      type: `Floor plan ${index + 1}`,
-      size: '',
-      startingPrice: '',
-      imageUrl: imageUrl(id),
+  return project.apartmentPlans
+    .filter((plan) => plan.apartmentType.trim().length > 0)
+    .map((plan) => ({
+      type: plan.apartmentType,
+      imageUrls: plan.apartmentPlanImages.map((id) => imageUrl(id)),
+      cards: variant(
+        plan.apartmentCardsGe,
+        plan.apartmentCardsEn,
+        plan.apartmentCardsRu,
+        suffix,
+      ).filter((html) => html.trim().length > 0),
     }));
-  }
-
-  return project.pricingBySquareMeters.map((pricing, index) => {
-    // Pricing tiers are paired with floor plan images by position; the first image is the fallback.
-    const planImage = planImages[index] ?? planImages[0];
-    return {
-      type: pricing.squareMeterRange,
-      size: pricing.squareMeterRange,
-      startingPrice: formatPrice(pricing.startingPrice),
-      imageUrl: planImage ? imageUrl(planImage) : null,
-    };
-  });
 }
 
 function buildPaymentStages(
@@ -265,7 +258,7 @@ export function buildPropertyDetailContent(
     },
     overviewFacts: buildOverviewFacts(project, suffix),
     overviewImageUrl: galleryUrls[0] ?? null,
-    unitPlans: buildUnitPlans(project, imageUrl),
+    unitPlans: buildUnitPlans(project, suffix, imageUrl),
     paymentPlan: {
       stages: buildPaymentStages(project, suffix),
       notes: variant(

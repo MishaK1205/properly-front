@@ -1,0 +1,31 @@
+<section class="field-group">
+  <header class="field-group__header">
+    <h4 class="field-group__title">{{ label() }}</h4>
+
+    @if (translated()) {
+      <span
+        class="field-group__language"
+        [matTooltip]="languageHelp()"
+        matTooltipPosition="above"
+      >
+        <mat-icon class="field-group__language-icon" aria-hidden="true">translate</mat-icon>
+        {{ language.current().code }}
+      </span>
+    }
+
+    @if (help(); as text) {
+      <button
+        matIconButton
+        type="button"
+        class="field-group__help"
+        aria-label="What this fills in on the page"
+        [matTooltip]="text"
+        matTooltipPosition="above"
+      >
+        <mat-icon>help_outline</mat-icon>
+      </button>
+    }
+  </header>
+
+  <ng-content />
+</section>

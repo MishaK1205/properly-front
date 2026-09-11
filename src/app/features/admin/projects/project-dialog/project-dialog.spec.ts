@@ -36,7 +36,15 @@ const PROJECT: ProjectResponse = {
   companyInfo: COMPANY,
   projectName: 'Sea Tower',
   projectImages: ['image-1', 'image-2'],
-  floorPlanImages: ['plan-1'],
+  apartmentPlans: [
+    {
+      apartmentType: 'Studio',
+      apartmentPlanImages: ['plan-1'],
+      apartmentCardsGe: ['<p>ბალკონი</p>'],
+      apartmentCardsEn: ['<p>Balcony</p>'],
+      apartmentCardsRu: ['<p>Балкон</p>'],
+    },
+  ],
   projectLocationGe: 'ბათუმი, ნინოშვილის 12',
   projectLocationEn: 'Batumi, Ninoshvili 12',
   projectLocationRu: 'Батуми, Ниношвили 12',
@@ -90,7 +98,6 @@ const PROJECT: ProjectResponse = {
   strManagementOnSiteRu: 'Да',
   distanceToSea: '250 m',
   distanceToCityCenter: '2 km',
-  pricingBySquareMeters: [{ squareMeterRange: '30–45 m²', startingPrice: 1400 }],
   paymentPlans: [
     {
       paymentStageGe: 'პირველი შენატანი',
@@ -153,8 +160,48 @@ function clickByText(fixture: ComponentFixture<ProjectDialog>, text: string): vo
   fixture.detectChanges();
 }
 
-function panels(fixture: ComponentFixture<ProjectDialog>): HTMLElement[] {
-  return Array.from(fixture.nativeElement.querySelectorAll('mat-expansion-panel'));
+function steps(fixture: ComponentFixture<ProjectDialog>): HTMLButtonElement[] {
+  return Array.from(fixture.nativeElement.querySelectorAll('.section-nav__item'));
+}
+
+/** Clicks a step in the rail, which swaps the section rendered in the body. */
+function goToStep(fixture: ComponentFixture<ProjectDialog>, label: string): void {
+  const step = steps(fixture).find((candidate) => candidate.textContent?.includes(label));
+  expect(step).withContext(`step "${label}"`).toBeTruthy();
+  step?.click();
+  fixture.detectChanges();
+}
+
+function activeStep(fixture: ComponentFixture<ProjectDialog>): string {
+  const active = steps(fixture).find((step) => step.getAttribute('aria-current') === 'step');
+  return active?.textContent?.trim() ?? '';
+}
+
+/** Clicks a language in the header switcher, which rebinds every translated field. */
+function selectLanguage(fixture: ComponentFixture<ProjectDialog>, code: string): void {
+  const option = Array.from(
+    fixture.nativeElement.querySelectorAll(
+      '.language-switcher__option',
+    ) as NodeListOf<HTMLButtonElement>,
+  ).find((candidate) => candidate.textContent?.trim().startsWith(code));
+
+  expect(option).withContext(`language "${code}"`).toBeTruthy();
+  option?.click();
+  fixture.detectChanges();
+}
+
+function fieldValues(fixture: ComponentFixture<ProjectDialog>): string[] {
+  return Array.from(
+    fixture.nativeElement.querySelectorAll('input, textarea') as NodeListOf<
+      HTMLInputElement | HTMLTextAreaElement
+    >,
+  ).map((field) => field.value);
+}
+
+function fieldLabels(fixture: ComponentFixture<ProjectDialog>): string[] {
+  return Array.from(
+    fixture.nativeElement.querySelectorAll('mat-label') as NodeListOf<HTMLElement>,
+  ).map((label) => label.textContent?.trim() ?? '');
 }
 
 function editors(fixture: ComponentFixture<ProjectDialog>): number {
@@ -173,40 +220,64 @@ function fillRequiredFields(fixture: ComponentFixture<ProjectDialog>): void {
 }
 
 describe('ProjectDialog', () => {
-  it('renders one panel per section of the property page', () => {
+  it('renders one step per section of the property page', () => {
     configure(PROJECT);
     const fixture = TestBed.createComponent(ProjectDialog);
     fixture.detectChanges();
 
-    const titles = Array.from(
-      fixture.nativeElement.querySelectorAll('mat-panel-title') as NodeListOf<HTMLElement>,
-    ).map((title) => title.textContent?.trim());
+    const labels = steps(fixture).map((step) => step.textContent?.trim());
 
-    expect(titles.length).toBe(6);
-    expect(titles[0]).toContain('1 · Hero');
-    expect(titles[5]).toContain('6 · The Property — Payment Plan tab');
+    expect(labels.length).toBe(6);
+    expect(labels[0]).toContain('Hero');
+    expect(labels[5]).toContain('Payment Plan');
   });
 
-  it('shows the values of an existing project in the fields of every section', () => {
+  it('starts on the hero step and renders that section only', () => {
     configure(PROJECT);
     const fixture = TestBed.createComponent(ProjectDialog);
     fixture.detectChanges();
 
-    const values = Array.from(
-      fixture.nativeElement.querySelectorAll('input, textarea') as NodeListOf<
-        HTMLInputElement | HTMLTextAreaElement
-      >,
-    ).map((field) => field.value);
+    expect(activeStep(fixture)).toContain('Hero');
+    expect(fieldValues(fixture)).toContain('Sea Tower');
+    // A field of a later step, which must stay out of the DOM until that step is picked.
+    expect(fieldValues(fixture)).not.toContain('Residential');
+  });
 
-    expect(values).toContain('Sea Tower');
-    expect(values).toContain('Batumi, Ninoshvili 12');
-    expect(values).toContain('Residential');
-    expect(values).toContain('30–45 m²');
-    expect(values).toContain('Down payment');
-    // Chips only render when the chip list resolved its control through the tabs component.
+  it('shows the values of an existing project in the fields of every step', () => {
+    configure(PROJECT);
+    const fixture = TestBed.createComponent(ProjectDialog);
+    fixture.detectChanges();
+
+    expect(fieldValues(fixture)).toContain('Batumi, Ninoshvili 12');
     expect(fixture.nativeElement.textContent).toContain('250 m to the sea');
+
+    goToStep(fixture, 'Our Take');
     expect(fixture.nativeElement.textContent).toContain('Construction permit verified');
+
+    goToStep(fixture, 'Overview');
+    expect(fieldValues(fixture)).toContain('Residential');
+
+    goToStep(fixture, 'Floor Plans');
+    expect(fieldValues(fixture)).toContain('Studio');
+
+    goToStep(fixture, 'Payment Plan');
+    expect(fieldValues(fixture)).toContain('Down payment');
     expect(fixture.nativeElement.textContent).toContain('0% interest instalments');
+  });
+
+  it('swaps the translated fields when the header language changes', () => {
+    configure(PROJECT);
+    const fixture = TestBed.createComponent(ProjectDialog);
+    fixture.detectChanges();
+
+    expect(fieldValues(fixture)).toContain('Batumi, Ninoshvili 12');
+
+    selectLanguage(fixture, 'GE');
+
+    expect(fieldValues(fixture)).toContain('ბათუმი, ნინოშვილის 12');
+    expect(fieldValues(fixture)).not.toContain('Batumi, Ninoshvili 12');
+    // Fields that are the same in every language stay put.
+    expect(fieldValues(fixture)).toContain('Sea Tower');
   });
 
   it('loads an existing project into the sections and saves it back unchanged', () => {
@@ -223,38 +294,30 @@ describe('ProjectDialog', () => {
     });
   });
 
-  it('opens the hero panel and leaves the rest collapsed', () => {
+  it('adds a row to every list step and renders its fields', () => {
     configure(null);
     const fixture = TestBed.createComponent(ProjectDialog);
     fixture.detectChanges();
 
-    const expanded = panels(fixture).map((panel) => panel.classList.contains('mat-expanded'));
-    expect(expanded).toEqual([true, false, false, false, false, false]);
-  });
+    clickByText(fixture, 'Add card');
+    expect(fixture.nativeElement.textContent).toContain('Card 1');
+    // A summary card is rich text, one editor in the language being edited.
+    expect(editors(fixture)).toBe(1);
 
-  it('adds a row to every list section and renders its fields', () => {
-    configure(null);
-    const fixture = TestBed.createComponent(ProjectDialog);
-    fixture.detectChanges();
+    goToStep(fixture, 'The Numbers');
+    clickByText(fixture, 'Add card');
+    expect(fixture.nativeElement.textContent).toContain('Card 1');
+    expect(editors(fixture)).toBe(1);
 
-    const editorsBefore = editors(fixture);
-    clickByText(fixture, 'Add summary card');
-    clickByText(fixture, 'Add investment card');
-    clickByText(fixture, 'Add pricing row');
-    clickByText(fixture, 'Add payment stage');
+    goToStep(fixture, 'Floor Plans');
+    clickByText(fixture, 'Add apartment type');
+    expect(fixture.nativeElement.textContent).toContain('Apartment type 1');
+    expect(fieldLabels(fixture)).toContain('Apartment type');
 
-    const text = fixture.nativeElement.textContent as string;
-    const labels = Array.from(
-      fixture.nativeElement.querySelectorAll('mat-label') as NodeListOf<HTMLElement>,
-    ).map((label) => label.textContent?.trim());
-
-    expect(text).toContain('Card 1');
-    expect(text).toContain('Investment card 1');
-    expect(text).toContain('Stage 1');
-    expect(labels).toContain('Square meter range');
-    expect(labels).toContain('Payment stage (English)');
-    // The summary and investment cards are rich text, one editor each in the open language tab.
-    expect(editors(fixture)).toBe(editorsBefore + 2);
+    goToStep(fixture, 'Payment Plan');
+    clickByText(fixture, 'Add stage');
+    expect(fixture.nativeElement.textContent).toContain('Stage 1');
+    expect(fieldLabels(fixture)).toContain('When');
   });
 
   it('removes a payment stage again', () => {
@@ -262,7 +325,8 @@ describe('ProjectDialog', () => {
     const fixture = TestBed.createComponent(ProjectDialog);
     fixture.detectChanges();
 
-    clickByText(fixture, 'Add payment stage');
+    goToStep(fixture, 'Payment Plan');
+    clickByText(fixture, 'Add stage');
     expect(fixture.nativeElement.textContent).toContain('Stage 1');
 
     const remove = buttons(fixture).find(
@@ -274,18 +338,26 @@ describe('ProjectDialog', () => {
     expect(fixture.nativeElement.textContent).not.toContain('Stage 1');
   });
 
-  it('names the missing fields and opens every panel instead of saving an empty project', () => {
+  it('names the missing fields and flags the steps holding them', () => {
     const projectService = configure(null);
     const fixture = TestBed.createComponent(ProjectDialog);
     fixture.detectChanges();
 
+    goToStep(fixture, 'Floor Plans');
     submit(fixture);
 
     const error = fixture.nativeElement.querySelector('.project-form__error') as HTMLElement;
+    const flagged = steps(fixture)
+      .filter((step) => step.classList.contains('section-nav__item--missing'))
+      .map((step) => step.textContent?.trim());
+
     expect(projectService.create).not.toHaveBeenCalled();
     expect(error.textContent).toContain('Please fill the required fields');
     expect(error.textContent).toContain('Project name');
-    expect(panels(fixture).every((panel) => panel.classList.contains('mat-expanded'))).toBeTrue();
+    // Saving jumps back to the first step with an empty required field.
+    expect(activeStep(fixture)).toContain('Hero');
+    expect(flagged.length).toBe(3);
+    expect(flagged[0]).toContain('Hero');
   });
 
   it('creates a project once the required fields are filled', () => {
@@ -304,29 +376,80 @@ describe('ProjectDialog', () => {
     expect(dto.projectImages).toEqual([]);
   });
 
-  it('sends the images uploaded inside the gallery and floor plan sections', () => {
+  it('keeps the images uploaded in the hero and floor plan steps while stepping between them', () => {
     const projectService = configure(null);
     const fixture = TestBed.createComponent(ProjectDialog);
     fixture.detectChanges();
 
-    const fileInputs = fixture.nativeElement.querySelectorAll(
-      'input[type=file]',
-    ) as NodeListOf<HTMLInputElement>;
-    expect(fileInputs.length).toBe(2);
-
-    for (const fileInput of Array.from(fileInputs)) {
-      const transfer = new DataTransfer();
-      transfer.items.add(new File(['image'], 'photo.png', { type: 'image/png' }));
-      fileInput.files = transfer.files;
-      fileInput.dispatchEvent(new Event('change'));
-    }
-    fixture.detectChanges();
-
+    // Each step renders its own uploader, so only the active one is in the DOM.
+    upload(fixture);
     fillRequiredFields(fixture);
+
+    goToStep(fixture, 'Floor Plans');
+    clickByText(fixture, 'Add apartment type');
+    typeInto(fixture, 'Apartment type', 'Studio');
+    upload(fixture);
+
     submit(fixture);
 
     const dto = projectService.create.calls.mostRecent().args[0] as CreateProjectDto;
     expect(dto.projectImages).toEqual(['uploaded-1']);
-    expect(dto.floorPlanImages).toEqual(['uploaded-1']);
+    expect(dto.apartmentPlans).toEqual([
+      {
+        apartmentType: 'Studio',
+        apartmentPlanImages: ['uploaded-1'],
+        apartmentCardsGe: [],
+        apartmentCardsEn: [],
+        apartmentCardsRu: [],
+      },
+    ]);
+  });
+
+  /** The backend keeps one array per language; the dialog edits a card at a time. */
+  it('edits the highlight cards of an apartment type one card at a time', () => {
+    configure(PROJECT);
+    const fixture = TestBed.createComponent(ProjectDialog);
+    fixture.detectChanges();
+
+    goToStep(fixture, 'Floor Plans');
+    // The card the project already has, in the language being edited.
+    expect(editors(fixture)).toBe(1);
+
+    clickByText(fixture, 'Add card');
+    expect(editors(fixture)).toBe(2);
   });
 });
+
+/** Types into the input of the `mat-form-field` carrying `label`. */
+function typeInto(fixture: ComponentFixture<ProjectDialog>, label: string, value: string): void {
+  const field = Array.from(
+    fixture.nativeElement.querySelectorAll('mat-form-field') as NodeListOf<HTMLElement>,
+  ).find((candidate) => candidate.querySelector('mat-label')?.textContent?.trim() === label);
+
+  const input = field?.querySelector('input') as HTMLInputElement | null;
+  expect(input).withContext(`field "${label}"`).toBeTruthy();
+
+  if (input) {
+    input.value = value;
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+  }
+}
+
+/** Picks a file in the uploader of the step on screen. */
+function upload(fixture: ComponentFixture<ProjectDialog>): void {
+  const fileInputs = fixture.nativeElement.querySelectorAll(
+    'input[type=file]',
+  ) as NodeListOf<HTMLInputElement>;
+  expect(fileInputs.length).toBe(1);
+
+  const transfer = new DataTransfer();
+  transfer.items.add(new File(['image'], 'photo.png', { type: 'image/png' }));
+  fileInputs[0].files = transfer.files;
+  fileInputs[0].dispatchEvent(new Event('change'));
+  fixture.detectChanges();
+}
+
+
+
+

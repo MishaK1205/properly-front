@@ -1,10 +1,10 @@
 import { FormArray, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 import {
+  ApartmentPlan,
   CreateProjectDto,
   InvestmentCard,
   PaymentPlan,
-  PricingBySquareMeter,
   ProjectDescriptionCard,
   ProjectResponse,
 } from '../../../../core/models/api.models';
@@ -19,12 +19,18 @@ type TranslatedControls<Base extends string, Value> = {
   [Key in `${Base}${Language['suffix']}`]: FormControl<Value>;
 };
 
+/** The `{Base}Ge`, `{Base}En`, `{Base}Ru` values of one translated field. */
+type TranslatedValues<Base extends string> = {
+  [Key in `${Base}${Language['suffix']}`]: string;
+};
+
 /** The whole dialog form. Every section component takes it as an input. */
 export type ProjectForm = ReturnType<typeof buildProjectForm>;
 
 export type DescriptionCardForm = ReturnType<typeof buildDescriptionCard>;
 export type InvestmentCardForm = ReturnType<typeof buildInvestmentCard>;
-export type PricingRowForm = ReturnType<typeof buildPricingRow>;
+export type ApartmentPlanForm = ReturnType<typeof buildApartmentPlan>;
+export type ApartmentCardForm = ReturnType<typeof buildApartmentCard>;
 export type PaymentPlanForm = ReturnType<typeof buildPaymentPlan>;
 
 export function buildProjectForm(project: ProjectResponse | null) {
@@ -67,8 +73,8 @@ export function buildProjectForm(project: ProjectResponse | null) {
     investmentCards: new FormArray<InvestmentCardForm>(
       (project?.investmentCards ?? []).map((card) => buildInvestmentCard(card)),
     ),
-    pricingBySquareMeters: new FormArray<PricingRowForm>(
-      (project?.pricingBySquareMeters ?? []).map((row) => buildPricingRow(row)),
+    apartmentPlans: new FormArray<ApartmentPlanForm>(
+      (project?.apartmentPlans ?? []).map((plan) => buildApartmentPlan(plan)),
     ),
     paymentPlans: new FormArray<PaymentPlanForm>(
       (project?.paymentPlans ?? []).map((plan) => buildPaymentPlan(plan)),
@@ -90,12 +96,61 @@ export function buildInvestmentCard(card?: InvestmentCard) {
   });
 }
 
-/** One option of the unit size selector on the floor plans tab. */
-export function buildPricingRow(row?: PricingBySquareMeter) {
+/**
+ * One apartment type of the floor plans tab. The images are uploaded to the backend before the
+ * project is saved, so the control holds the ids they came back with.
+ */
+export function buildApartmentPlan(plan?: ApartmentPlan) {
   return new FormGroup({
-    squareMeterRange: requiredText(row?.squareMeterRange),
-    startingPrice: requiredNumber(row?.startingPrice ?? 0, Validators.min(0)),
+    apartmentType: requiredText(plan?.apartmentType),
+    apartmentPlanImages: new FormControl<string[]>([...(plan?.apartmentPlanImages ?? [])], {
+      nonNullable: true,
+    }),
+    apartmentCards: new FormArray<ApartmentCardForm>(
+      apartmentCardRows(plan).map((card) => buildApartmentCard(card)),
+    ),
   });
+}
+
+/** One highlight card of an apartment type, holding rich text HTML. */
+export function buildApartmentCard(card?: ApartmentCardRow) {
+  return new FormGroup({
+    ...translatedText('apartmentCards', card),
+  });
+}
+
+/** One card across the three languages, the shape the dialog edits a card in. */
+type ApartmentCardRow = TranslatedValues<'apartmentCards'>;
+
+type ApartmentPlanValue = ReturnType<ApartmentPlanForm['getRawValue']>;
+
+/**
+ * The backend keeps one array per language, all in the same order, while the dialog edits a card
+ * at a time. A short array means a card was never translated, so it is filled in as empty.
+ */
+function apartmentCardRows(plan?: ApartmentPlan): readonly ApartmentCardRow[] {
+  const ge = plan?.apartmentCardsGe ?? [];
+  const en = plan?.apartmentCardsEn ?? [];
+  const ru = plan?.apartmentCardsRu ?? [];
+
+  return Array.from({ length: Math.max(ge.length, en.length, ru.length) }, (_, index) => ({
+    apartmentCardsGe: ge[index] ?? '',
+    apartmentCardsEn: en[index] ?? '',
+    apartmentCardsRu: ru[index] ?? '',
+  }));
+}
+
+/** Turns the edited cards back into the one-array-per-language shape the backend takes. */
+function toApartmentPlan(plan: ApartmentPlanValue): ApartmentPlan {
+  const cards = plan.apartmentCards;
+
+  return {
+    apartmentType: plan.apartmentType,
+    apartmentPlanImages: plan.apartmentPlanImages,
+    apartmentCardsGe: cards.map((card) => card.apartmentCardsGe),
+    apartmentCardsEn: cards.map((card) => card.apartmentCardsEn),
+    apartmentCardsRu: cards.map((card) => card.apartmentCardsRu),
+  };
 }
 
 /** One row of the payment plan table. */
@@ -107,16 +162,17 @@ export function buildPaymentPlan(plan?: PaymentPlan) {
   });
 }
 
-/** The images are uploaded outside the form, so they are passed in separately. */
+/** The gallery images are uploaded outside the form, so they are passed in separately. */
 export function toCreateProjectDto(
   form: ProjectForm,
   projectImages: readonly string[],
-  floorPlanImages: readonly string[],
 ): CreateProjectDto {
+  const { apartmentPlans, ...fields } = form.getRawValue();
+
   return {
-    ...form.getRawValue(),
+    ...fields,
     projectImages: [...projectImages],
-    floorPlanImages: [...floorPlanImages],
+    apartmentPlans: apartmentPlans.map((plan) => toApartmentPlan(plan)),
   };
 }
 

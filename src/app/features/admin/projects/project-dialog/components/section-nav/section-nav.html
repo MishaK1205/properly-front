@@ -1,0 +1,18 @@
+<nav class="section-nav" aria-label="Sections of the property page">
+  @for (step of steps(); track step.id) {
+    <button
+      type="button"
+      class="section-nav__item"
+      [class.section-nav__item--active]="step.active"
+      [class.section-nav__item--missing]="step.missing"
+      [attr.aria-current]="step.active ? 'step' : null"
+      (click)="selected.emit(step.id)"
+    >
+      <span class="section-nav__step">{{ step.step }}</span>
+      <span class="section-nav__label">{{ step.label }}</span>
+      @if (step.missing) {
+        <mat-icon class="section-nav__flag" aria-label="Missing required fields">error</mat-icon>
+      }
+    </button>
+  }
+</nav>

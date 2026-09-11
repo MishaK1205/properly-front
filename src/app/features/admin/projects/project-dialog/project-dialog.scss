@@ -1,7 +1,28 @@
 @use './project-form' as *;
 
+.project-dialog__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  padding: 1.25rem 1.5rem 1rem;
+}
+
+/* The dialog title carries Material's own spacing, which the header row replaces. */
+.project-dialog__title {
+  padding: 0;
+  margin: 0;
+
+  &::before {
+    display: none;
+  }
+}
+
 .project-dialog__content {
-  padding-top: 0.5rem;
+  padding-top: 1rem;
+  /* Grey body, so the white field groups read as separate cards. */
+  background: var(--color-bg);
 }
 
 .project-form {
@@ -9,11 +30,74 @@
   gap: 1rem;
 }
 
-/** Error for inputs that are not Material form fields, so they have no built-in mat-error. */
-.project-form__field-error {
-  margin-top: 0.5rem;
-  color: #b3261e;
+.project-form__layout {
+  display: grid;
+  align-items: start;
+  gap: 1rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 12rem 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* The body scrolls past the rail, so the steps stay reachable. */
+.project-form__nav {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding-bottom: 0.5rem;
+  background: var(--color-bg);
+}
+
+.project-form__body {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.project-form__heading {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.project-form__heading-icon {
+  flex: none;
+  color: var(--color-primary);
+}
+
+.project-form__heading-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.project-form__heading-title {
+  font-size: var(--font-size-lg);
+  color: var(--color-heading);
+}
+
+.project-form__heading-summary {
+  color: var(--color-text-muted);
   font-size: var(--font-size-sm);
+}
+
+.project-form__heading-step {
+  flex: none;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  white-space: nowrap;
+}
+
+.project-form__steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+}
+
+.project-form__steps-next {
+  margin-left: auto;
 }
 
 .project-form__error {
@@ -22,7 +106,7 @@
   gap: 0.5rem;
   padding: 0.75rem 1rem;
   border-radius: var(--radius-sm);
-  background: #fdecea;
-  color: #b3261e;
+  background: var(--color-error-soft);
+  color: var(--color-error);
   font-size: var(--font-size-sm);
 }

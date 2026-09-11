@@ -20,11 +20,12 @@ export interface OverviewFact {
   readonly value: string;
 }
 
+/** One apartment type of the Floor Plans tab, with the plan images belonging to it. */
 export interface UnitPlan {
   readonly type: string;
-  readonly size: string;
-  readonly startingPrice: string;
-  readonly imageUrl: string | null;
+  readonly imageUrls: readonly string[];
+  /** Highlight cards beside the plans, as rich text HTML written in the admin editor. */
+  readonly cards: readonly string[];
 }
 
 export interface PaymentStage {

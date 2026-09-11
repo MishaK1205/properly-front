@@ -83,35 +83,32 @@
             @if (unitTypes().length > 1) {
               <div class="tabs__plans-select">
                 <app-select-input
-                  label="Select unit size:"
+                  label="Select apartment type:"
                   [options]="unitTypes()"
-                  [placeholder]="unitTypes()[0]"
                   [(value)]="unitType"
                 />
               </div>
             }
 
             @if (selectedPlan(); as plan) {
-              @if (plan.imageUrl; as planImageUrl) {
+              @for (planImageUrl of plan.imageUrls; track planImageUrl) {
                 <div class="tabs__plan-media">
                   <img [src]="planImageUrl" [alt]="plan.type + ' floor plan'" loading="lazy" decoding="async" />
                 </div>
+              } @empty {
+                <p class="tabs__plans-empty">No plan images for {{ plan.type }} yet.</p>
               }
 
-              <div class="tabs__plan-stats">
-                @if (plan.size) {
-                  <div class="tabs__plan-stat">
-                    <span class="tabs__plan-stat-label">Unit size</span>
-                    <span class="tabs__plan-stat-value">{{ plan.size }}</span>
-                  </div>
-                }
-                @if (plan.startingPrice) {
-                  <div class="tabs__plan-stat">
-                    <span class="tabs__plan-stat-label">Price per m²</span>
-                    <span class="tabs__plan-stat-value">{{ plan.startingPrice }}</span>
-                  </div>
-                }
-              </div>
+              @if (plan.cards.length) {
+                <div class="tabs__plan-cards">
+                  @for (card of plan.cards; track $index) {
+                    <article
+                      class="tabs__plan-card rich-text rich-text--stat rich-text--stat-sm"
+                      [innerHTML]="card | safeHtml"
+                    ></article>
+                  }
+                </div>
+              }
             }
           </div>
         }

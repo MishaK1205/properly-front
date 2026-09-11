@@ -36,6 +36,8 @@ html {
   --color-whatsapp: #24c95d;
   --color-whatsapp-hover: #1cab4d;
   --color-success: #2dca72;
+  --color-error: #b3261e;
+  --color-error-soft: #fdecea;
 
   /* Pastel accents & gradients */
   --color-lavender: #e1beff;
@@ -242,6 +244,20 @@ button {
 
   p + p {
     margin-top: 0;
+  }
+}
+
+/* The same tiles at the smaller scale that fits beside a floor plan. */
+.rich-text--stat-sm {
+  h2,
+  h3,
+  h4 {
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  p:first-of-type {
+    font-size: var(--font-size-lg);
   }
 }
 

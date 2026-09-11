@@ -84,9 +84,17 @@ export interface InvestmentCard {
   investmentCardContentRu: string;
 }
 
-export interface PricingBySquareMeter {
-  squareMeterRange: string;
-  startingPrice: number;
+/**
+ * One apartment type of the Floor Plans tab, with the plan images belonging to it and the
+ * highlight cards shown beside them. Each card is rich text HTML; the three language arrays
+ * hold the same cards in the same order.
+ */
+export interface ApartmentPlan {
+  apartmentType: string;
+  apartmentPlanImages: string[];
+  apartmentCardsGe: string[];
+  apartmentCardsEn: string[];
+  apartmentCardsRu: string[];
 }
 
 export interface PaymentPlan {
@@ -136,8 +144,7 @@ export interface CreateProjectDto {
   strManagementOnSiteRu: string;
   distanceToSea: string;
   distanceToCityCenter: string;
-  floorPlanImages: string[];
-  pricingBySquareMeters: PricingBySquareMeter[];
+  apartmentPlans: ApartmentPlan[];
   paymentPlans: PaymentPlan[];
   paymentAdvantagesGe: string[];
   paymentAdvantagesEn: string[];

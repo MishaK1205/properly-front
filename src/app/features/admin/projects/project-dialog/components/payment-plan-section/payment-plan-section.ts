@@ -1,15 +1,14 @@
-import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatTabsModule } from '@angular/material/tabs';
 
-import { LANGUAGES } from '../../../../shared/languages';
 import { buildPaymentPlan, ProjectForm } from '../../project-form';
-import { ChipListTabs } from '../chip-list-tabs/chip-list-tabs';
+import { FieldGroup } from '../field-group/field-group';
+import { TranslatedChips } from '../translated-chips/translated-chips';
+import { TranslatedField } from '../translated-field/translated-field';
 
 /** "The Property" → Payment Plan tab: the stage table and the notes under it. */
 @Component({
@@ -17,12 +16,12 @@ import { ChipListTabs } from '../chip-list-tabs/chip-list-tabs';
   imports: [
     ReactiveFormsModule,
     MatButtonModule,
-    MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatTabsModule,
-    ChipListTabs,
+    FieldGroup,
+    TranslatedChips,
+    TranslatedField,
   ],
   templateUrl: './payment-plan-section.html',
   styleUrl: './payment-plan-section.scss',
@@ -30,10 +29,7 @@ import { ChipListTabs } from '../chip-list-tabs/chip-list-tabs';
 })
 export class PaymentPlanSection {
   readonly form = input.required<ProjectForm>();
-  readonly expandAll = input(false);
 
-  protected readonly languages = LANGUAGES;
-  protected readonly expanded = signal(false);
   protected readonly paymentPlans = computed(() => this.form().controls.paymentPlans);
 
   protected addPaymentPlan(): void {

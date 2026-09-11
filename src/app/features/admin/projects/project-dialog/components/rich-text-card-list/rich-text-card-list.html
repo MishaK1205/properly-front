@@ -1,6 +1,6 @@
 <div class="project-form__stack">
   @for (card of cards().controls; track card; let i = $index) {
-    <div class="project-form__item" [formGroup]="card">
+    <div class="project-form__item">
       <div class="project-form__item-header">
         <span>{{ itemLabel() }} {{ i + 1 }}</span>
         <button
@@ -13,19 +13,12 @@
         </button>
       </div>
 
-      <mat-tab-group dynamicHeight>
-        @for (language of languages; track language.suffix) {
-          <mat-tab [label]="language.label">
-            <div class="project-form__stack project-form__tab-body">
-              <app-rich-text-editor
-                [label]="'Content (' + language.label + ')'"
-                [placeholder]="placeholder()"
-                [formControlName]="controlBase() + 'Content' + language.suffix"
-              />
-            </div>
-          </mat-tab>
-        }
-      </mat-tab-group>
+      <app-translated-rich-text
+        [group]="card"
+        [base]="base()"
+        [label]="itemLabel() + ' content'"
+        [placeholder]="placeholder()"
+      />
     </div>
   }
 

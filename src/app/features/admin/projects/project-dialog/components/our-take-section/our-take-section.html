@@ -1,55 +1,40 @@
-<mat-expansion-panel
-  [expanded]="expandAll() || expanded()"
-  (expandedChange)="expanded.set($event)"
->
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      <mat-icon class="project-form__panel-icon" aria-hidden="true">notes</mat-icon>
-      2 · Our Take — description &amp; verification
-    </mat-panel-title>
-  </mat-expansion-panel-header>
+<div class="project-form__stack">
+  <app-field-group
+    label="Write-up"
+    translated
+    help="The body of the “Our Take” section. It opens with its own heading, so start the text with a Heading 2 line."
+  >
+    <app-translated-rich-text
+      [group]="description()"
+      base="projectDescription"
+      label="Write-up"
+      placeholder="Start with a heading, then the body text"
+    />
+  </app-field-group>
 
-  <div [formGroup]="form()">
-    <p class="project-form__hint">
-      The section below the hero: the write-up on the left, the verification checklist box on the
-      right.
-    </p>
+  <app-field-group
+    label="Shortlist teaser"
+    translated
+    help="The sentence or two on the home page shortlist card. It is not part of the Our Take section itself."
+  >
+    <app-translated-rich-text
+      [group]="description()"
+      base="projectShortDescription"
+      label="Short description"
+      placeholder="A sentence or two that sells the property"
+    />
+  </app-field-group>
 
-    <h3 class="project-form__section-title">Description</h3>
-    <p class="project-form__hint">
-      The short description is the teaser on the home page shortlist card, not part of this
-      section. The write-up opens with its own heading, so start it with a Heading 2 line.
-    </p>
-    <div formGroupName="projectDescription">
-      <mat-tab-group dynamicHeight>
-        @for (language of languages; track language.suffix) {
-          <mat-tab [label]="language.label">
-            <div class="project-form__stack project-form__tab-body">
-              <app-rich-text-editor
-                [label]="'Short description — shortlist card (' + language.label + ')'"
-                placeholder="A sentence or two that sells the property"
-                [formControlName]="'projectShortDescription' + language.suffix"
-              />
-              <app-rich-text-editor
-                [label]="'Write-up (' + language.label + ')'"
-                placeholder="Start with a heading, then the body text"
-                [formControlName]="'projectDescription' + language.suffix"
-              />
-            </div>
-          </mat-tab>
-        }
-      </mat-tab-group>
-    </div>
-
-    <h3 class="project-form__section-title">Verification checklist</h3>
-    <p class="project-form__hint">
-      The ticked list in the grey box. Type an item and press Enter to add it.
-    </p>
-    <app-chip-list-tabs
+  <app-field-group
+    label="Verification checklist"
+    translated
+    help="The ticked list in the grey box beside the write-up."
+  >
+    <app-translated-chips
       [group]="form()"
-      controlBase="verificationChecklist"
+      base="verificationChecklist"
       label="Verification checklist"
       placeholder="e.g. Construction permit verified"
     />
-  </div>
-</mat-expansion-panel>
+  </app-field-group>
+</div>

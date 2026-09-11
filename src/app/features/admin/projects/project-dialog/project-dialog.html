@@ -1,35 +1,78 @@
-<h2 mat-dialog-title>{{ project ? 'Edit project' : 'Add project' }}</h2>
+<div class="project-dialog__header">
+  <h2 mat-dialog-title class="project-dialog__title">
+    {{ project ? 'Edit project' : 'Add project' }}
+  </h2>
+  <app-language-switcher [incomplete]="missingLanguages()" />
+</div>
 
-<mat-dialog-content class="project-dialog__content">
+<mat-dialog-content class="project-dialog__content" #scroller>
   <form [formGroup]="form" id="project-form" class="project-form" (ngSubmit)="save()">
-    <p class="project-form__hint">
-      Panels follow the property page from top to bottom, so each one fills in one section of it.
-    </p>
-
-    <mat-accordion multi>
-      <app-hero-section [form]="form" [expandAll]="expandAll()" [(images)]="projectImages" />
-
-      <app-our-take-section [form]="form" [expandAll]="expandAll()" />
-
-      <app-numbers-section [form]="form" [expandAll]="expandAll()" />
-
-      <app-overview-section [form]="form" [expandAll]="expandAll()" />
-
-      <app-floor-plans-section
-        [form]="form"
-        [expandAll]="expandAll()"
-        [(images)]="floorPlanImages"
-      />
-
-      <app-payment-plan-section [form]="form" [expandAll]="expandAll()" />
-    </mat-accordion>
-
     @if (saveError(); as message) {
       <p class="project-form__error" role="alert">
         <mat-icon aria-hidden="true">error_outline</mat-icon>
         {{ message }}
       </p>
     }
+
+    <div class="project-form__layout">
+      <app-section-nav class="project-form__nav" [steps]="steps()" (selected)="goTo($event)" />
+
+      <div class="project-form__body">
+        <header class="project-form__heading">
+          <mat-icon class="project-form__heading-icon" aria-hidden="true">
+            {{ current().icon }}
+          </mat-icon>
+          <div class="project-form__heading-text">
+            <h3 class="project-form__heading-title">{{ current().label }}</h3>
+            <p class="project-form__heading-summary">{{ current().summary }}</p>
+          </div>
+          <span class="project-form__heading-step">
+            Step {{ current().step }} of {{ totalSteps }}
+          </span>
+        </header>
+
+        @switch (sectionId()) {
+          @case ('hero') {
+            <app-hero-section [form]="form" [(images)]="projectImages" />
+          }
+          @case ('our-take') {
+            <app-our-take-section [form]="form" />
+          }
+          @case ('numbers') {
+            <app-numbers-section [form]="form" />
+          }
+          @case ('overview') {
+            <app-overview-section [form]="form" />
+          }
+          @case ('floor-plans') {
+            <app-floor-plans-section [form]="form" />
+          }
+          @case ('payment') {
+            <app-payment-plan-section [form]="form" />
+          }
+        }
+
+        <footer class="project-form__steps">
+          @if (previous(); as step) {
+            <button matButton type="button" (click)="goTo(step.id)">
+              <mat-icon>arrow_back</mat-icon>
+              {{ step.label }}
+            </button>
+          }
+          @if (next(); as step) {
+            <button
+              matButton="tonal"
+              type="button"
+              class="project-form__steps-next"
+              (click)="goTo(step.id)"
+            >
+              {{ step.label }}
+              <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+            </button>
+          }
+        </footer>
+      </div>
+    </div>
   </form>
 </mat-dialog-content>
 

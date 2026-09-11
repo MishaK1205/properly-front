@@ -1,0 +1,18 @@
+@if (multiline()) {
+  <mat-form-field appearance="outline" class="translated-field">
+    <mat-label>{{ label() }}</mat-label>
+    <textarea
+      matInput
+      rows="2"
+      [placeholder]="placeholder()"
+      [formControl]="control()"
+    ></textarea>
+    <mat-error>Required</mat-error>
+  </mat-form-field>
+} @else {
+  <mat-form-field appearance="outline" class="translated-field">
+    <mat-label>{{ label() }}</mat-label>
+    <input matInput [placeholder]="placeholder()" [formControl]="control()" />
+    <mat-error>Required</mat-error>
+  </mat-form-field>
+}

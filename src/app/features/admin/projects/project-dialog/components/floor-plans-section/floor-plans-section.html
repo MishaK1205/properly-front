@@ -1,49 +1,60 @@
-<mat-expansion-panel
-  [expanded]="expandAll() || expanded()"
-  (expandedChange)="expanded.set($event)"
+<app-field-group
+  label="Apartment types & plans"
+  help="Each apartment type becomes an option in the selector at the top of the Floor Plans tab, showing its own plan images."
 >
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      <mat-icon class="project-form__panel-icon" aria-hidden="true">architecture</mat-icon>
-      5 · The Property — Floor Plans tab
-    </mat-panel-title>
-  </mat-expansion-panel-header>
-
-  <p class="project-form__hint">
-    The "Floor Plans" tab. Each pricing row becomes an option in the size selector and is paired
-    with the floor plan image in the same position.
-  </p>
-
-  <h3 class="project-form__section-title">Floor plan images</h3>
-  <app-image-uploader label="Floor plan images" [(imageIds)]="images" />
-
-  <h3 class="project-form__section-title">Pricing by square meters</h3>
   <div class="project-form__stack">
-    @for (row of pricingRows().controls; track row; let i = $index) {
-      <div class="project-form__row" [formGroup]="row">
-        <mat-form-field appearance="outline">
-          <mat-label>Square meter range</mat-label>
-          <input matInput formControlName="squareMeterRange" placeholder="e.g. 30–45 m²" />
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Price per m²</mat-label>
-          <input matInput type="number" min="0" formControlName="startingPrice" />
-          <span matTextPrefix>$&nbsp;</span>
-        </mat-form-field>
-        <button
-          matIconButton
-          type="button"
-          aria-label="Remove pricing row"
-          (click)="removePricingRow(i)"
-        >
-          <mat-icon>delete_outline</mat-icon>
-        </button>
+    @for (plan of apartmentPlans().controls; track plan; let i = $index) {
+      <div class="project-form__item">
+        <div class="project-form__item-header">
+          <span>Apartment type {{ i + 1 }}</span>
+          <button
+            matIconButton
+            type="button"
+            aria-label="Remove apartment type"
+            (click)="removeApartmentPlan(i)"
+          >
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+        </div>
+
+        <div class="project-form__stack" [formGroup]="plan">
+          <mat-form-field appearance="outline" class="project-form__full">
+            <mat-label>Apartment type</mat-label>
+            <input matInput formControlName="apartmentType" placeholder="e.g. Studio" />
+          </mat-form-field>
+
+          <app-image-uploader
+            label="Plan images"
+            [imageIds]="plan.controls.apartmentPlanImages.value"
+            (imageIdsChange)="setPlanImages(plan, $event)"
+          />
+
+          <app-field-group
+            label="Highlight cards"
+            translated
+            help="The small cards shown beside the plan images of this apartment type. Write a heading for the label and the text under it; use the toolbar to bold text or change its colour."
+          >
+            <app-rich-text-card-list
+              [cards]="plan.controls.apartmentCards"
+              base="apartmentCards"
+              itemLabel="Card"
+              addLabel="Add card"
+              placeholder="e.g. Balcony — 5 m² facing the sea"
+              (add)="addApartmentCard(plan)"
+            />
+          </app-field-group>
+        </div>
       </div>
     }
 
-    <button matButton="outlined" type="button" class="project-form__add" (click)="addPricingRow()">
+    <button
+      matButton="outlined"
+      type="button"
+      class="project-form__add"
+      (click)="addApartmentPlan()"
+    >
       <mat-icon>add</mat-icon>
-      Add pricing row
+      Add apartment type
     </button>
   </div>
-</mat-expansion-panel>
+</app-field-group>

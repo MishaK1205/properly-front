@@ -1,73 +1,59 @@
-<mat-expansion-panel
-  [expanded]="expandAll() || expanded()"
-  (expandedChange)="expanded.set($event)"
->
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      <mat-icon class="project-form__panel-icon" aria-hidden="true">payments</mat-icon>
-      6 · The Property — Payment Plan tab
-    </mat-panel-title>
-  </mat-expansion-panel-header>
+<div class="project-form__stack">
+  <app-field-group
+    label="Payment stages"
+    translated
+    help="One row per stage in the table of the Payment Plan tab. The amount is the same in every language, so it is entered once."
+  >
+    <div class="project-form__stack">
+      @for (plan of paymentPlans().controls; track plan; let i = $index) {
+        <div class="project-form__item">
+          <div class="project-form__item-header">
+            <span>Stage {{ i + 1 }}</span>
+            <button
+              matIconButton
+              type="button"
+              aria-label="Remove payment plan"
+              (click)="removePaymentPlan(i)"
+            >
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
 
-  <p class="project-form__hint">
-    The "Payment Plan" tab: one row per stage in the table, then the highlighted notes under it.
-  </p>
+          <div class="project-form__grid" [formGroup]="plan">
+            <app-translated-field [group]="plan" base="paymentStage" label="Stage" />
+            <app-translated-field [group]="plan" base="when" label="When" />
 
-  <h3 class="project-form__section-title">Payment stages</h3>
-  <div class="project-form__stack">
-    @for (plan of paymentPlans().controls; track plan; let i = $index) {
-      <div class="project-form__item" [formGroup]="plan">
-        <div class="project-form__item-header">
-          <span>Stage {{ i + 1 }}</span>
-          <button
-            matIconButton
-            type="button"
-            aria-label="Remove payment plan"
-            (click)="removePaymentPlan(i)"
-          >
-            <mat-icon>delete_outline</mat-icon>
-          </button>
+            <mat-form-field appearance="outline" class="project-form__amount">
+              <mat-label>Payment amount</mat-label>
+              <input matInput type="number" min="0" formControlName="paymentAmount" />
+              <span matTextPrefix>$&nbsp;</span>
+            </mat-form-field>
+          </div>
         </div>
+      }
 
-        <mat-form-field appearance="outline" class="project-form__amount">
-          <mat-label>Payment amount</mat-label>
-          <input matInput type="number" min="0" formControlName="paymentAmount" />
-          <span matTextPrefix>$&nbsp;</span>
-        </mat-form-field>
+      <button
+        matButton="outlined"
+        type="button"
+        class="project-form__add"
+        (click)="addPaymentPlan()"
+      >
+        <mat-icon>add</mat-icon>
+        Add stage
+      </button>
+    </div>
+  </app-field-group>
 
-        <mat-tab-group dynamicHeight>
-          @for (language of languages; track language.suffix) {
-            <mat-tab [label]="language.label">
-              <div class="project-form__stack project-form__tab-body">
-                <mat-form-field appearance="outline">
-                  <mat-label>Payment stage ({{ language.label }})</mat-label>
-                  <input matInput [formControlName]="'paymentStage' + language.suffix" />
-                </mat-form-field>
-                <mat-form-field appearance="outline">
-                  <mat-label>When ({{ language.label }})</mat-label>
-                  <input matInput [formControlName]="'when' + language.suffix" />
-                </mat-form-field>
-              </div>
-            </mat-tab>
-          }
-        </mat-tab-group>
-      </div>
-    }
-
-    <button matButton="outlined" type="button" class="project-form__add" (click)="addPaymentPlan()">
-      <mat-icon>add</mat-icon>
-      Add payment stage
-    </button>
-  </div>
-
-  <h3 class="project-form__section-title">Payment advantages</h3>
-  <p class="project-form__hint">
-    The ticked notes under the table. Type an item and press Enter to add it.
-  </p>
-  <app-chip-list-tabs
-    [group]="form()"
-    controlBase="paymentAdvantages"
-    label="Payment advantages"
-    placeholder="e.g. 0% interest instalments"
-  />
-</mat-expansion-panel>
+  <app-field-group
+    label="Payment notes"
+    translated
+    help="The ticked notes highlighted under the payment table."
+  >
+    <app-translated-chips
+      [group]="form()"
+      base="paymentAdvantages"
+      label="Payment advantages"
+      placeholder="e.g. 0% interest instalments"
+    />
+  </app-field-group>
+</div>

@@ -1,24 +1,21 @@
-import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatTabsModule } from '@angular/material/tabs';
 
-import { LANGUAGES } from '../../../../shared/languages';
 import { ProjectForm } from '../../project-form';
+import { FieldGroup } from '../field-group/field-group';
+import { TranslatedField } from '../translated-field/translated-field';
 
 /** "The Property" → Overview tab: the fact rows and the distances. */
 @Component({
   selector: 'app-overview-section',
   imports: [
     ReactiveFormsModule,
-    MatExpansionModule,
     MatFormFieldModule,
-    MatIconModule,
     MatInputModule,
-    MatTabsModule,
+    FieldGroup,
+    TranslatedField,
   ],
   templateUrl: './overview-section.html',
   styleUrl: './overview-section.scss',
@@ -26,8 +23,4 @@ import { ProjectForm } from '../../project-form';
 })
 export class OverviewSection {
   readonly form = input.required<ProjectForm>();
-  readonly expandAll = input(false);
-
-  protected readonly languages = LANGUAGES;
-  protected readonly expanded = signal(false);
 }

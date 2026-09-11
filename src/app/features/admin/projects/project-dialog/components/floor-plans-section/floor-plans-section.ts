@@ -1,32 +1,32 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-  model,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
 import { ImageUploader } from '../../../../shared/image-uploader/image-uploader';
-import { buildPricingRow, ProjectForm } from '../../project-form';
+import {
+  ApartmentPlanForm,
+  buildApartmentCard,
+  buildApartmentPlan,
+  ProjectForm,
+} from '../../project-form';
+import { FieldGroup } from '../field-group/field-group';
+import { RichTextCardList } from '../rich-text-card-list/rich-text-card-list';
 
-/** "The Property" → Floor Plans tab: plan images paired with the unit size prices. */
+/** "The Property" → Floor Plans tab: plan images and highlight cards per apartment type. */
 @Component({
   selector: 'app-floor-plans-section',
   imports: [
     ReactiveFormsModule,
     MatButtonModule,
-    MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    FieldGroup,
     ImageUploader,
+    RichTextCardList,
   ],
   templateUrl: './floor-plans-section.html',
   styleUrl: './floor-plans-section.scss',
@@ -34,19 +34,24 @@ import { buildPricingRow, ProjectForm } from '../../project-form';
 })
 export class FloorPlansSection {
   readonly form = input.required<ProjectForm>();
-  readonly expandAll = input(false);
 
-  /** Floor plan image ids, uploaded outside the form. */
-  readonly images = model.required<string[]>();
+  protected readonly apartmentPlans = computed(() => this.form().controls.apartmentPlans);
 
-  protected readonly expanded = signal(false);
-  protected readonly pricingRows = computed(() => this.form().controls.pricingBySquareMeters);
-
-  protected addPricingRow(): void {
-    this.pricingRows().push(buildPricingRow());
+  protected addApartmentPlan(): void {
+    this.apartmentPlans().push(buildApartmentPlan());
   }
 
-  protected removePricingRow(index: number): void {
-    this.pricingRows().removeAt(index);
+  protected removeApartmentPlan(index: number): void {
+    this.apartmentPlans().removeAt(index);
+  }
+
+  protected addApartmentCard(plan: ApartmentPlanForm): void {
+    plan.controls.apartmentCards.push(buildApartmentCard());
+  }
+
+  /** The uploader owns a plain array, so its changes are written back into the control. */
+  protected setPlanImages(plan: ApartmentPlanForm, imageIds: string[]): void {
+    plan.controls.apartmentPlanImages.setValue(imageIds);
+    plan.controls.apartmentPlanImages.markAsDirty();
   }
 }

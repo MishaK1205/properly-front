@@ -1,8 +1,17 @@
-import { ChangeDetectionStrategy, Component, computed, input, output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  linkedSignal,
+  output,
+  signal,
+} from '@angular/core';
 import { Button } from '../../../../shared/components/button/button';
 import { SectionHeading } from '../../../../shared/components/section-heading/section-heading';
 import { SelectInput } from '../../../../shared/components/select-input/select-input';
 import { ScrollRevealDirective } from '../../../../shared/directives/scroll-reveal.directive';
+import { SafeHtmlPipe } from '../../../../shared/pipes/safe-html.pipe';
 import { PropertyDetailContent, UnitPlan } from '../../property-detail.models';
 
 type TabId = 'overview' | 'plans' | 'payment';
@@ -14,7 +23,7 @@ interface Tab {
 
 @Component({
   selector: 'app-property-tabs',
-  imports: [Button, SectionHeading, SelectInput, ScrollRevealDirective],
+  imports: [Button, SectionHeading, SelectInput, ScrollRevealDirective, SafeHtmlPipe],
   templateUrl: './property-tabs.html',
   styleUrl: './property-tabs.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -49,9 +58,10 @@ export class PropertyTabs {
     return tabs.find((tab) => tab.id === requested)?.id ?? tabs[0]?.id;
   });
 
-  protected readonly unitType = signal('');
-
   protected readonly unitTypes = computed(() => this.detail().unitPlans.map((plan) => plan.type));
+
+  /** Starts on the first apartment type and falls back to it whenever the project changes. */
+  protected readonly unitType = linkedSignal<string>(() => this.unitTypes()[0] ?? '');
 
   protected readonly selectedPlan = computed<UnitPlan | undefined>(() => {
     const plans = this.detail().unitPlans;

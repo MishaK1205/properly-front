@@ -1,7 +1,8 @@
 <mat-form-field appearance="outline" class="chip-list">
   <mat-label>{{ label() }}</mat-label>
   <mat-chip-grid #chipGrid [disabled]="disabled()" [attr.aria-label]="label()">
-    @for (item of items(); track item) {
+    <!-- Chips are tracked by position: switching language swaps every value at once. -->
+    @for (item of items(); track $index) {
       <mat-chip-row [editable]="true" (removed)="remove(item)" (edited)="edit(item, $event)">
         {{ item }}
         <button matChipRemove type="button" [attr.aria-label]="'Remove ' + item">

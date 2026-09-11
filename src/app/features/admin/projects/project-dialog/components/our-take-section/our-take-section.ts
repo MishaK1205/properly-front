@@ -1,33 +1,20 @@
-import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTabsModule } from '@angular/material/tabs';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
-import { LANGUAGES } from '../../../../shared/languages';
-import { RichTextEditor } from '../../../../shared/rich-text-editor/rich-text-editor';
 import { ProjectForm } from '../../project-form';
-import { ChipListTabs } from '../chip-list-tabs/chip-list-tabs';
+import { FieldGroup } from '../field-group/field-group';
+import { TranslatedChips } from '../translated-chips/translated-chips';
+import { TranslatedRichText } from '../translated-rich-text/translated-rich-text';
 
 /** "Our Take" section: the write-up and the verification checklist box beside it. */
 @Component({
   selector: 'app-our-take-section',
-  imports: [
-    ReactiveFormsModule,
-    MatExpansionModule,
-    MatIconModule,
-    MatTabsModule,
-    ChipListTabs,
-    RichTextEditor,
-  ],
+  imports: [FieldGroup, TranslatedChips, TranslatedRichText],
   templateUrl: './our-take-section.html',
   styleUrl: './our-take-section.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OurTakeSection {
   readonly form = input.required<ProjectForm>();
-  readonly expandAll = input(false);
 
-  protected readonly languages = LANGUAGES;
-  protected readonly expanded = signal(false);
+  protected readonly description = computed(() => this.form().controls.projectDescription);
 }

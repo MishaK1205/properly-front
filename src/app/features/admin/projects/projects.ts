@@ -96,7 +96,7 @@ export class AdminProjects {
     this.dialog
       .open(ProjectDialog, {
         data: project,
-        width: '56rem',
+        width: '64rem',
         maxWidth: 'calc(100vw - 1rem)',
         maxHeight: 'calc(100dvh - 2rem)',
         autoFocus: false,
