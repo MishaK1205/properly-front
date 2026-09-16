@@ -11,25 +11,11 @@
   }
 
   &__eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.35rem 0.9rem;
-    border-radius: var(--radius-pill);
-    background: var(--color-primary-soft);
     font-size: var(--font-size-xs);
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--color-primary);
-
-    &::before {
-      content: '';
-      width: 0.4rem;
-      height: 0.4rem;
-      border-radius: 50%;
-      background: currentcolor;
-    }
   }
 
   &__title {
@@ -44,9 +30,15 @@
     font-size: var(--font-size-lg);
   }
 
+  &--lg {
+    .heading__title {
+      font-size: clamp(2.3rem, 4.6vw, var(--font-size-3xl));
+      line-height: 1.05;
+    }
+  }
+
   &--dark {
     .heading__eyebrow {
-      background: rgb(255 255 255 / 0.1);
       color: var(--color-lavender);
     }
 

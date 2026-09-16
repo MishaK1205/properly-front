@@ -1,6 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 
-export type ButtonVariant = 'primary' | 'whatsapp' | 'dark' | 'outline' | 'link' | 'link-whatsapp';
+export type ButtonVariant =
+  | 'primary'
+  | 'accent'
+  | 'whatsapp'
+  | 'dark'
+  | 'outline'
+  | 'link'
+  | 'link-whatsapp';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
 @Component({

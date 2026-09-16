@@ -7,6 +7,9 @@ import { LanguageService } from '../../../../../core/services/language.service';
 import { Button } from '../../../../../shared/components/button/button';
 import { SafeHtmlPipe } from '../../../../../shared/pipes/safe-html.pipe';
 
+/** Advantages shown before collapsing the rest into a "+N more" chip, keeping card heights even. */
+const MAX_VISIBLE_ADVANTAGES = 3;
+
 @Component({
   selector: 'app-project-card',
   imports: [Button, RouterLink, SafeHtmlPipe],
@@ -16,6 +19,8 @@ import { SafeHtmlPipe } from '../../../../../shared/pipes/safe-html.pipe';
 })
 export class ProjectCard {
   readonly project = input.required<ProjectResponse>();
+  /** 1-based position in the shortlist; omit to hide the rank badge. */
+  readonly rank = input<number | null>(null);
 
   readonly interested = output<string>();
 
@@ -25,6 +30,11 @@ export class ProjectCard {
   protected readonly imageUrl = computed(() => {
     const [cover] = this.project().projectImages;
     return cover ? this.images.imageUrl(cover) : null;
+  });
+
+  protected readonly rankLabel = computed(() => {
+    const rank = this.rank();
+    return rank === null ? '' : `№ ${String(rank).padStart(2, '0')}`;
   });
 
   protected readonly companyName = computed(() => this.project().companyInfo?.companyName ?? '');
@@ -50,6 +60,14 @@ export class ProjectCard {
       }) ?? []
     );
   });
+
+  protected readonly visibleAdvantages = computed(() =>
+    this.advantages().slice(0, MAX_VISIBLE_ADVANTAGES),
+  );
+
+  protected readonly hiddenAdvantageCount = computed(() =>
+    Math.max(0, this.advantages().length - MAX_VISIBLE_ADVANTAGES),
+  );
 
   protected readonly shortDescription = computed(() => {
     const description = this.project().projectDescription;

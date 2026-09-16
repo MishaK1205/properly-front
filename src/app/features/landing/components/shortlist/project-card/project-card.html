@@ -17,11 +17,23 @@
       />
     } @else {
       <div class="card__placeholder" aria-hidden="true">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
           <path d="M3 21V7l9-4 9 4v14h-7v-6h-4v6H3Z" />
         </svg>
       </div>
     }
+
+    <div class="card__badges">
+      @if (rankLabel(); as label) {
+        <span class="card__badge card__badge--rank">{{ label }}</span>
+      }
+      <span class="card__badge card__badge--verified">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m5 12 4.5 4.5L19 7" />
+        </svg>
+        Verified
+      </span>
+    </div>
   </div>
 
   <div class="card__body">
@@ -43,27 +55,38 @@
       rel="noopener"
       [attr.aria-label]="'Open ' + location() + ' in Google Maps'"
     >
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" />
         <circle cx="12" cy="10" r="2.5" />
       </svg>
       {{ location() }}
     </a>
 
-    @if (advantages().length) {
-      <ul class="card__chips">
-        @for (advantage of advantages(); track advantage) {
-          <li class="card__chip">{{ advantage }}</li>
-        }
-      </ul>
-    }
-
     @if (shortDescription(); as description) {
       <div class="card__description rich-text" [innerHTML]="description | safeHtml"></div>
+    }
+
+    @if (visibleAdvantages().length) {
+      <ul class="card__chips">
+        @for (advantage of visibleAdvantages(); track advantage) {
+          <li class="card__chip">{{ advantage }}</li>
+        }
+        @if (hiddenAdvantageCount() > 0) {
+          <li class="card__chip card__chip--more">+{{ hiddenAdvantageCount() }} more</li>
+        }
+      </ul>
     }
   </div>
 
   <footer class="card__footer">
+    <span class="card__cta" aria-hidden="true">
+      View property
+      <svg class="card__cta-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14" />
+        <path d="m13 6 6 6-6 6" />
+      </svg>
+    </span>
+
     <app-button variant="primary" size="md" (clicked)="interested.emit(project().projectName)">
       I'm Interested →
     </app-button>
