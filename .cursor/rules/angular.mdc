@@ -67,11 +67,50 @@ src/app/
 
 ## Styles (SCSS)
 
-- Global design tokens (colors, spacing, radii, fonts) as CSS custom properties in `src/styles.scss`; component SCSS consumes `var(--...)` — never hardcode brand hex values in components.
-- Component styles stay encapsulated (default emulated encapsulation); no `::ng-deep`.
-- Class naming: BEM-lite, kebab-case (`.hero`, `.hero__title`, `.hero--dark`).
-- Max nesting depth 2; mobile-first with `@media (min-width: ...)` breakpoints (768px, 1024px, 1280px) via shared SCSS mixins in `src/styles/_mixins.scss` if repetition appears.
-- Use `rem` for typography/spacing, flex/grid for layout.
+### Where styles live
+
+- `src/styles.scss` — design tokens (`:root` custom properties), element resets, and the few global classes that must escape encapsulation (`.container`, `.section-panel`, `.reveal`, `.rich-text*` for `innerHTML` content, third-party overrides). Nothing else is global.
+- `src/styles/_mixins.scss` — shared mixins only (`up()`, `hide-scrollbar`, `visually-hidden`); it must emit no CSS. Import with `@use 'mixins' as *;` (resolved via `stylePreprocessorOptions.includePaths`).
+- Everything else is a component stylesheet. Encapsulation stays on (emulated); never `::ng-deep`, never `ViewEncapsulation.None`.
+
+### Tokens
+
+- Colors, fonts, radii, shadows, layout gutters, z-index layers and motion (`--transition`, `--ease-out`) are tokens in `src/styles.scss`; components only use `var(--...)`.
+- No literal color values in components. Tinted transparency derives from a token: `color-mix(in srgb, var(--color-ink) 55%, transparent)`. Third-party brand colors are tokens too (`--color-whatsapp`, `--color-telegram`).
+  - Allowed literals: `transparent`, `currentcolor`, and neutral white/black overlays `rgb(255 255 255 / a)` / `rgb(0 0 0 / a)`.
+- `z-index` above 9 must be a layer token (`--z-header`, `--z-fab`). Values 1–9 are fine for stacking inside a component that sets `isolation: isolate` or `position: relative`.
+- Units: `rem` for type, spacing and sizes; `px` only for hairlines (borders, outlines, underlines ≤ 3px), shadow offsets and blur radii. Layout with flex/grid, never floats or magic margins.
+
+### File shape
+
+Order inside every component stylesheet:
+
+1. `@use 'mixins' as *;` (only if a mixin is used)
+2. `@keyframes` declarations
+3. `:host { display: ... }` — always present. Sections/cards use `block`; hosts that only render a top-layer or fixed element (dialog, FAB, progress bar) use `contents`; a host that must stretch as a grid/flex item declares that explicitly with a comment.
+4. The block(s), one `.block { &__element {} &--modifier {} }` tree each, elements in DOM order.
+
+### Selectors & nesting
+
+- BEM-lite, kebab-case, one block per component (`.card`, `.card__title`, `.card--featured`). Modifiers and states nest under the element they change: `&--active`, `&:hover`, `&::after`, `.item--open &`.
+- Parent-driven child state uses the double-`&` form inside the block: `&:hover &__image { ... }`. Never restate the block name outside its tree (`.card:hover .card__image` at root level).
+- Max nesting depth 2 (block → element → state/pseudo). Flatten deeper chains with compound selectors (`&:hover::after`, `tbody tr:hover`) instead of nesting them.
+- Prefer classes; bare element selectors (`img`, `svg`, `th`, `dd`) only for markup you don't control (tables, rich text, third-party) and only one level deep.
+- Never style another component's selector or a global utility (`.container`) from a component; put a BEM class on the element instead (`<app-button-link class="agent__cta">`).
+- `!important` is not used (the only exception is the global `prefers-reduced-motion` reset).
+
+### Responsive & motion
+
+- Mobile-first. Every breakpoint goes through `@include up(md | lg | xl)` (768 / 1024 / 1280px); no inline `@media (min-width: …px)` and no off-scale values. Feature queries like `(hover: none)` are written inline, nested under the rule they affect.
+- Multi-value `transition`/`box-shadow`/`background` lists go one value per line. Prefer `translate`/`scale`/`rotate` properties over `transform` for animatable state.
+- Everything that animates respects `prefers-reduced-motion` (the global reset covers transitions/animations; add a component rule only for state that must also change, e.g. hover `scale: 1`).
+
+### Hygiene
+
+- No hand-written vendor prefixes — the build autoprefixes. Sole exception: `display: -webkit-box; -webkit-box-orient; -webkit-line-clamp` for multi-line clamping.
+- No dead selectors: if a template renames or removes a class/element, delete its rule. Two features needing the same block (FAB, form card, eyebrow) means a `shared/` component, not copy-pasted SCSS.
+- Comments: `/* */` in component files (explain *why*, e.g. why a `:host` display or a UA-stylesheet workaround is needed); `//` in partials so nothing is emitted into consumers.
+- Declaration grouping (not enforced by tooling, keep it readable): positioning → display/box model → borders/radius → background → typography → visual (`opacity`, `filter`, `cursor`) → motion (`transition`, `animation`).
 
 ## State & data
 

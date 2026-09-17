@@ -9,7 +9,7 @@
   <h3 class="agent__name">{{ agent().name }}</h3>
   <p class="agent__role">{{ agent().role }}</p>
   <p class="agent__bio">{{ agent().bio }}</p>
-  <app-button-link variant="whatsapp" size="md" [href]="agent().whatsappUrl">
+  <app-button-link class="agent__cta" variant="whatsapp" size="md" [href]="agent().whatsappUrl">
     <app-whatsapp-icon [size]="16" />
     {{ whatsappLabel() }}
   </app-button-link>

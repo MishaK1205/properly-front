@@ -28,13 +28,17 @@ html {
   --color-navy-700: #1f3868;
   --color-navy-600: #2f4c85;
   --color-ink: #0f1e3d;
+  --color-ink-deep: #060c1a; /* near-black ink for full-screen backdrops */
 
   /* Accent — coral */
   --color-primary: #f2543f;
   --color-primary-hover: #d9412d;
   --color-primary-soft: #fdebe8;
+
+  /* Third-party brand colors */
   --color-whatsapp: #24c95d;
   --color-whatsapp-hover: #1cab4d;
+  --color-telegram: #2aa8e0;
   --color-success: #2dca72;
   --color-error: #b3261e;
   --color-error-soft: #fdecea;
@@ -93,6 +97,10 @@ html {
   --section-pad-y: 6rem;
   --page-gutter: 0.75rem;
   --section-gap: 0.75rem;
+
+  /* Stacking layers for fixed/sticky chrome (components use 0–9 internally) */
+  --z-header: 20;
+  --z-fab: 30;
 
   --transition: 0.2s ease;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);

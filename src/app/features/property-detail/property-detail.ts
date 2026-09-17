@@ -9,7 +9,7 @@ import { ProjectService } from '../../core/services/project.service';
 import { resolveProjectId } from '../../core/utils/project-slug';
 import { SiteFooter } from '../../shared/components/site-footer/site-footer';
 import { SiteHeader } from '../../shared/components/site-header/site-header';
-import { WhatsappIcon } from '../../shared/components/whatsapp-icon/whatsapp-icon';
+import { WhatsappFab } from '../../shared/components/whatsapp-fab/whatsapp-fab';
 import { DetailHero } from './components/detail-hero/detail-hero';
 import { DetailSkeleton } from './components/detail-skeleton/detail-skeleton';
 import { DeveloperSection } from './components/developer-section/developer-section';
@@ -36,7 +36,7 @@ const RELATED_COUNT = 3;
     DeveloperSection,
     InterestForm,
     KeepExploring,
-    WhatsappIcon,
+    WhatsappFab,
   ],
   templateUrl: './property-detail.html',
   styleUrl: './property-detail.scss',

@@ -1,3 +1,5 @@
+@use 'mixins' as *;
+
 :host {
   display: block;
 }
@@ -13,7 +15,7 @@
     padding: 0;
     list-style: none;
 
-    @media (min-width: 768px) {
+    @include up(md) {
       grid-template-columns: repeat(3, 1fr);
       gap: 3.5rem;
     }
@@ -69,7 +71,7 @@
     font-size: 1.5rem;
     color: var(--color-text-muted);
 
-    @media (min-width: 768px) {
+    @include up(md) {
       display: block;
     }
   }

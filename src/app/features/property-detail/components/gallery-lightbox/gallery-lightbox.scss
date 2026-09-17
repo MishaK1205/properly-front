@@ -1,3 +1,5 @@
+@use 'mixins' as *;
+
 @keyframes lightbox-in {
   from {
     opacity: 0;
@@ -20,6 +22,11 @@
   }
 }
 
+/* The dialog renders in the top layer, so the host itself takes no space in the gallery. */
+:host {
+  display: contents;
+}
+
 .lightbox {
   display: none;
   flex-direction: column;
@@ -40,9 +47,8 @@
   }
 
   &::backdrop {
-    background: rgb(6 12 26 / 0.94);
+    background: color-mix(in srgb, var(--color-ink-deep) 94%, transparent);
     backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
     animation: backdrop-in 0.3s ease-out;
   }
 
@@ -145,11 +151,8 @@
     gap: 0.5rem;
     padding: 1.25rem 1.5rem 1.5rem;
     overflow-x: auto;
-    scrollbar-width: none;
 
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    @include hide-scrollbar;
   }
 
   &__thumb {

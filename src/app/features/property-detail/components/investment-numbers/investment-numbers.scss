@@ -1,3 +1,9 @@
+@use 'mixins' as *;
+
+:host {
+  display: block;
+}
+
 .numbers {
   padding-block: var(--section-pad-y);
   background: var(--color-bg);
@@ -7,11 +13,11 @@
     gap: 1.25rem;
     margin-top: 2.5rem;
 
-    @media (min-width: 768px) {
+    @include up(md) {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    @media (min-width: 1024px) {
+    @include up(lg) {
       grid-template-columns: repeat(3, 1fr);
     }
   }

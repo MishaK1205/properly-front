@@ -1,0 +1,42 @@
+@keyframes fab-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-whatsapp) 45%, transparent);
+  }
+
+  70% {
+    box-shadow: 0 0 0 14px transparent;
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+:host {
+  display: contents;
+}
+
+.fab {
+  position: fixed;
+  right: calc(var(--page-gutter) + 0.5rem);
+  bottom: calc(var(--page-gutter) + 0.5rem);
+  z-index: var(--z-fab);
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background: var(--color-whatsapp);
+  color: var(--color-text-inverse);
+  box-shadow: var(--shadow-lg);
+  animation: fab-pulse 2.5s ease-out infinite;
+  transition:
+    background var(--transition),
+    transform 0.3s var(--ease-out);
+
+  &:hover {
+    background: var(--color-whatsapp-hover);
+    transform: scale(1.1) rotate(6deg);
+    animation-play-state: paused;
+  }
+}

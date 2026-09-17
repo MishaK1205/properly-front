@@ -6,45 +6,6 @@
   position: relative;
 }
 
-@keyframes fab-pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgb(36 201 93 / 0.45);
-  }
-
-  70% {
-    box-shadow: 0 0 0 14px rgb(36 201 93 / 0);
-  }
-
-  100% {
-    box-shadow: 0 0 0 0 rgb(36 201 93 / 0);
-  }
-}
-
-.whatsapp-fab {
-  position: fixed;
-  right: 1.5rem;
-  bottom: 1.5rem;
-  z-index: 30;
-  display: grid;
-  place-items: center;
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: 50%;
-  background: var(--color-whatsapp);
-  color: var(--color-text-inverse);
-  box-shadow: var(--shadow-lg);
-  animation: fab-pulse 2.5s ease-out infinite;
-  transition:
-    background var(--transition),
-    transform 0.3s var(--ease-out);
-
-  &:hover {
-    background: var(--color-whatsapp-hover);
-    transform: scale(1.1) rotate(6deg);
-    animation-play-state: paused;
-  }
-}
-
 .not-found {
   padding-block: var(--section-pad-y);
   text-align: center;

@@ -1,3 +1,5 @@
+@use 'mixins' as *;
+
 :host {
   display: block;
 }
@@ -14,7 +16,7 @@
   user-select: none;
   outline: none;
 
-  @media (min-width: 768px) {
+  @include up(md) {
     aspect-ratio: 3 / 2;
   }
 
@@ -38,12 +40,20 @@
 
   &::before {
     top: 0;
-    background: linear-gradient(180deg, rgb(15 30 61 / 0.55), transparent);
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-ink) 55%, transparent),
+      transparent
+    );
   }
 
   &::after {
     bottom: 0;
-    background: linear-gradient(0deg, rgb(15 30 61 / 0.65), transparent);
+    background: linear-gradient(
+      0deg,
+      color-mix(in srgb, var(--color-ink) 65%, transparent),
+      transparent
+    );
   }
 
   &__track {
@@ -121,7 +131,6 @@
     border-radius: 50%;
     background: rgb(255 255 255 / 0.14);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     color: var(--color-text-inverse);
     cursor: pointer;
     transition:
@@ -152,7 +161,6 @@
     border-radius: 50%;
     background: rgb(255 255 255 / 0.16);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     color: var(--color-text-inverse);
     cursor: pointer;
     opacity: 0;
@@ -161,6 +169,11 @@
       opacity 0.3s var(--ease-out),
       background var(--transition),
       scale 0.3s var(--ease-out);
+
+    /* Touch screens have no hover, so the arrows must always be there. */
+    @media (hover: none) {
+      opacity: 1;
+    }
 
     &--prev {
       left: 1rem;
@@ -186,6 +199,11 @@
     }
   }
 
+  &:hover &__arrow,
+  &:focus-within &__arrow {
+    opacity: 1;
+  }
+
   /* A small filmstrip resting directly on the photo; hidden on phones where swiping does the job. */
   &__thumbs {
     position: absolute;
@@ -198,14 +216,11 @@
     padding: 0.2rem;
     overflow-x: auto;
     scroll-snap-type: x proximity;
-    scrollbar-width: none;
 
-    @media (min-width: 768px) {
+    @include hide-scrollbar;
+
+    @include up(md) {
       display: flex;
-    }
-
-    &::-webkit-scrollbar {
-      display: none;
     }
   }
 
@@ -258,26 +273,13 @@
     padding: 0.3rem 0.7rem;
     border: 1px solid rgb(255 255 255 / 0.18);
     border-radius: var(--radius-pill);
-    background: rgb(15 30 61 / 0.45);
+    background: color-mix(in srgb, var(--color-ink) 45%, transparent);
     backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
     color: var(--color-text-inverse);
     font-size: var(--font-size-xs);
     font-weight: 600;
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.04em;
     pointer-events: none;
-  }
-}
-
-.gallery:hover .gallery__arrow,
-.gallery:focus-within .gallery__arrow {
-  opacity: 1;
-}
-
-/* Touch screens have no hover, so the arrows must always be there. */
-@media (hover: none) {
-  .gallery__arrow {
-    opacity: 1;
   }
 }
