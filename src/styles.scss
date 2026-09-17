@@ -81,6 +81,7 @@ html {
   --radius-md: 1rem;
   --radius-lg: 1.5rem;
   --radius-xl: 2rem;
+  --radius-section: 1.5rem;
   --radius-pill: 62.5rem;
   --shadow-sm: 0 1px 3px rgb(15 30 61 / 0.06);
   --shadow-md: 0 10px 30px rgb(15 30 61 / 0.08);
@@ -90,6 +91,8 @@ html {
   --container-max: 72rem;
   --container-pad: 1.25rem;
   --section-pad-y: 6rem;
+  --page-gutter: 0.75rem;
+  --section-gap: 0.75rem;
 
   --transition: 0.2s ease;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -150,6 +153,27 @@ button {
   max-width: var(--container-max);
   margin-inline: auto;
   padding-inline: var(--container-pad);
+}
+
+/* Rounded island used by landing sections — sits inside the page gutter. */
+.section-panel {
+  border-radius: var(--radius-section);
+  overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --page-gutter: 1.25rem;
+    --section-gap: 1rem;
+    --radius-section: 2.25rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  :root {
+    --page-gutter: 1.5rem;
+    --radius-section: 2.5rem;
+  }
 }
 
 /* Quill editor (/admin only). Global because Quill builds its toolbar and editor

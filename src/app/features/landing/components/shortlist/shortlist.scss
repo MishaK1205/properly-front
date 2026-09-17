@@ -1,20 +1,24 @@
+:host {
+  display: block;
+}
+
 .shortlist {
   padding-block: var(--section-pad-y);
   background: var(--color-surface);
 
   &__grid {
     display: grid;
-    gap: 2rem;
-    margin-top: 3rem;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
 
     @media (min-width: 768px) {
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
     }
   }
 
   &__skeleton {
-    height: 31rem;
-    border-radius: var(--radius-xl);
+    height: 26rem;
+    border-radius: var(--radius-lg);
   }
 
   &__status {

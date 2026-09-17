@@ -1,6 +1,10 @@
+:host {
+  display: block;
+}
+
 .market {
   padding-block: var(--section-pad-y);
-  background: var(--color-bg);
+  background: var(--color-surface);
 
   &__grid {
     display: grid;

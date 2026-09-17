@@ -10,12 +10,16 @@
   }
 }
 
+:host {
+  display: block;
+}
+
 .hero {
   position: relative;
   display: flex;
   flex-direction: column;
-  min-height: 34rem;
-  min-height: clamp(34rem, 82svh, 48rem);
+  min-height: 30rem;
+  min-height: max(30rem, calc(100svh - 4.5rem - var(--page-gutter) * 2));
   isolation: isolate;
   overflow: hidden;
   background: var(--color-ink);
