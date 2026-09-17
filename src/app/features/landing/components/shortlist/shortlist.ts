@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 import { ProjectResponse } from '../../../../core/models/api.models';
 import { Button } from '../../../../shared/components/button/button';
 import { SectionHeading } from '../../../../shared/components/section-heading/section-heading';
+import { Skeleton } from '../../../../shared/components/skeleton/skeleton';
 import { ScrollRevealDirective } from '../../../../shared/directives/scroll-reveal.directive';
 import { ProjectCard } from './project-card/project-card';
 
@@ -10,7 +11,7 @@ const SKELETON_COUNT = 4;
 
 @Component({
   selector: 'app-shortlist',
-  imports: [SectionHeading, ProjectCard, Button, ScrollRevealDirective],
+  imports: [SectionHeading, ProjectCard, Button, Skeleton, ScrollRevealDirective],
   templateUrl: './shortlist.html',
   styleUrl: './shortlist.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

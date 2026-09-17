@@ -44,7 +44,7 @@
   &__step:hover &__icon {
     rotate: 4deg;
     scale: 1.1;
-    box-shadow: 0 10px 24px rgb(110 105 245 / 0.3);
+    box-shadow: 0 10px 24px color-mix(in srgb, var(--color-primary) 30%, transparent);
   }
 
   &__title {

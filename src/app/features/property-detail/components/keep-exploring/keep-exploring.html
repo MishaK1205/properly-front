@@ -9,7 +9,7 @@
 
     <div class="explore__grid">
       @for (card of cards(); track card.id; let i = $index) {
-        <a class="explore__card" [appScrollReveal]="i * 100" [routerLink]="['/property', card.id]">
+        <a class="explore__card" [appScrollReveal]="i * 100" [routerLink]="['/property', card.slug]">
           <div class="explore__media">
             @if (card.imageUrl; as imageUrl) {
               <img [src]="imageUrl" [alt]="card.name" loading="lazy" decoding="async" />

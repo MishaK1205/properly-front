@@ -6,82 +6,48 @@
 }
 
 .card {
-  --card-radius: var(--radius-lg);
-  --card-pad-x: 1.5rem;
-
   position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;
-  border-radius: var(--card-radius);
+  border-radius: var(--radius-xl);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  box-shadow:
-    0 1px 2px rgb(18 18 23 / 0.04),
-    0 12px 32px -16px rgb(18 18 23 / 0.16);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
   transition:
-    box-shadow 0.4s var(--ease-out),
-    border-color 0.4s var(--ease-out),
-    translate 0.4s var(--ease-out);
+    box-shadow 0.3s var(--ease-out),
+    border-color var(--transition),
+    transform 0.3s var(--ease-out);
 
   &:hover {
-    border-color: color-mix(in srgb, var(--color-primary) 30%, var(--color-border));
-    box-shadow:
-      0 1px 2px rgb(18 18 23 / 0.04),
-      0 28px 60px -20px rgb(18 18 23 / 0.22),
-      0 0 0 6px color-mix(in srgb, var(--color-primary) 7%, transparent);
-    translate: 0 -0.5rem;
-  }
-
-  /* Keyboard focus lands on the invisible overlay link; ring the whole card instead. */
-  &:has(.card__link:focus-visible) {
-    border-color: var(--color-primary);
-    box-shadow:
-      0 0 0 4px var(--color-primary-soft),
-      0 28px 60px -20px rgb(18 18 23 / 0.22);
+    box-shadow: var(--shadow-lg);
+    border-color: color-mix(in srgb, var(--color-primary) 35%, transparent);
+    transform: translateY(-6px);
   }
 
   &__link {
     position: absolute;
     inset: 0;
     z-index: 1;
-    border-radius: inherit;
-    outline: none;
   }
 
   &__media {
     position: relative;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 8 / 5;
     overflow: hidden;
-    /* Edge-to-edge: only the top corners round, hugging the card's 1px border. */
-    border-radius: calc(var(--card-radius) - 1px) calc(var(--card-radius) - 1px) 0 0;
     background: var(--color-bg);
-    isolation: isolate;
-
-    /* Soft vignette so the badges stay legible on any photo. */
-    &::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        180deg,
-        rgb(18 18 23 / 0.28),
-        transparent 38%,
-        transparent 100%
-      );
-      pointer-events: none;
-    }
   }
 
   &__image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: scale 0.8s var(--ease-out);
+    transition: scale 0.6s var(--ease-out);
   }
 
   &:hover &__image {
-    scale: 1.06;
+    scale: 1.05;
   }
 
   &__placeholder {
@@ -89,55 +55,16 @@
     place-items: center;
     width: 100%;
     height: 100%;
-    color: rgb(255 255 255 / 0.75);
+    color: var(--color-border-strong);
     background: var(--gradient-card);
-  }
-
-  &__badges {
-    position: absolute;
-    inset: 0.875rem 0.875rem auto;
-    z-index: 1;
-    display: flex;
-    justify-content: space-between;
-    gap: 0.5rem;
-    pointer-events: none;
-  }
-
-  &__badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.4rem 0.8rem;
-    border-radius: var(--radius-pill);
-    font-size: var(--font-size-xs);
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    line-height: 1;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-
-    &--rank {
-      background: rgb(18 18 23 / 0.62);
-      color: var(--color-text-inverse);
-      font-variant-numeric: tabular-nums;
-    }
-
-    &--verified {
-      margin-left: auto;
-      background: rgb(255 255 255 / 0.88);
-      color: var(--color-heading);
-
-      svg {
-        color: var(--color-success);
-      }
-    }
   }
 
   &__body {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 1.35rem var(--card-pad-x) 1rem;
+    gap: 0.6rem;
+    padding: 1.5rem 1.5rem 1rem;
   }
 
   &__company {
@@ -146,22 +73,12 @@
     gap: 0.4rem;
     font-size: var(--font-size-xs);
     font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--color-primary);
+    color: var(--color-text-muted);
   }
 
   &__name {
-    margin-top: 0.5rem;
     font-size: var(--font-size-xl);
     font-weight: 800;
-    line-height: 1.15;
-    text-wrap: balance;
-    transition: color var(--transition);
-  }
-
-  &:hover &__name {
-    color: var(--color-primary);
   }
 
   &__location {
@@ -169,10 +86,8 @@
     z-index: 2;
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    margin-top: 0.5rem;
+    gap: 0.4rem;
     font-size: var(--font-size-sm);
-    font-weight: 500;
     color: var(--color-text-muted);
     text-decoration: none;
     transition: color var(--transition);
@@ -180,84 +95,44 @@
     &:hover {
       color: var(--color-primary);
       text-decoration: underline;
-      text-underline-offset: 0.2em;
     }
-  }
-
-  &__description {
-    display: -webkit-box;
-    margin-top: 0.9rem;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    font-size: var(--font-size-sm);
-    line-height: 1.6;
-    color: var(--color-text-muted);
   }
 
   &__chips {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem;
-    margin: 1rem 0 0;
+    gap: 0.5rem;
+    margin: 0.4rem 0 0;
     padding: 0;
     list-style: none;
   }
 
   &__chip {
-    padding: 0.35rem 0.75rem;
+    padding: 0.3rem 0.75rem;
     border-radius: var(--radius-pill);
-    background: var(--color-bg);
     border: 1px solid var(--color-border);
+    background: var(--color-bg);
     font-size: var(--font-size-xs);
-    font-weight: 600;
-    line-height: 1.3;
-    color: var(--color-text);
-
-    &--more {
-      background: var(--color-primary-soft);
-      border-color: transparent;
-      color: var(--color-primary);
-    }
-  }
-
-  &__footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    margin: auto var(--card-pad-x) 0;
-    padding: 1rem 0 1.25rem;
-    border-top: 1px solid var(--color-border);
-
-    /* Only the button rises above the overlay link; the rest of the footer still opens the property. */
-    app-button {
-      position: relative;
-      z-index: 2;
-    }
-  }
-
-  &__cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: var(--font-size-sm);
-    font-weight: 600;
-    color: var(--color-text-muted);
-    transition: color var(--transition);
-  }
-
-  &__cta-arrow {
-    transition: translate 0.3s var(--ease-out);
-  }
-
-  &:hover &__cta {
+    font-weight: 700;
     color: var(--color-heading);
   }
 
-  &:hover &__cta-arrow {
-    translate: 0.25rem 0;
+  &__description {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  &__footer {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: auto;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--color-border);
   }
 }
 

@@ -1,13 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  input,
-  output,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output, signal } from '@angular/core';
 import { TELEGRAM_URL, WHATSAPP_URL } from '../../../../core/data/site.data';
 import { Button } from '../../../../shared/components/button/button';
 import { ButtonLink } from '../../../../shared/components/button-link/button-link';
@@ -15,10 +7,11 @@ import { TelegramIcon } from '../../../../shared/components/telegram-icon/telegr
 import { WhatsappIcon } from '../../../../shared/components/whatsapp-icon/whatsapp-icon';
 import { SafeHtmlPipe } from '../../../../shared/pipes/safe-html.pipe';
 import { PropertyDetailContent } from '../../property-detail.models';
+import { PropertyGallery } from '../property-gallery/property-gallery';
 
 @Component({
   selector: 'app-detail-hero',
-  imports: [Button, ButtonLink, SafeHtmlPipe, TelegramIcon, WhatsappIcon],
+  imports: [Button, ButtonLink, PropertyGallery, SafeHtmlPipe, TelegramIcon, WhatsappIcon],
   templateUrl: './detail-hero.html',
   styleUrl: './detail-hero.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,19 +26,7 @@ export class DetailHero {
   protected readonly whatsappUrl = WHATSAPP_URL;
   protected readonly telegramUrl = TELEGRAM_URL;
 
-  protected readonly selectedIndex = signal(0);
   protected readonly copied = signal(false);
-
-  protected readonly mainImageUrl = computed(() => {
-    const urls = this.detail().galleryUrls;
-    return urls[this.selectedIndex()] ?? urls[0] ?? null;
-  });
-
-  protected readonly thumbnails = computed(() => this.detail().galleryUrls.slice(1));
-
-  protected selectImage(index: number): void {
-    this.selectedIndex.set(index);
-  }
 
   protected copyLink(): void {
     const url = this.document.location?.href ?? '';

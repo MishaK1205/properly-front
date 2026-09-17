@@ -4,11 +4,9 @@ import { RouterLink } from '@angular/router';
 import { ProjectResponse } from '../../../../../core/models/api.models';
 import { ImageService } from '../../../../../core/services/image.service';
 import { LanguageService } from '../../../../../core/services/language.service';
+import { projectSlug } from '../../../../../core/utils/project-slug';
 import { Button } from '../../../../../shared/components/button/button';
 import { SafeHtmlPipe } from '../../../../../shared/pipes/safe-html.pipe';
-
-/** Advantages shown before collapsing the rest into a "+N more" chip, keeping card heights even. */
-const MAX_VISIBLE_ADVANTAGES = 3;
 
 @Component({
   selector: 'app-project-card',
@@ -19,22 +17,17 @@ const MAX_VISIBLE_ADVANTAGES = 3;
 })
 export class ProjectCard {
   readonly project = input.required<ProjectResponse>();
-  /** 1-based position in the shortlist; omit to hide the rank badge. */
-  readonly rank = input<number | null>(null);
 
   readonly interested = output<string>();
 
   private readonly images = inject(ImageService);
   private readonly language = inject(LanguageService);
 
+  protected readonly slug = computed(() => projectSlug(this.project()));
+
   protected readonly imageUrl = computed(() => {
     const [cover] = this.project().projectImages;
     return cover ? this.images.imageUrl(cover) : null;
-  });
-
-  protected readonly rankLabel = computed(() => {
-    const rank = this.rank();
-    return rank === null ? '' : `№ ${String(rank).padStart(2, '0')}`;
   });
 
   protected readonly companyName = computed(() => this.project().companyInfo?.companyName ?? '');
@@ -60,14 +53,6 @@ export class ProjectCard {
       }) ?? []
     );
   });
-
-  protected readonly visibleAdvantages = computed(() =>
-    this.advantages().slice(0, MAX_VISIBLE_ADVANTAGES),
-  );
-
-  protected readonly hiddenAdvantageCount = computed(() =>
-    Math.max(0, this.advantages().length - MAX_VISIBLE_ADVANTAGES),
-  );
 
   protected readonly shortDescription = computed(() => {
     const description = this.project().projectDescription;

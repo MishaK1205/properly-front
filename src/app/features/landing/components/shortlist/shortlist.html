@@ -11,7 +11,7 @@
     @if (loading()) {
       <div class="shortlist__grid">
         @for (skeleton of skeletons; track skeleton) {
-          <div class="shortlist__skeleton" aria-hidden="true"></div>
+          <app-skeleton class="shortlist__skeleton" />
         }
       </div>
       <p class="shortlist__status" role="status">Loading projects…</p>
@@ -32,7 +32,6 @@
           <app-project-card
             [appScrollReveal]="(i % 2) * 100"
             [project]="project"
-            [rank]="i + 1"
             (interested)="interested.emit($event)"
           />
         }

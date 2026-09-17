@@ -25,80 +25,8 @@
   }
 
   &__gallery {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+    min-width: 0;
     animation: detail-rise 0.6s var(--ease-out) both;
-  }
-
-  &__media {
-    position: relative;
-    aspect-ratio: 3 / 2;
-    border-radius: var(--radius-xl);
-    overflow: hidden;
-    background: var(--color-bg);
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: scale 0.6s var(--ease-out);
-    }
-
-    &:hover img {
-      scale: 1.04;
-    }
-  }
-
-  &__placeholder {
-    display: grid;
-    place-items: center;
-    width: 100%;
-    height: 100%;
-    color: var(--color-border-strong);
-    background: var(--gradient-card);
-  }
-
-  &__thumbs {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.75rem;
-  }
-
-  &__thumb {
-    position: relative;
-    aspect-ratio: 4 / 3;
-    padding: 0;
-    border: 2px solid transparent;
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    cursor: pointer;
-    background: none;
-    transition:
-      border-color var(--transition),
-      transform var(--transition),
-      box-shadow var(--transition);
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: scale 0.4s var(--ease-out);
-    }
-
-    &:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-
-      img {
-        scale: 1.08;
-      }
-    }
-
-    &--active,
-    &:hover {
-      border-color: var(--color-primary);
-    }
   }
 
   &__card {

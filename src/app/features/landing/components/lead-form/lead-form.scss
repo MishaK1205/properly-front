@@ -14,8 +14,16 @@
     height: 34rem;
     margin-left: -32rem;
     background:
-      radial-gradient(closest-side, rgb(225 190 255 / 0.32), transparent 70%),
-      radial-gradient(closest-side at 70% 70%, rgb(166 204 255 / 0.3), transparent 70%);
+      radial-gradient(
+        closest-side,
+        color-mix(in srgb, var(--color-lavender) 32%, transparent),
+        transparent 70%
+      ),
+      radial-gradient(
+        closest-side at 70% 70%,
+        color-mix(in srgb, var(--color-sky) 30%, transparent),
+        transparent 70%
+      );
     filter: blur(70px);
     pointer-events: none;
   }

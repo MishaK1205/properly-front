@@ -1,0 +1,163 @@
+/* Mirrors the spacing of `.hero` (detail-hero.scss) and `.take` (our-take.scss) so the
+   real content drops into the same place when it arrives. */
+
+.skeleton {
+  &__sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  &__hero {
+    padding-block: 3rem;
+    background: var(--gradient-hero);
+  }
+
+  &__hero-grid {
+    display: grid;
+    gap: 2rem;
+
+    @media (min-width: 1024px) {
+      grid-template-columns: 1.15fr 1fr;
+      align-items: start;
+    }
+  }
+
+  &__gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  &__media {
+    aspect-ratio: 3 / 2;
+    border-radius: var(--radius-xl);
+  }
+
+  &__thumbs {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+  }
+
+  &__thumb {
+    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-md);
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding: 1.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+  }
+
+  &__line {
+    width: 100%;
+    height: 0.9rem;
+
+    &--title {
+      height: 2.25rem;
+      width: 70%;
+    }
+
+    &--heading {
+      height: 2rem;
+      width: 80%;
+      margin-bottom: 0.5rem;
+    }
+
+    &--half {
+      width: 50%;
+    }
+
+    &--narrow {
+      width: 35%;
+    }
+
+    &--center {
+      align-self: center;
+    }
+
+    &--check {
+      width: 85%;
+      height: 1.1rem;
+    }
+  }
+
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+  }
+
+  &__stat {
+    height: 4.5rem;
+    border-radius: var(--radius-md);
+  }
+
+  &__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  &__tag {
+    width: 5.5rem;
+    height: 1.6rem;
+    border-radius: var(--radius-pill);
+  }
+
+  &__divider {
+    height: 1px;
+    background: var(--color-border);
+  }
+
+  &__button {
+    height: 3.25rem;
+    border-radius: var(--radius-pill);
+  }
+
+  &__take {
+    padding-block: var(--section-pad-y);
+  }
+
+  &__take-grid {
+    display: grid;
+    gap: 2.5rem;
+
+    @media (min-width: 1024px) {
+      grid-template-columns: 1.6fr 1fr;
+      align-items: start;
+    }
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  &__eyebrow {
+    width: 6rem;
+    height: 1.6rem;
+    border-radius: var(--radius-pill);
+  }
+
+  &__checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    padding: 1.75rem;
+    border-radius: var(--radius-xl);
+    background: var(--color-bg);
+  }
+}
