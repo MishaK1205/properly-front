@@ -1,7 +1,7 @@
 /* ============================================================
    Design system — global tokens & base styles
-   Holo-inspired: ink-on-porcelain, periwinkle accent, pastel
-   gradients, pill CTAs, oversized radii, generous whitespace.
+   Coral Reef: navy ink-on-porcelain, vivid coral accent, peach & sky
+   pastel gradients, pill CTAs, oversized radii, generous whitespace.
    All components must consume these via var(--...).
    ============================================================ */
 
@@ -23,16 +23,16 @@ html {
 
 :root {
   /* Brand colors — ink scale (kept as navy-* names for admin compat) */
-  --color-navy-900: #121217;
-  --color-navy-800: #1c1c24;
-  --color-navy-700: #2a2a35;
-  --color-navy-600: #3f3f50;
-  --color-ink: #121217;
+  --color-navy-900: #0f1e3d;
+  --color-navy-800: #162a52;
+  --color-navy-700: #1f3868;
+  --color-navy-600: #2f4c85;
+  --color-ink: #0f1e3d;
 
-  /* Accent — periwinkle */
-  --color-primary: #6e69f5;
-  --color-primary-hover: #5652e0;
-  --color-primary-soft: #eeedfe;
+  /* Accent — coral */
+  --color-primary: #f2543f;
+  --color-primary-hover: #d9412d;
+  --color-primary-soft: #fdebe8;
   --color-whatsapp: #24c95d;
   --color-whatsapp-hover: #1cab4d;
   --color-success: #2dca72;
@@ -40,28 +40,28 @@ html {
   --color-error-soft: #fdecea;
 
   /* Pastel accents & gradients */
-  --color-lavender: #e1beff;
-  --color-sky: #a6ccff;
-  --color-mint: #33eee3;
-  --color-pink: #f173ba;
-  --gradient-accent: linear-gradient(180deg, #e1beff, #a6ccff);
-  --gradient-card: linear-gradient(180deg, #c8d0ff, #c2d9fd);
-  --gradient-hero: linear-gradient(180deg, #ffffff, #f4f8ff 70%, #eef4ff);
-  --gradient-ink: linear-gradient(135deg, #1c1c24, #121217 60%, #26263a);
+  --color-lavender: #ffc9bd;
+  --color-sky: #bfe3ff;
+  --color-mint: #8fe3cf;
+  --color-pink: #ff8fb1;
+  --gradient-accent: linear-gradient(180deg, #ffc9bd, #bfe3ff);
+  --gradient-card: linear-gradient(180deg, #ffd3c9, #c9e4ff);
+  --gradient-hero: linear-gradient(180deg, #ffffff, #fff5f2 70%, #f3f7ff);
+  --gradient-ink: linear-gradient(135deg, #162a52, #0f1e3d 60%, #25406f);
 
   /* Surfaces */
-  --color-bg: #f7f7f8;
+  --color-bg: #f7f8fb;
   --color-bg-blue: #eef4ff;
   --color-surface: #ffffff;
-  --color-border: #ebebef;
-  --color-border-strong: #d1d1db;
+  --color-border: #e5e8f0;
+  --color-border-strong: #c9d0df;
 
   /* Text */
   --color-heading: var(--color-ink);
-  --color-text: #3f3f50;
-  --color-text-muted: #8a8aa3;
+  --color-text: #364460;
+  --color-text-muted: #7d89a3;
   --color-text-inverse: #ffffff;
-  --color-text-inverse-muted: #a9a9bc;
+  --color-text-inverse-muted: #aab7cf;
 
   /* Typography */
   --font-family:
@@ -82,9 +82,9 @@ html {
   --radius-lg: 1.5rem;
   --radius-xl: 2rem;
   --radius-pill: 62.5rem;
-  --shadow-sm: 0 1px 3px rgb(18 18 23 / 0.06);
-  --shadow-md: 0 10px 30px rgb(18 18 23 / 0.07);
-  --shadow-lg: 0 24px 60px rgb(18 18 23 / 0.12);
+  --shadow-sm: 0 1px 3px rgb(15 30 61 / 0.06);
+  --shadow-md: 0 10px 30px rgb(15 30 61 / 0.08);
+  --shadow-lg: 0 24px 60px rgb(15 30 61 / 0.14);
 
   /* Layout */
   --container-max: 72rem;

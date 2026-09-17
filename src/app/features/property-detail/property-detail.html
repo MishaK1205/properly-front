@@ -1,5 +1,5 @@
 @if (detail(); as detail) {
-  <app-site-header [breadcrumb]="detail.name" />
+  <app-site-header />
 
   <main class="page">
     <app-detail-hero [detail]="detail" (interested)="scrollTo('contact')" />
@@ -24,23 +24,27 @@
   >
     <app-whatsapp-icon [size]="26" />
   </a>
+} @else if (loading()) {
+  <app-site-header />
+
+  <main class="page">
+    <app-detail-skeleton />
+  </main>
+
+  <app-site-footer />
 } @else {
   <app-site-header />
 
   <main class="not-found container">
-    @if (loading()) {
-      <h1 class="not-found__title">Loading property…</h1>
-    } @else {
-      <h1 class="not-found__title">Property not found</h1>
-      <p class="not-found__text">
-        @if (failed()) {
-          We couldn't load this property right now. Please try again.
-        } @else {
-          This property is no longer on our shortlist.
-        }
-      </p>
-      <a class="not-found__link" routerLink="/">← Back to the full Top 10 list</a>
-    }
+    <h1 class="not-found__title">Property not found</h1>
+    <p class="not-found__text">
+      @if (failed()) {
+        We couldn't load this property right now. Please try again.
+      } @else {
+        This property is no longer on our shortlist.
+      }
+    </p>
+    <a class="not-found__link" routerLink="/">← Back to the full Top 10 list</a>
   </main>
 
   <app-site-footer />

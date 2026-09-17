@@ -2,6 +2,7 @@
   class="heading"
   [class.heading--start]="align() === 'start'"
   [class.heading--dark]="tone() === 'dark'"
+  [class.heading--lg]="size() === 'lg'"
 >
   @if (eyebrow()) {
     <p class="heading__eyebrow">{{ eyebrow() }}</p>

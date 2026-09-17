@@ -1,5 +1,6 @@
 import { ProjectResponse } from '../../core/models/api.models';
 import { LanguageSuffix } from '../../core/models/language';
+import { projectSlug } from '../../core/utils/project-slug';
 import {
   DEVELOPER_FOOTNOTE,
   DEVELOPER_LABELS,
@@ -279,6 +280,7 @@ export function buildExploreCards(
 ): readonly ExploreCard[] {
   return projects.map((project) => ({
     id: project._id,
+    slug: projectSlug(project),
     name: project.projectName,
     location: variant(
       project.projectLocationGe,

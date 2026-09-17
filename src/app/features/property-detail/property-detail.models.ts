@@ -54,6 +54,8 @@ export interface DeveloperProfile {
 /** Card in the "Keep exploring" strip, linking to another project's detail page. */
 export interface ExploreCard {
   readonly id: string;
+  /** URL segment of the project's detail page. */
+  readonly slug: string;
   readonly name: string;
   readonly location: string;
   readonly imageUrl: string | null;

@@ -1,0 +1,85 @@
+<div
+  class="gallery"
+  role="region"
+  aria-roledescription="carousel"
+  [attr.aria-label]="name() + ' photos'"
+  tabindex="0"
+  (keydown.arrowleft)="previous()"
+  (keydown.arrowright)="next()"
+  (keydown.enter)="openLightbox()"
+  (pointerdown)="onPointerDown($event)"
+  (pointerup)="onPointerUp($event)"
+  (pointercancel)="onPointerCancel()"
+>
+  @if (count()) {
+    <div class="gallery__track" [style.translate]="'-' + index() * 100 + '% 0'" (click)="onTrackClick()">
+      @for (url of images(); track $index; let i = $index) {
+        <div class="gallery__slide" [attr.aria-hidden]="i !== index()">
+          <img
+            class="gallery__photo"
+            [class.gallery__photo--active]="i === index()"
+            [src]="url"
+            [alt]="i === index() ? name() + ' — photo ' + (i + 1) : ''"
+            decoding="async"
+            draggable="false"
+          />
+        </div>
+      }
+    </div>
+
+    <div class="gallery__top">
+      @if (hasMany()) {
+        <div class="gallery__progress" aria-hidden="true">
+          @for (url of images(); track $index; let i = $index) {
+            <span class="gallery__segment" [class.gallery__segment--done]="i <= index()"></span>
+          }
+        </div>
+      }
+      <button type="button" class="gallery__expand" (click)="openLightbox()" aria-label="View photos fullscreen">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+        </svg>
+      </button>
+    </div>
+  } @else {
+    <div class="gallery__placeholder" aria-hidden="true">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M3 21V7l9-4 9 4v14h-7v-6h-4v6H3Z" />
+      </svg>
+    </div>
+  }
+
+  @if (hasMany()) {
+    <button type="button" class="gallery__arrow gallery__arrow--prev" (click)="previous()" aria-label="Previous photo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m15 6-6 6 6 6" />
+      </svg>
+    </button>
+    <button type="button" class="gallery__arrow gallery__arrow--next" (click)="next()" aria-label="Next photo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m9 6 6 6-6 6" />
+      </svg>
+    </button>
+
+    <div #strip class="gallery__thumbs" role="tablist" aria-label="Choose a photo">
+      @for (url of images(); track $index; let i = $index) {
+        <button
+          #thumb
+          type="button"
+          role="tab"
+          class="gallery__thumb"
+          [class.gallery__thumb--active]="i === index()"
+          [attr.aria-selected]="i === index()"
+          [attr.aria-label]="'Photo ' + (i + 1) + ' of ' + count()"
+          (click)="select(i)"
+        >
+          <img [src]="url" alt="" loading="lazy" decoding="async" draggable="false" />
+        </button>
+      }
+    </div>
+
+    <p class="gallery__counter" aria-live="polite">{{ index() + 1 }} / {{ count() }}</p>
+  }
+</div>
+
+<app-gallery-lightbox [images]="images()" [name]="name()" [(index)]="index" [(open)]="lightboxOpen" />

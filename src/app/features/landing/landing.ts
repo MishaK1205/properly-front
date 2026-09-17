@@ -13,7 +13,6 @@ import { ProjectService } from '../../core/services/project.service';
 import { SiteFooter } from '../../shared/components/site-footer/site-footer';
 import { SiteHeader } from '../../shared/components/site-header/site-header';
 import { WhatsappIcon } from '../../shared/components/whatsapp-icon/whatsapp-icon';
-import { AnnouncementBar } from './components/announcement-bar/announcement-bar';
 import { Faq } from './components/faq/faq';
 import { Hero } from './components/hero/hero';
 import { HowItWorks } from './components/how-it-works/how-it-works';
@@ -26,7 +25,6 @@ import { Verification } from './components/verification/verification';
 @Component({
   selector: 'app-landing',
   imports: [
-    AnnouncementBar,
     SiteHeader,
     Hero,
     MarketCase,

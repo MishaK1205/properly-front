@@ -32,8 +32,8 @@
     width: 3.25rem;
     height: 3.25rem;
     border-radius: var(--radius-md);
-    background: var(--gradient-accent);
-    color: var(--color-ink);
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
     rotate: -4deg;
     transition:
       rotate 0.3s var(--ease-out),
@@ -44,7 +44,7 @@
   &__step:hover &__icon {
     rotate: 4deg;
     scale: 1.1;
-    box-shadow: 0 10px 24px rgb(110 105 245 / 0.3);
+    box-shadow: 0 10px 24px color-mix(in srgb, var(--color-primary) 30%, transparent);
   }
 
   &__title {

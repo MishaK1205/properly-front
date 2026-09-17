@@ -1,34 +1,10 @@
 <section class="hero">
   <div class="hero__grid container">
-    <div class="hero__gallery">
-      <div class="hero__media">
-        @if (mainImageUrl(); as url) {
-          <img [src]="url" [alt]="detail().name" decoding="async" />
-        } @else {
-          <div class="hero__placeholder" aria-hidden="true">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M3 21V7l9-4 9 4v14h-7v-6h-4v6H3Z" />
-            </svg>
-          </div>
-        }
-      </div>
-
-      @if (thumbnails().length) {
-        <div class="hero__thumbs" role="tablist" aria-label="Property photos">
-          @for (url of thumbnails(); track url; let i = $index) {
-            <button
-              type="button"
-              class="hero__thumb"
-              [class.hero__thumb--active]="selectedIndex() === i + 1"
-              (click)="selectImage(i + 1)"
-              [attr.aria-label]="'Photo ' + (i + 2) + ' of ' + detail().name"
-            >
-              <img [src]="url" alt="" loading="lazy" decoding="async" />
-            </button>
-          }
-        </div>
-      }
-    </div>
+    <app-property-gallery
+      class="hero__gallery"
+      [images]="detail().galleryUrls"
+      [name]="detail().name"
+    />
 
     <aside class="hero__card">
       <h1 class="hero__name">{{ detail().name }}</h1>

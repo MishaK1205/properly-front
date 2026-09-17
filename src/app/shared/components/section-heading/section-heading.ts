@@ -11,6 +11,8 @@ export class SectionHeading {
   readonly title = input.required<string>();
   readonly subtitle = input('');
   readonly align = input<'center' | 'start'>('center');
+  /** 'lg' renders a larger display-style title. */
+  readonly size = input<'md' | 'lg'>('md');
   /** 'dark' renders white text for navy backgrounds. */
   readonly tone = input<'light' | 'dark'>('light');
 }

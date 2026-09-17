@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { ProjectResponse } from '../../../../../core/models/api.models';
 import { ImageService } from '../../../../../core/services/image.service';
 import { LanguageService } from '../../../../../core/services/language.service';
+import { projectSlug } from '../../../../../core/utils/project-slug';
 import { Button } from '../../../../../shared/components/button/button';
 import { SafeHtmlPipe } from '../../../../../shared/pipes/safe-html.pipe';
 
@@ -21,6 +22,8 @@ export class ProjectCard {
 
   private readonly images = inject(ImageService);
   private readonly language = inject(LanguageService);
+
+  protected readonly slug = computed(() => projectSlug(this.project()));
 
   protected readonly imageUrl = computed(() => {
     const [cover] = this.project().projectImages;

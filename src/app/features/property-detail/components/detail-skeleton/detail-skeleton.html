@@ -1,0 +1,60 @@
+<div class="skeleton" role="status" aria-busy="true" aria-live="polite">
+  <span class="skeleton__sr-only">Loading property…</span>
+
+  <section class="skeleton__hero">
+    <div class="skeleton__hero-grid container">
+      <div class="skeleton__gallery">
+        <app-skeleton class="skeleton__media" />
+        <div class="skeleton__thumbs">
+          @for (thumb of thumbs; track thumb) {
+            <app-skeleton class="skeleton__thumb" />
+          }
+        </div>
+      </div>
+
+      <div class="skeleton__card">
+        <app-skeleton class="skeleton__line skeleton__line--title" />
+        <app-skeleton class="skeleton__line skeleton__line--narrow" />
+        <app-skeleton class="skeleton__line skeleton__line--half" />
+
+        <div class="skeleton__stats">
+          @for (stat of stats; track stat) {
+            <app-skeleton class="skeleton__stat" />
+          }
+        </div>
+
+        <div class="skeleton__tags">
+          @for (tag of tags; track tag) {
+            <app-skeleton class="skeleton__tag" />
+          }
+        </div>
+
+        <div class="skeleton__divider"></div>
+
+        <app-skeleton class="skeleton__line skeleton__line--half" />
+        <app-skeleton class="skeleton__button" />
+        <app-skeleton class="skeleton__line skeleton__line--narrow skeleton__line--center" />
+      </div>
+    </div>
+  </section>
+
+  <section class="skeleton__take">
+    <div class="skeleton__take-grid container">
+      <div class="skeleton__text">
+        <app-skeleton class="skeleton__eyebrow" />
+        <app-skeleton class="skeleton__line skeleton__line--heading" />
+        @for (line of paragraph; track line) {
+          <app-skeleton class="skeleton__line" />
+        }
+        <app-skeleton class="skeleton__line skeleton__line--half" />
+      </div>
+
+      <div class="skeleton__checklist">
+        <app-skeleton class="skeleton__line skeleton__line--half" />
+        @for (check of checks; track check) {
+          <app-skeleton class="skeleton__line skeleton__line--check" />
+        }
+      </div>
+    </div>
+  </section>
+</div>

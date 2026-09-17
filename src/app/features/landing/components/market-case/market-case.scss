@@ -64,7 +64,7 @@
     animation: yield-grow 1s var(--ease-out) 0.3s both;
 
     &--highlight {
-      background: linear-gradient(90deg, var(--color-primary), #8888ff);
+      background: var(--color-primary);
     }
   }
 }

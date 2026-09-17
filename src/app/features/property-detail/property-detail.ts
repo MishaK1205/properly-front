@@ -6,10 +6,12 @@ import { WHATSAPP_URL } from '../../core/data/site.data';
 import { ImageService } from '../../core/services/image.service';
 import { LanguageService } from '../../core/services/language.service';
 import { ProjectService } from '../../core/services/project.service';
+import { resolveProjectId } from '../../core/utils/project-slug';
 import { SiteFooter } from '../../shared/components/site-footer/site-footer';
 import { SiteHeader } from '../../shared/components/site-header/site-header';
 import { WhatsappIcon } from '../../shared/components/whatsapp-icon/whatsapp-icon';
 import { DetailHero } from './components/detail-hero/detail-hero';
+import { DetailSkeleton } from './components/detail-skeleton/detail-skeleton';
 import { DeveloperSection } from './components/developer-section/developer-section';
 import { InterestForm } from './components/interest-form/interest-form';
 import { InvestmentNumbers } from './components/investment-numbers/investment-numbers';
@@ -27,6 +29,7 @@ const RELATED_COUNT = 3;
     SiteFooter,
     RouterLink,
     DetailHero,
+    DetailSkeleton,
     OurTake,
     InvestmentNumbers,
     PropertyTabs,
@@ -40,8 +43,8 @@ const RELATED_COUNT = 3;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PropertyDetail {
-  /** Project id from the route, bound via withComponentInputBinding. */
-  readonly id = input.required<string>();
+  /** Project name slug (or a legacy id) from the route, bound via withComponentInputBinding. */
+  readonly slug = input.required<string>();
 
   private readonly document = inject(DOCUMENT);
   private readonly projectService = inject(ProjectService);
@@ -50,20 +53,30 @@ export class PropertyDetail {
 
   protected readonly whatsappUrl = WHATSAPP_URL;
 
+  /** Resolves the slug to an id and feeds the "Keep exploring" strip. */
+  private readonly projectsResource = rxResource({
+    stream: () => this.projectService.getAll(),
+  });
+
+  /** Backend id for the current slug; undefined until the list is loaded or if nothing matches. */
+  private readonly id = computed(() =>
+    resolveProjectId(this.slug(), this.projectsResource.value()),
+  );
+
+  /** Stays idle while `id` is undefined, so the detail request only fires once the slug resolves. */
   private readonly projectResource = rxResource({
     params: () => this.id(),
     stream: ({ params }) => this.projectService.getById(params),
   });
 
-  /** Loaded only to suggest other projects at the bottom of the page. */
-  private readonly projectsResource = rxResource({
-    stream: () => this.projectService.getAll(),
-  });
-
   private readonly imageUrl = (imageId: string): string => this.images.imageUrl(imageId);
 
-  protected readonly loading = computed(() => this.projectResource.isLoading());
-  protected readonly failed = computed(() => this.projectResource.error() !== undefined);
+  protected readonly loading = computed(
+    () => this.projectsResource.isLoading() || this.projectResource.isLoading(),
+  );
+  protected readonly failed = computed(
+    () => this.projectsResource.error() !== undefined || this.projectResource.error() !== undefined,
+  );
 
   protected readonly detail = computed(() => {
     const project = this.projectResource.value();

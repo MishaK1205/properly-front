@@ -5,16 +5,6 @@
       <span class="header__name">Batumi Top 10</span>
     </a>
 
-    @if (breadcrumb()) {
-      <nav class="header__breadcrumb" aria-label="Breadcrumb">
-        <a class="header__breadcrumb-link" routerLink="/">Top 10 List</a>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="m9 6 6 6-6 6" />
-        </svg>
-        <span class="header__breadcrumb-current" aria-current="page">{{ breadcrumb() }}</span>
-      </nav>
-    }
-
     <div class="header__actions">
       <app-language-switcher />
       <app-button-link variant="whatsapp" size="sm" [href]="whatsappUrl">
