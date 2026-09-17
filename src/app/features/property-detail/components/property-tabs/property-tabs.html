@@ -91,11 +91,13 @@
             }
 
             @if (selectedPlan(); as plan) {
-              @for (planImageUrl of plan.imageUrls; track planImageUrl) {
-                <div class="tabs__plan-media">
-                  <img [src]="planImageUrl" [alt]="plan.type + ' floor plan'" loading="lazy" decoding="async" />
-                </div>
-              } @empty {
+              @if (plan.imageUrls.length) {
+                <app-plan-slider
+                  class="tabs__plan-slider"
+                  [images]="plan.imageUrls"
+                  [label]="plan.type + ' floor plan'"
+                />
+              } @else {
                 <p class="tabs__plans-empty">No plan images for {{ plan.type }} yet.</p>
               }
 

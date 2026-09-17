@@ -13,6 +13,7 @@ import { SelectInput } from '../../../../shared/components/select-input/select-i
 import { ScrollRevealDirective } from '../../../../shared/directives/scroll-reveal.directive';
 import { SafeHtmlPipe } from '../../../../shared/pipes/safe-html.pipe';
 import { PropertyDetailContent, UnitPlan } from '../../property-detail.models';
+import { PlanSlider } from './plan-slider/plan-slider';
 
 type TabId = 'overview' | 'plans' | 'payment';
 
@@ -23,7 +24,7 @@ interface Tab {
 
 @Component({
   selector: 'app-property-tabs',
-  imports: [Button, SectionHeading, SelectInput, ScrollRevealDirective, SafeHtmlPipe],
+  imports: [Button, SectionHeading, SelectInput, ScrollRevealDirective, SafeHtmlPipe, PlanSlider],
   templateUrl: './property-tabs.html',
   styleUrl: './property-tabs.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
