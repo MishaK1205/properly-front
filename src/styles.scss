@@ -16,7 +16,7 @@ html {
       primary: mat.$violet-palette,
       tertiary: mat.$azure-palette,
     ),
-    typography: 'Inter',
+    typography: 'Google Sans',
     density: 0,
   ));
 }
@@ -69,7 +69,7 @@ html {
 
   /* Typography */
   --font-family:
-    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     Helvetica, Arial, sans-serif;
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
